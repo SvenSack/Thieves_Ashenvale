@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -25502,6 +25502,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b093db0ce5e714990895a8275316e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roleSprites:
+  - {fileID: 21300000, guid: ea1c78b1e0049ae49b0ecd3c012ff5ab, type: 3}
+  - {fileID: 21300000, guid: 5318a3269d7cde04a92cd782bcd31994, type: 3}
+  - {fileID: 21300000, guid: a8d81148943a84047a1df583867ba499, type: 3}
+  - {fileID: 21300000, guid: 36dd9fdee74634a438406a5f2c3c2f37, type: 3}
+  - {fileID: 21300000, guid: bdc6bd226a82b254694a38dc0d2776ed, type: 3}
+  - {fileID: 21300000, guid: 463b483d7da603044bb721eaa5ff2b74, type: 3}
   characterSprites:
   - {fileID: 21300000, guid: 99645a27cd9bfc34987ccad35de03246, type: 3}
   - {fileID: 21300000, guid: 43c5a964e52bf96438f226355ffbc614, type: 3}
@@ -25513,13 +25520,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7481c7485b5bd6b4b8dcc616d69d4c98, type: 3}
   - {fileID: 21300000, guid: e0624cbdad2beb042a774d01407e0b04, type: 3}
   - {fileID: 21300000, guid: fa9b68a99aac1e64d9e58523cd738a9c, type: 3}
-  roleSprites:
-  - {fileID: 21300000, guid: ea1c78b1e0049ae49b0ecd3c012ff5ab, type: 3}
-  - {fileID: 21300000, guid: 5318a3269d7cde04a92cd782bcd31994, type: 3}
-  - {fileID: 21300000, guid: a8d81148943a84047a1df583867ba499, type: 3}
-  - {fileID: 21300000, guid: 36dd9fdee74634a438406a5f2c3c2f37, type: 3}
-  - {fileID: 21300000, guid: bdc6bd226a82b254694a38dc0d2776ed, type: 3}
-  - {fileID: 21300000, guid: 463b483d7da603044bb721eaa5ff2b74, type: 3}
   actionSprites:
   - {fileID: 21300000, guid: 725d1955fd8cef04cb4b6cd34acb4171, type: 3}
   - {fileID: 21300000, guid: 725d1955fd8cef04cb4b6cd34acb4171, type: 3}
@@ -25563,6 +25563,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 725d1955fd8cef04cb4b6cd34acb4171, type: 3}
   - {fileID: 21300000, guid: 725d1955fd8cef04cb4b6cd34acb4171, type: 3}
   - {fileID: 21300000, guid: 725d1955fd8cef04cb4b6cd34acb4171, type: 3}
+  roleCards: []
+  characterCards: []
+  actionCards: []
+  artifactCards: []
+  threatCards: []
+  cardPrefabs:
+  - {fileID: 7701243812361817655, guid: dd2f336c559b81e4fb7025e0638b9506, type: 3}
+  - {fileID: 3134104621269193279, guid: 251b186336a9afa43933f776e3f18e8a, type: 3}
+  - {fileID: 5436492771421655288, guid: 4c281639f9e0a2f44b1cc6a97a557c8e, type: 3}
+  - {fileID: 7410232730130418785, guid: 8441190824d123b4d96d46e316e8abae, type: 3}
+  - {fileID: 6845383341124998437, guid: fd0773b992f798f44b89054837be55e0, type: 3}
+  jsonFiles:
+  - {fileID: 4900000, guid: e2ac5a92d759a1246ac75e7474df9b1c, type: 3}
+  - {fileID: 4900000, guid: c6bb938f10ea7234b973f670c832e1dc, type: 3}
+  - {fileID: 4900000, guid: f76a70764bfa52e4aa4db8bb78e253ed, type: 3}
+  - {fileID: 4900000, guid: 782b61cada1b59b4d875ee040ac96949, type: 3}
+  - {fileID: 4900000, guid: 3b4b50175b7570640a8a0111e6a48451, type: 3}
 --- !u!4 &1390413239
 Transform:
   m_ObjectHideFlags: 0

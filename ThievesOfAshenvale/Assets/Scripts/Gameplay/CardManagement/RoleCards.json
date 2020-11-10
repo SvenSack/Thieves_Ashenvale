@@ -1,0 +1,34 @@
+{"roleCards":
+	[
+		{
+			"cardName": "The Leader",
+			"text": "You win if by the end of the game you are still the Leader. Reveal: gain1 extra HP; you must reveal at the start of the game. Revealed: You assign jobs each round. When you die, the character with the most threat potential gets this role",
+			"isGuild": "true"
+		},
+		{
+			"cardName": "The Greedy Rogue",
+			"text": "You win if by the end of the game you have 20 coins in your character pool. Revealed: Whenever you would get the Leader a benefit, you can keep it instead.",
+			"isGuild": "true"
+		},
+		{
+			"cardName": "The Hidden Paladin",
+			"text": "You win if the thieves guild loses. Reveal: next turn, one more threat is drawn. Revealed: the Leader must assign you at least 2 workers",
+			"isGuild": "false"
+		},
+		{
+			"cardName": "The Ambitious Gangster",
+			"text": "You can only win by becoming the Leader. Reveal: for the remainder of this turn, treat all your Thugs as Assassins. Revealed: At the start of each turn, take a Thug for your character pool",
+			"isGuild": "true"
+		},
+		{
+			"cardName": "The Vengeful Vigilante",
+			"text": "You win if all guild members are dead. If they lose through a threat, you still lose. Reveal: Increase the damage dealt by threatening pieces to a character of your choice by 2. Revealed: At the start of each turn, take an Assassin for your character pool, you no longer need to pay for Assassins at the end of the turn.",
+			"isGuild": "false"
+		},
+		{
+			"cardName": "The Scheming Noble",
+			"text": "You win if by the end of the game no one has evidence against you and is still alive. Others begin with evidence against you. Reveal: gain 10 coins. Revealed:  At the start of each turn, add 2 coins to your character pool",
+			"isGuild": "true"
+		}
+	]
+}

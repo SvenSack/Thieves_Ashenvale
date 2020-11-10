@@ -523,7 +523,7 @@ namespace Gameplay
         {
             if (pv.IsMine)
             {
-                Decklist.Instance.characterCards.TryGetValue(character, out CharacterCard charCard);
+                /*Decklist.Instance.characterCards.TryGetValue(character, out CharacterCard charCard);
                 if (health + amount <= charCard.health)
                 {
                     AddHealth(amount);
@@ -531,7 +531,7 @@ namespace Gameplay
                 else
                 {
                     AddHealth(charCard.health - health);
-                }
+                }*/ // TODO replace this
             }
         }
         
@@ -629,7 +629,7 @@ namespace Gameplay
 
             if (pv.IsMine)
             {
-                Decklist.Instance.characterCards.TryGetValue(character, out var tempCard);
+                /*Decklist.Instance.characterCards.TryGetValue(character, out var tempCard);
                 GameObject charCard = GameMaster.Instance.ConstructCard(GameMaster.CardType.Character, (int) character);
                 var position = mySlot.rCCardLocation.position;
                 charCard.transform.position = position + new Vector3(0,.3f,0);
@@ -654,7 +654,7 @@ namespace Gameplay
                     DrawACard(GameMaster.CardType.Artifact);
                     DrawACard(GameMaster.CardType.Artifact);
                     DrawACard(GameMaster.CardType.Artifact);
-                }
+                }*/  // TODO replace this
 
                 StartCoroutine(PrepAndStart());
             }
@@ -816,6 +816,7 @@ namespace Gameplay
                 GameMaster.Instance.roleRevealTurns[(int) part.role] = GameMaster.Instance.turnCounter;
                 if (playerNumber != playerIndexWhoRevealed)
                 {
+                    /*
                     Decklist.Instance.roleCards.TryGetValue(part.role, out RoleCard roleCard);
                     string content = UIManager.Instance.CreateCharPlayerString(part) + " is " + roleCard.name;
                     string header = UIManager.Instance.CreateCharPlayerString(part) + " has revealed their role";
@@ -826,7 +827,7 @@ namespace Gameplay
                     else
                     {
                         RpcAddEvidence(content, header, false, playerIndexWhoRevealed);
-                    }
+                    } */  // TODO replace this
                 }
                 else
                 {

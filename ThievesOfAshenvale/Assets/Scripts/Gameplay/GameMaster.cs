@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -388,25 +389,20 @@ namespace Gameplay
 
         public GameObject ConstructCard(CardType type, int enumIndex)
         { // used by other classes to create card instances, this could be moved somewhere else maybe
-            Decklist dL = Decklist.Instance;
+            // TODO move this functionality into decklist
+            /* Decklist dL = Decklist.Instance;
             GameObject card = null;
             switch (type)
             {
                 case CardType.Action:
                     card = Instantiate(cardPrefabs[(int) type]);
                     Card parts = card.GetComponent<Card>();
-                    if (dL.actionCards.TryGetValue((Action) enumIndex, out ActionCard thisCard))
-                    {
-                        parts.cardType = type;
-                        parts.illustration.sprite = thisCard.illustration;
-                        parts.cardName.text = thisCard.name;
-                        parts.text.text = thisCard.effectText;
-                        parts.cardIndex = enumIndex;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PANIC");
-                    }
+                    ActionCard thisCard = dL.actionCards[enumIndex];
+                    parts.cardType = type;
+                    parts.illustration.sprite = thisCard.illustration;
+                    parts.cardName.text = thisCard.cardName;
+                    parts.text.text = thisCard.text;
+                    parts.cardIndex = enumIndex;
                     break;
                 case CardType.Artifact:
                     card = Instantiate(cardPrefabs[(int) type]);
@@ -478,7 +474,8 @@ namespace Gameplay
                     }
                     break;
             }
-            return card;
+            return card;*/
+            return null;
         }
         
         public void EndTurn(bool isFirst)

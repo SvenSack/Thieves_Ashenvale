@@ -1,0 +1,54 @@
+{"artifactCards":
+	[
+		{
+			"cardName": "Crystal Ball",
+			"text": "You may look behind the screen of any one player of your choice.",
+			"weaponStrength": "1"
+		},
+		{
+			"cardName": "Bauble of Shielding",
+			"text": "Instead of playing this card, you may discard it to negate the effect of any one artifact which targets you.",
+			"weaponStrength": "2"
+		},
+		{
+			"cardName": "Bow of the Manhunter",
+			"text": "Any one character of your choice immediately discards up to 3 Assassins or Thugs.",
+			"weaponStrength": "4"
+		},
+		{
+			"cardName": "Ritual Dagger",
+			"text": "You may immediately take and use 2 Assassins for your character pool.",
+			"weaponStrength": "3"
+		},
+		{
+			"cardName": "Periapt of the Mindthief",
+			"text": "You may secretly look at the Role card of any one player of your choice.",
+			"weaponStrength": "2"
+		},
+		{
+			"cardName": "Potion of Healing",
+			"text": "Restore up to 3 HP to a character of your choice.",
+			"weaponStrength": "1"
+		},
+		{
+			"cardName": "Serum of Truth",
+			"text": "A player of your choice must immediately answer a yes or no question truthfully.",
+			"weaponStrength": "1"
+		},
+		{
+			"cardName": "Scepter of Lightning",
+			"text": "A character of your choise immediately loses 3 health.",
+			"weaponStrength": "5"
+		},
+		{
+			"cardName": "Mantikor Venom",
+			"text": "Play this artifact together with an Assassin. For the remainder of this turn, that Assassin has a threat value of 5.",
+			"weaponStrength": "3"
+		},
+		{
+			"cardName": "Wand of Fireballs",
+			"text": "Discard any number of pieces which threaten you.",
+			"weaponStrength": "5"
+		}
+	]
+}

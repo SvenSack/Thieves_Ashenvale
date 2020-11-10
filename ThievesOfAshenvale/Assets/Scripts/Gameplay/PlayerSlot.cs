@@ -36,10 +36,11 @@ namespace Gameplay
             {
                 if (player != null)
                 {
+                    /*
                     if (Decklist.Instance.characterCards.TryGetValue(player.character, out var tempOut))
                     {
                         playerCharacterName = tempOut.name;
-                    }
+                    }*/  // TODO replace this
                 }
                 
             }

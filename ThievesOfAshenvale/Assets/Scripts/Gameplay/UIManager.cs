@@ -861,7 +861,7 @@ namespace Gameplay
         private void SelectACardTCS(Card hoveredCard)
         { // this is a helper selection for the threat contribution UI. I could not come up with a better easy to implement version for contributing cards (could however make
           // a better one based on the job assignment toggle system, but that would be more work than needed at this point
-            Decklist.Instance.artifactCards.TryGetValue((GameMaster.Artifact) hoveredCard.cardIndex,
+            /* Decklist.Instance.artifactCards.TryGetValue((GameMaster.Artifact) hoveredCard.cardIndex,
                 out ArtifactCard temp);
             threatContributedValues[5] += temp.weaponStrength;
             PhotonNetwork.Destroy(hoveredCard.GetComponent<PhotonView>());
@@ -870,6 +870,7 @@ namespace Gameplay
             {
                 targetedThreat.pv.RPC("Contribute", RpcTarget.All, participant.playerNumber, threatContributedValues);
             }
+            */ // TODO replace this
             ResetAfterSelect();
         }
 
@@ -1470,8 +1471,11 @@ namespace Gameplay
             {
                 playerName = player.pv.Controller.NickName;
             }
+            /*
             Decklist.Instance.characterNames.TryGetValue(player.character, out string charName);
             return charName + "(" + playerName + ")";
+            */  // TODO replace this
+            return null;
         }
         
         private void PlayCard(Card card)
@@ -1494,10 +1498,12 @@ namespace Gameplay
                     break;
                 case TargetingReason.Periapt:
                     string playerCharName = CreateCharPlayerString(participant);
+                    /*
                     Decklist.Instance.roleCards.TryGetValue(participant.role, out RoleCard roleCard);
                     string content = playerCharName + " is " + roleCard.name;
                     string header = "The role of " + playerCharName;
                     inquiringPlayer.pv.RPC("RpcAddEvidence", RpcTarget.Others, content, header, true, (byte)participant.playerNumber);
+                    */  // TODO replace this
                     break;
                 case TargetingReason.Scepter:
                     participant.RpcRemoveHealth(3);

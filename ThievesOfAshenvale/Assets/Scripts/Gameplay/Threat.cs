@@ -34,11 +34,12 @@ namespace Gameplay
         [PunRPC]
         public void SetThreat(byte threatIndex)
         {
+            /*
             Decklist.Instance.threatCards.TryGetValue((GameMaster.Threat) threatIndex,
                 out ThreatCard thisTCard);
             threatValues = thisTCard.requirements;
             threatType = (GameMaster.Threat) threatIndex;
-            StartCoroutine(SetCardThreat());
+            StartCoroutine(SetCardThreat());*/  // TODO replace this
         }
 
         IEnumerator SetCardThreat()
