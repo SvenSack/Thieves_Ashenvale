@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -106,8 +107,8 @@ namespace Gameplay
         
         public void DrawACard()
         { // draws a card to this board
-            int newCardIndex = GameMaster.Instance.DrawCard(GameMaster.CardType.Artifact);
-            GameObject newCard = GameMaster.Instance.ConstructCard(GameMaster.CardType.Artifact, newCardIndex);
+            int newCardIndex = GameMaster.Instance.DrawCard(Decklist.Cardtype.Artifact);
+            GameObject newCard = Decklist.Instance.CreateCard(Decklist.Cardtype.Artifact, newCardIndex);
             newCard.transform.position = pieceLocation.position + new Vector3(.3f*artifactHand.Count,.3f,.2f*artifactHand.Count);
             newCard.transform.rotation = pieceLocation.rotation;
             Card cardPart = newCard.GetComponent<Card>();

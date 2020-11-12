@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using UnityEngine;
 
@@ -34,12 +35,9 @@ namespace Gameplay
         [PunRPC]
         public void SetThreat(byte threatIndex)
         {
-            /*
-            Decklist.Instance.threatCards.TryGetValue((GameMaster.Threat) threatIndex,
-                out ThreatCard thisTCard);
-            threatValues = thisTCard.requirements;
+            threatValues = Decklist.Instance.threatCards[threatIndex].requirements;
             threatType = (GameMaster.Threat) threatIndex;
-            StartCoroutine(SetCardThreat());*/  // TODO replace this
+            StartCoroutine(SetCardThreat());
         }
 
         IEnumerator SetCardThreat()

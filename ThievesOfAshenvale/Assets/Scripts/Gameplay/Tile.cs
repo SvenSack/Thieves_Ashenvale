@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using UnityEngine;
 
@@ -242,8 +243,8 @@ namespace Gameplay
                                 }
                                 else return false;
                             case TileType.EquipSpies:
-                                player.DrawACard(GameMaster.CardType.Action);
-                                player.DrawACard(GameMaster.CardType.Action);
+                                player.DrawACard(Decklist.Cardtype.Action);
+                                player.DrawACard(Decklist.Cardtype.Action);
                                 ToggleUsed();
                                 return true;
                             case TileType.ForgeEvidence:
@@ -297,7 +298,7 @@ namespace Gameplay
                                 {
                                     board.RemoveCoins(4);
                                     board.DrawACard();
-                                    player.DrawACard(GameMaster.CardType.Artifact);
+                                    player.DrawACard(Decklist.Cardtype.Artifact);
                                     GiveArtifactToLeader();
                                     ToggleUsed();
                                     return true;
@@ -308,7 +309,7 @@ namespace Gameplay
                                 {
                                     UIManager.Instance.PayAmountOwed(4);
                                     board.DrawACard();
-                                    player.DrawACard(GameMaster.CardType.Artifact);
+                                    player.DrawACard(Decklist.Cardtype.Artifact);
                                     GiveArtifactToLeader();
                                     ToggleUsed();
                                     return true;
@@ -352,7 +353,7 @@ namespace Gameplay
         {
             if (player.Equals(GameMaster.Instance.FetchLeader()) || (player.roleRevealed && (player.role == GameMaster.Role.Rogue || player.role == GameMaster.Role.Paladin || player.role == GameMaster.Role.Vigilante)))
             {
-                player.DrawACard(GameMaster.CardType.Artifact);
+                player.DrawACard(Decklist.Cardtype.Artifact);
             }
             else
             {

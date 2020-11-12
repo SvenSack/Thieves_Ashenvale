@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Gameplay
         [SerializeField] private Rigidbody cardBody;
         
         public int cardIndex;
-        public GameMaster.CardType cardType;
+        public Decklist.Cardtype cardType;
         public bool isPrivate = true;
         public PhotonView pv;
         public TextMeshProUGUI cardName;
@@ -47,7 +48,7 @@ namespace Gameplay
             }
             if (UIManager.Instance.isSelectingACard)
             {
-                if (cardType == GameMaster.CardType.Action || cardType == GameMaster.CardType.Artifact)
+                if (cardType == Decklist.Cardtype.Action || cardType == Decklist.Cardtype.Artifact)
                 {
                     CursorFollower.Instance.hoveredCard = this;
                     CursorFollower.Instance.isHoveringACard = highlighter.activeSelf;
@@ -56,7 +57,7 @@ namespace Gameplay
             else
             {
                 
-                if (cardType == GameMaster.CardType.Threat)
+                if (cardType == Decklist.Cardtype.Threat)
                 {
                     CursorFollower.Instance.hoveredCard = this;
                     CursorFollower.Instance.isHoveringTCard = highlighter.activeSelf;
@@ -64,7 +65,7 @@ namespace Gameplay
                 else
                 {
                 
-                    if (cardType == GameMaster.CardType.Role)
+                    if (cardType == Decklist.Cardtype.Role)
                     {
                         CursorFollower.Instance.hoveredCard = this;
                         CursorFollower.Instance.isHoveringRCard = highlighter.activeSelf;

@@ -35,7 +35,7 @@ namespace Gameplay.CardManagement
         [SerializeField] private GameObject[] cardPrefabs = new GameObject[5];
         [SerializeField] private TextAsset[] jsonFiles = new TextAsset[5];
         
-        public Dictionary<GameMaster.Character, string> characterNames; // TODO REPLACE THIS
+        public Dictionary<GameMaster.Character, string> characterNames;
 
         void Start()
         {
@@ -62,7 +62,59 @@ namespace Gameplay.CardManagement
         public GameObject CreateCard(Cardtype type, int index)
         { // create a card instance from a template
             GameObject inst = PhotonNetwork.Instantiate(cardPrefabs[(int)type].name, Vector3.zero, Quaternion.identity);
-            // TODO set up all the data from the card index in the card instance
+            switch (type)
+            {
+                case Cardtype.Action:
+                    Card parts = inst.GetComponent<Card>();
+                    ActionCard thisCard = actionCards[index];
+                    parts.cardType = type;
+                    parts.illustration.sprite = thisCard.illustration;
+                    parts.cardName.text = thisCard.cardName;
+                    parts.text.text = thisCard.text;
+                    parts.cardIndex = index;
+                    break;
+                case Cardtype.Artifact:
+                    Card partsA = inst.GetComponent<Card>();
+                    ArtifactCard thisACard = artifactCards[index];
+                    partsA.cardType = type;
+                    partsA.illustration.sprite = thisACard.illustration;
+                    partsA.cardName.text = thisACard.name;
+                    partsA.text.text = thisACard.text;
+                    partsA.extraText1.text = "Strength: " + thisACard.weaponStrength;
+                    partsA.cardIndex = index;
+                    break;
+                case Cardtype.Character:
+                    Card partsC = inst.GetComponent<Card>();
+                    CharacterCard thisCCard = characterCards[index];
+                    partsC.cardType = type;
+                    partsC.illustration.sprite = thisCCard.illustration;
+                    partsC.cardName.text = thisCCard.name;
+                    partsC.text.text = thisCCard.text;
+                    partsC.extraText1.text = thisCCard.health.ToString();
+                    partsC.extraText2.text = thisCCard.wealth.ToString();
+                    break;
+                case Cardtype.Role:
+                    Card partsR = inst.GetComponent<Card>();
+                    RoleCard thisRCard = roleCards[index];
+                    partsR.cardType = type;
+                    partsR.illustration.sprite = thisRCard.illustration;
+                    partsR.cardName.text = thisRCard.name;
+                    partsR.text.text = thisRCard.text;
+                    if (!thisRCard.isGuild)
+                    {
+                        partsR.icon.gameObject.SetActive(false);
+                    }
+                    break;
+                
+                case Cardtype.Threat:
+                    Card partsT = inst.GetComponent<Card>();
+                    ThreatCard thisTCard = threatCards[index];
+                    partsT.cardType = type;
+                    partsT.illustration.sprite = thisTCard.illustration;
+                    partsT.cardName.text = thisTCard.name;
+                    partsT.text.text = thisTCard.text;
+                    break;
+            }
             return inst;
         }
 

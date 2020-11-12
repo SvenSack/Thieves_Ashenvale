@@ -201,6 +201,7 @@
             </e>
             <e p="GameMaster.cs" t="Include" />
             <e p="Participant.cs" t="Include" />
+            <e p="ParticipantRPC.cs" t="Include" />
             <e p="Piece.cs" t="Include" />
             <e p="PlayerSlot.cs" t="Include" />
             <e p="Threat.cs" t="Include" />

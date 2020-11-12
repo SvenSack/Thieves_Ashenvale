@@ -173,15 +173,6 @@ namespace Gameplay
             CrimesRevealed
         }
 
-        public enum CardType
-        {
-            Character,
-            Role,
-            Action,
-            Artifact,
-            Threat
-        }
-
         public enum PieceType
         {
             Worker,
@@ -224,8 +215,8 @@ namespace Gameplay
             Participant[] players = FindObjectsOfType<Participant>();
             foreach (var player in players)
             {
-                byte roleNum = (byte) DrawCard(CardType.Role);
-                int charNum = DrawCard(CardType.Character);
+                byte roleNum = (byte) DrawCard(Decklist.Cardtype.Role);
+                int charNum = DrawCard(Decklist.Cardtype.Character);
                 player.pv.RPC("RpcAssignRoleAndChar", RpcTarget.AllBufferedViaServer, roleNum, charNum);
             }
         }
@@ -290,31 +281,31 @@ namespace Gameplay
              return piece;
         }
 
-        public int DrawCard(CardType type)
+        public int DrawCard(Decklist.Cardtype type)
         {// used by other classes to draw cards from the central deck
             switch (type)
             {
-                case CardType.Character:
+                case Decklist.Cardtype.Character:
                     int randomPick = Random.Range(0, characterDeck.Count);
                     Character returnValue = characterDeck[randomPick];
                     pv.RPC("RemoveFromDeck", RpcTarget.All,(int)type, (int)returnValue);
                     return (int)returnValue;
-                case CardType.Role:
+                case Decklist.Cardtype.Role:
                     int randomPick2 = Random.Range(0, roleDeck.Count);
                     Role returnValue2 = roleDeck[randomPick2];
                     pv.RPC("RemoveFromDeck", RpcTarget.All,(int)type, (int)returnValue2);
                     return (int)returnValue2;
-                case CardType.Artifact:
+                case Decklist.Cardtype.Artifact:
                     int randomPick3 = Random.Range(0, artifactDeck.Count);
                     Artifact returnValue3 = artifactDeck[randomPick3];
                     pv.RPC("RemoveFromDeck", RpcTarget.All,(int)type, (int)returnValue3);
                     return (int)returnValue3;
-                case CardType.Action:
+                case Decklist.Cardtype.Action:
                     int randomPick4 = Random.Range(0, actionDeck.Count);
                     Action returnValue4 = actionDeck[randomPick4];
                     pv.RPC("RemoveFromDeck", RpcTarget.All,(int)type, (int)returnValue4);
                     return (int)returnValue4;
-                case CardType.Threat:
+                case Decklist.Cardtype.Threat:
                     int randomPick5 = Random.Range(0, threatDeck.Count);
                     Threat returnValue5 = threatDeck[randomPick5];
                     pv.RPC("RemoveFromDeck", RpcTarget.All,(int)type, (int)returnValue5);
@@ -326,9 +317,9 @@ namespace Gameplay
         [PunRPC]
         public void RemoveFromDeck(int cardType, int index)
         { // used to synchronize the deck on all clients
-            switch ((CardType)cardType)
+            switch ((Decklist.Cardtype)cardType)
             {
-                case CardType.Character:
+                case Decklist.Cardtype.Character:
                     Character target = (Character) index;
                     for (int i = 0; i < characterDeck.Count; i++)
                     {
@@ -339,7 +330,7 @@ namespace Gameplay
                         }
                     }
                     break;
-                case CardType.Role:
+                case Decklist.Cardtype.Role:
                     Role target2 = (Role) index;
                     for (int i = 0; i < roleDeck.Count; i++)
                     {
@@ -350,7 +341,7 @@ namespace Gameplay
                         }
                     }
                     break;
-                case CardType.Action:
+                case Decklist.Cardtype.Action:
                     Action target3 = (Action) index;
                     for (int i = 0; i < actionDeck.Count; i++)
                     {
@@ -361,7 +352,7 @@ namespace Gameplay
                         }
                     }
                     break;
-                case CardType.Artifact:
+                case Decklist.Cardtype.Artifact:
                     Artifact target4 = (Artifact) index;
                     for (int i = 0; i < artifactDeck.Count; i++)
                     {
@@ -372,7 +363,7 @@ namespace Gameplay
                         }
                     }
                     break;
-                case CardType.Threat:
+                case Decklist.Cardtype.Threat:
                     Threat target5 = (Threat) index;
                     for (int i = 0; i < threatDeck.Count; i++)
                     {
@@ -387,97 +378,6 @@ namespace Gameplay
             
         }
 
-        public GameObject ConstructCard(CardType type, int enumIndex)
-        { // used by other classes to create card instances, this could be moved somewhere else maybe
-            // TODO move this functionality into decklist
-            /* Decklist dL = Decklist.Instance;
-            GameObject card = null;
-            switch (type)
-            {
-                case CardType.Action:
-                    card = Instantiate(cardPrefabs[(int) type]);
-                    Card parts = card.GetComponent<Card>();
-                    ActionCard thisCard = dL.actionCards[enumIndex];
-                    parts.cardType = type;
-                    parts.illustration.sprite = thisCard.illustration;
-                    parts.cardName.text = thisCard.cardName;
-                    parts.text.text = thisCard.text;
-                    parts.cardIndex = enumIndex;
-                    break;
-                case CardType.Artifact:
-                    card = Instantiate(cardPrefabs[(int) type]);
-                    Card partsA = card.GetComponent<Card>();
-                    if (dL.artifactCards.TryGetValue((Artifact) enumIndex, out ArtifactCard thisACard))
-                    {
-                        partsA.cardType = type;
-                        partsA.illustration.sprite = thisACard.illustration;
-                        partsA.cardName.text = thisACard.name;
-                        partsA.text.text = thisACard.effectText;
-                        partsA.extraText1.text = "Strength: " + thisACard.weaponStrength;
-                        partsA.cardIndex = enumIndex;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PANIC");
-                    }
-                    break;
-                case CardType.Character:
-                    card = Instantiate(cardPrefabs[(int) type]);
-                    Card partsC = card.GetComponent<Card>();
-                    if (dL.characterCards.TryGetValue((Character) enumIndex, out CharacterCard thisCCard))
-                    {
-                        partsC.cardType = type;
-                        partsC.illustration.sprite = thisCCard.illustration;
-                        partsC.cardName.text = thisCCard.name;
-                        partsC.text.text = thisCCard.effectText;
-                        partsC.extraText1.text = thisCCard.health.ToString();
-                        partsC.extraText2.text = thisCCard.wealth.ToString();
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PANIC");
-                    }
-                    break;
-                case CardType.Role:
-                    card = Instantiate(cardPrefabs[(int) type]);
-                    Card partsR = card.GetComponent<Card>();
-                    if (dL.roleCards.TryGetValue((Role) enumIndex, out RoleCard thisRCard))
-                    {
-                        partsR.cardType = type;
-                        partsR.illustration.sprite = thisRCard.illustration;
-                        partsR.cardName.text = thisRCard.name;
-                        partsR.text.text = thisRCard.effectText;
-                        if (!thisRCard.isGuild)
-                        {
-                            partsR.icon.gameObject.SetActive(false);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PANIC");
-                    }
-                    break;
-                
-                case CardType.Threat:
-                    card = Instantiate(cardPrefabs[(int) type]);
-                    Card partsT = card.GetComponent<Card>();
-                    if (dL.threatCards.TryGetValue((Threat) enumIndex, out ThreatCard thisTCard))
-                    {
-                        partsT.cardType = type;
-                        partsT.illustration.sprite = thisTCard.illustration;
-                        partsT.cardName.text = thisTCard.name;
-                        partsT.text.text = thisTCard.requirementText;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PANIC");
-                    }
-                    break;
-            }
-            return card;*/
-            return null;
-        }
-        
         public void EndTurn(bool isFirst)
         {
             for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Gameplay.CardManagement;
+using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -36,11 +37,7 @@ namespace Gameplay
             {
                 if (player != null)
                 {
-                    /*
-                    if (Decklist.Instance.characterCards.TryGetValue(player.character, out var tempOut))
-                    {
-                        playerCharacterName = tempOut.name;
-                    }*/  // TODO replace this
+                    Decklist.Instance.characterNames.TryGetValue(player.character, out playerCharacterName);
                 }
                 
             }

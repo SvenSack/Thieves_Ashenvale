@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.CardManagement;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,7 +54,7 @@ namespace Gameplay
             representedCard = target;
             SetText(target.cardName.text);
             isHoverName = true;
-            if (target.cardType == GameMaster.CardType.Artifact)
+            if (target.cardType == Decklist.Cardtype.Artifact)
             {
                 representation.sprite = images[3];
             }

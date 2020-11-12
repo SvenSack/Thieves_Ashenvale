@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gameplay.CardManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -68,7 +69,7 @@ namespace Gameplay
         private int threatResolutionCardTargets;
         private int[] threatContributedValues = new int[6];
         private LayerMask piecesMask;
-        private List<SelectionType> selectionBuffer = new List<SelectionType>();
+        private Queue<SelectionType> selectionBuffer = new Queue<SelectionType>();
         private bool isSelectingForFalsify;
         private MoWTradeSecret[] secrets = new MoWTradeSecret[2];
 
@@ -172,8 +173,7 @@ namespace Gameplay
         {
             if (!isSelecting && selectionBuffer.Count != 0 && !turnEnded)
             {
-                StartSelection(selectionBuffer[0], null);
-                selectionBuffer.RemoveAt(0);
+                StartSelection(selectionBuffer.Dequeue(), null);
             }
             
             if (Input.GetMouseButtonDown(0) && !turnEnded)
@@ -191,27 +191,27 @@ namespace Gameplay
                             SelectACardTG(CursorFollower.Instance.hoveredCard);
                             break;
                         case SelectionType.SellArtifacts:
-                            if (!CursorFollower.Instance.hoveredCard.isPrivate && CursorFollower.Instance.hoveredCard.cardType == GameMaster.CardType.Artifact)
+                            if (!CursorFollower.Instance.hoveredCard.isPrivate && CursorFollower.Instance.hoveredCard.cardType == Decklist.Cardtype.Artifact)
                             {
                                 SelectACardSA(CursorFollower.Instance.hoveredCard);
                             }
                             break;
                         case SelectionType.ThreatCardACardAssignment:
-                            if (CursorFollower.Instance.hoveredCard.cardType == GameMaster.CardType.Artifact)
+                            if (CursorFollower.Instance.hoveredCard.cardType == Decklist.Cardtype.Artifact)
                             {
                                 SelectACardTCS(CursorFollower.Instance.hoveredCard);
                             }
 
                             break;
                         case SelectionType.LeaderFavourPaymentArt:
-                            if (CursorFollower.Instance.hoveredCard.cardType == GameMaster.CardType.Artifact)
+                            if (CursorFollower.Instance.hoveredCard.cardType == Decklist.Cardtype.Artifact)
                             {
                                 SelectACardLFP(CursorFollower.Instance.hoveredCard, true);
                             }
 
                             break;
                         case SelectionType.LeaderFavourPaymentAct:
-                            if (CursorFollower.Instance.hoveredCard.cardType == GameMaster.CardType.Action)
+                            if (CursorFollower.Instance.hoveredCard.cardType == Decklist.Cardtype.Action)
                             {
                                 SelectACardLFP(CursorFollower.Instance.hoveredCard, false);
                             }
@@ -459,7 +459,7 @@ namespace Gameplay
                 {
                     if (type != SelectionType.ThreatenPlayerDistribution)
                     {
-                        selectionBuffer.Add(type);
+                        selectionBuffer.Enqueue(type);
                         Debug.LogAssertion("Added " +type+ " to the selection buffer");
                     }
                 }    
@@ -478,9 +478,15 @@ namespace Gameplay
                 endturnButtons[1].SetActive(true);
             }
         }
+
+        public void StartTrade()
+        {
+            StartSelection(SelectionType.TradePlayerSelect, null);
+        }
         
         public void ConfirmThreatSelection()
         { // confirms the threat assignment UI and passes values accordingly
+            // TODO make this compliant with button abstraction ideas
             threatContributedValues = new int[6];
             for (int j = 0; j < 2; j++)
             {
@@ -565,7 +571,7 @@ namespace Gameplay
                         PhotonNetwork.Destroy(good.representedPiece.pv);
                         break;
                     case TradeAssignmentToggle.TradeGood.Card:
-                        if (good.representedCard.cardType == GameMaster.CardType.Artifact)
+                        if (good.representedCard.cardType == Decklist.Cardtype.Artifact)
                         {
                             artifactsIndices.Add((byte)good.representedCard.cardIndex);
                         }
@@ -638,7 +644,6 @@ namespace Gameplay
             participant.awaitingTrade[tradePartner.playerNumber] = false;
             
             tradeAssigner.DropAll();
-            ResetAfterSelect();
         }
 
         public void SelectMoWTS(bool isFirst)
@@ -655,10 +660,9 @@ namespace Gameplay
             }
             participant.DropOutstandingTS(secrets[0]);
             participant.DropOutstandingTS(secrets[1]);
-            ResetAfterSelect();
         }
 
-        public void RevealRole(bool endAfter)
+        public void RevealRole()
         {
             for (int i = 0; i < GameMaster.Instance.seatsClaimed; i++)
             {
@@ -670,11 +674,6 @@ namespace Gameplay
             {
                 GameMaster.Instance.MakeNewLeader();
             }
-
-            if (endAfter)
-            {
-                ResetAfterSelect();
-            }
         }
 
         public void SelectACardBM(bool isAction)
@@ -682,22 +681,20 @@ namespace Gameplay
             if (isAction)
             {
                 selectingTile.GiveCoinToOwner(1, GameMaster.Job.MasterOfWhispers);
-                selectingTile.player.DrawACard(GameMaster.CardType.Action);
+                selectingTile.player.DrawACard(Decklist.Cardtype.Action);
             }
             else
             {
                 selectingTile.GiveCoinToOwner(1, GameMaster.Job.MasterOfGoods);
-                selectingTile.player.DrawACard(GameMaster.CardType.Artifact);
+                selectingTile.player.DrawACard(Decklist.Cardtype.Artifact);
             }
-
-            ResetAfterSelect();
         }
         
         private void SelectACardTG(Card hoveredCard)
         { // this plays action and artifact cards (so it contains a lot of logic for them)
             switch (hoveredCard.cardType)
             {
-                case GameMaster.CardType.Artifact:
+                case Decklist.Cardtype.Artifact:
                     switch ((GameMaster.Artifact)hoveredCard.cardIndex)
                     {
                         case GameMaster.Artifact.Ball:
@@ -765,7 +762,7 @@ namespace Gameplay
                             break;
                     }
                     break;
-                case GameMaster.CardType.Action:
+                case Decklist.Cardtype.Action:
                     switch ((GameMaster.Action)hoveredCard.cardIndex)
                     {
                         case GameMaster.Action.Improvise:
@@ -795,8 +792,8 @@ namespace Gameplay
                             PlayCard(hoveredCard);
                             break;
                         case GameMaster.Action.SecretCache:
-                            participant.DrawACard(GameMaster.CardType.Artifact);
-                            participant.DrawACard(GameMaster.CardType.Artifact);
+                            participant.DrawACard(Decklist.Cardtype.Artifact);
+                            participant.DrawACard(Decklist.Cardtype.Artifact);
                             PlayCard(hoveredCard);
                             break;
                         case GameMaster.Action.AskForFavours:
@@ -861,16 +858,13 @@ namespace Gameplay
         private void SelectACardTCS(Card hoveredCard)
         { // this is a helper selection for the threat contribution UI. I could not come up with a better easy to implement version for contributing cards (could however make
           // a better one based on the job assignment toggle system, but that would be more work than needed at this point
-            /* Decklist.Instance.artifactCards.TryGetValue((GameMaster.Artifact) hoveredCard.cardIndex,
-                out ArtifactCard temp);
-            threatContributedValues[5] += temp.weaponStrength;
+            threatContributedValues[5] += Decklist.Instance.artifactCards[hoveredCard.cardIndex].weaponStrength;
             PhotonNetwork.Destroy(hoveredCard.GetComponent<PhotonView>());
             threatResolutionCardTargets--;
             if (threatResolutionCardTargets == 0)
             {
                 targetedThreat.pv.RPC("Contribute", RpcTarget.All, participant.playerNumber, threatContributedValues);
             }
-            */ // TODO replace this
             ResetAfterSelect();
         }
 
@@ -892,7 +886,6 @@ namespace Gameplay
 
                 participant.officeCampaign[0] = 0;
             }
-            ResetAfterSelect();
         }
 
         private void SelectACardLFP(Card hoveredCard, bool isArtifact)
@@ -907,7 +900,6 @@ namespace Gameplay
             tradePartner.pv.RPC("StartTrade", RpcTarget.Others,(byte) participant.playerNumber);
             participant.awaitingTrade[tradePartner.playerNumber] = true;
             StartSelection(SelectionType.Trade, null);
-            ResetAfterSelect();
         }
 
         public void StartInformationSelection(bool isFalsify)
@@ -930,8 +922,8 @@ namespace Gameplay
             if (!isSelectingForFalsify)
             {
                 participant.informationHand.Remove(info);
-                participant.DrawACard(GameMaster.CardType.Action);
-                participant.DrawACard(GameMaster.CardType.Action);
+                participant.DrawACard(Decklist.Cardtype.Action);
+                participant.DrawACard(Decklist.Cardtype.Action);
                 infoSelect.DropAll();
                 ResetAfterSelect();
             }
@@ -950,7 +942,6 @@ namespace Gameplay
         public void SelectJobSelene(int jobIndex)
         {
             GameMaster.Instance.jobBoards[jobIndex].GetComponent<Board>().SeleneClaim(participant.pv.Owner);
-            ResetAfterSelect();
         }
 
         public void ConfirmPostTurnPay()
@@ -961,7 +952,6 @@ namespace Gameplay
                 GameMaster.Instance.characterIndex.TryGetValue(GameMaster.Character.Sheriff, out Participant part);
                 part.pv.RPC("RpcAddCoin", RpcTarget.Others, thugAmount/2);
             }
-            ResetAfterSelect();
         }
 
         public void ConfirmWorkerDistribution()
@@ -977,7 +967,6 @@ namespace Gameplay
                 workerDistributionPools[i+1].DropPool();
             }
             participant.pv.RPC("StartTurn", RpcTarget.All);
-            ResetAfterSelect();
         }
 
         public void ConfirmThreatenPlayerDistribution()
@@ -990,7 +979,6 @@ namespace Gameplay
                 }
                 threatPieceDistributionPools[i+1].DropPool();
             }
-            ResetAfterSelect();
         }
 
         public void ConfirmJobDistribution()
@@ -1005,8 +993,6 @@ namespace Gameplay
                 }
                 jobDistributionPools[i+1].DropPool();
             }
-            
-            ResetAfterSelect();
         }
         
         private void SelectACardSA(Card hoveredCard)
@@ -1038,7 +1024,6 @@ namespace Gameplay
             {
                 participant.LookBehindScreenBy((byte)inquirer.playerNumber);
             }
-            ResetAfterSelect();
             
         }
         
@@ -1046,14 +1031,12 @@ namespace Gameplay
         { // this confirms the black market selection UI
             if (isAction)
             {
-                participant.DrawACard(GameMaster.CardType.Action);
+                participant.DrawACard(Decklist.Cardtype.Action);
             }
             else
             {
-                participant.DrawACard(GameMaster.CardType.Artifact);
+                participant.DrawACard(Decklist.Cardtype.Artifact);
             }
-
-            ResetAfterSelect();
         }
 
         public void ConfirmHeist()
@@ -1084,34 +1067,31 @@ namespace Gameplay
             {
                 participant.AddCoin(amount);
             }
-            ResetAfterSelect();
         }
 
         public void StealPieceFromLeader(int typeToSteal)
         {
             GameMaster.Instance.FetchLeader().pv.RPC("RpcStealPiece", RpcTarget.Others, (byte) typeToSteal, (byte) participant.playerNumber);
-            ResetAfterSelect();
         }
         
         public void StealCardFromLeader(int typeToSteal)
         {
             GameMaster.Instance.FetchLeader().pv.RPC("RpcStealCard", RpcTarget.Others, (byte) typeToSteal, (byte) participant.playerNumber);
-            ResetAfterSelect();
         }
 
         public void ConfirmAntiThreatAssignment()
         {
             participant.RemoveHealth((byte)antiThreatAssigner.TallyAndClean());
-            ResetAfterSelect();
         }
 
         public void ConfirmBaubleChoice(bool decision)
         { // this is the popup for the bauble decision, which you get when being targeted by something which is blockable by bauble
+            // TODO make this compliant with idea for button abstraction
             if (decision)
             {
                 for (var i = 0; i < participant.aHand.Count; i++)
                 {
-                    if (participant.aHand[i].cardType == GameMaster.CardType.Artifact &&
+                    if (participant.aHand[i].cardType == Decklist.Cardtype.Artifact &&
                         participant.aHand[i].cardIndex == (int) GameMaster.Artifact.Bauble)
                     {
                         PlayCard(participant.aHand[i]);
@@ -1136,11 +1116,6 @@ namespace Gameplay
                 archive.DropArchive();
             }
             archiveUI.SetActive(!archiveUI.activeSelf);
-        }
-
-        public void ClosePopup()
-        { // this could be used generally, atm is only used for the information popup for the serum card
-            ResetAfterSelect();
         }
 
         public void ConfirmCharSelection()
@@ -1184,7 +1159,6 @@ namespace Gameplay
                     }
                 }
             }
-            ResetAfterSelect();
         }
 
         #endregion
@@ -1244,7 +1218,7 @@ namespace Gameplay
                 int totalCards = 0;
                 foreach (var card in participant.aHand)
                 {
-                    if (card.cardType == GameMaster.CardType.Artifact)
+                    if (card.cardType == Decklist.Cardtype.Artifact)
                     {
                         totalCards++;
                     }
@@ -1471,11 +1445,8 @@ namespace Gameplay
             {
                 playerName = player.pv.Controller.NickName;
             }
-            /*
             Decklist.Instance.characterNames.TryGetValue(player.character, out string charName);
             return charName + "(" + playerName + ")";
-            */  // TODO replace this
-            return null;
         }
         
         private void PlayCard(Card card)
@@ -1498,12 +1469,9 @@ namespace Gameplay
                     break;
                 case TargetingReason.Periapt:
                     string playerCharName = CreateCharPlayerString(participant);
-                    /*
-                    Decklist.Instance.roleCards.TryGetValue(participant.role, out RoleCard roleCard);
-                    string content = playerCharName + " is " + roleCard.name;
+                    string content = playerCharName + " is " + Decklist.Instance.roleCards[(int)participant.role].cardName;
                     string header = "The role of " + playerCharName;
                     inquiringPlayer.pv.RPC("RpcAddEvidence", RpcTarget.Others, content, header, true, (byte)participant.playerNumber);
-                    */  // TODO replace this
                     break;
                 case TargetingReason.Scepter:
                     participant.RpcRemoveHealth(3);
@@ -1533,37 +1501,3 @@ public class InformationPiece
         evidenceTargetIndex = _evidenceTargetIndex;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
