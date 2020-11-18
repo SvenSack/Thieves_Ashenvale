@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 5487988829381632626}
   - component: {fileID: 3172087351587212842}
   - component: {fileID: 5042249069508517634}
-  m_Layer: 15
+  m_Layer: 11
   m_Name: JobPoolLocation
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -544,7 +544,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.4
   m_Range: 10
-  m_SpotAngle: 30
+  m_SpotAngle: 47.667114
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -579,7 +579,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 2
@@ -671,7 +671,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 2
@@ -802,9 +802,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5487988830363870024}
-  - component: {fileID: 5487988830363870022}
   - component: {fileID: 5487988830363870025}
-  m_Layer: 15
+  - component: {fileID: 1297084631115826885}
+  m_Layer: 11
   m_Name: TileZone_
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -825,19 +825,6 @@ Transform:
   m_Father: {fileID: 5487988830438878789}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5487988830363870022
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5487988830363870027}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0.0000009536743}
 --- !u!114 &5487988830363870025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,13 +841,28 @@ MonoBehaviour:
   nameHover: {fileID: 5487988829416640082}
   explanationHover: {fileID: 7624886099474399133}
   hoverTimes:
-  - 2
-  - 4
+  - 0.1
+  - 0.5
   light: {fileID: 5487988830683565749}
+  hideNames: 1
   isUsed: 0
   hoverTime: 0
   player: {fileID: 0}
   board: {fileID: 4295954021372424942}
+--- !u!136 &1297084631115826885
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487988830363870027}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.9
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.21949172, z: 0}
 --- !u!1 &5487988830365883668
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,9 +945,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5487988830407886134}
-  - component: {fileID: 5487988830407886132}
   - component: {fileID: 5487988830407886135}
-  m_Layer: 15
+  - component: {fileID: 8000144350333674952}
+  m_Layer: 11
   m_Name: TileZone_
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -966,19 +968,6 @@ Transform:
   m_Father: {fileID: 5487988830438878789}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5487988830407886132
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5487988830407886137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0.0000009536743}
 --- !u!114 &5487988830407886135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -995,13 +984,28 @@ MonoBehaviour:
   nameHover: {fileID: 5487988830559077001}
   explanationHover: {fileID: 1083730865338713832}
   hoverTimes:
-  - 2
-  - 4
+  - 0.1
+  - 0.5
   light: {fileID: 5487988829480320856}
+  hideNames: 1
   isUsed: 0
   hoverTime: 0
   player: {fileID: 0}
   board: {fileID: 4295954021372424942}
+--- !u!136 &8000144350333674952
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487988830407886137}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.9
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.2544759, z: 0}
 --- !u!1 &5487988830438878788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,9 +1126,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5487988830528909191}
-  - component: {fileID: 5487988830528909189}
   - component: {fileID: 5487988830528909188}
-  m_Layer: 15
+  - component: {fileID: 8814211237787340490}
+  m_Layer: 11
   m_Name: TileZone_
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -1145,19 +1149,6 @@ Transform:
   m_Father: {fileID: 5487988830438878789}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5487988830528909189
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5487988830528909190}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0.0000009536743}
 --- !u!114 &5487988830528909188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,13 +1165,28 @@ MonoBehaviour:
   nameHover: {fileID: 5487988830066231175}
   explanationHover: {fileID: 2764346822471682820}
   hoverTimes:
-  - 2
-  - 4
+  - 0.1
+  - 0.5
   light: {fileID: 5487988830689075466}
+  hideNames: 1
   isUsed: 0
   hoverTime: 0
   player: {fileID: 0}
   board: {fileID: 4295954021372424942}
+--- !u!136 &8814211237787340490
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487988830528909190}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.9
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.25020042, z: 0}
 --- !u!1 &5487988830559077001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,7 +1404,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5487988830587269396}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.463}
   m_LocalScale: {x: 0.0050989543, y: 0.005098953, z: 0.0050989543}
   m_Children:
   - {fileID: 5487988831229895622}
@@ -1407,7 +1413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.086, y: -0.482}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5487988830591281614
@@ -1622,7 +1628,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.4
   m_Range: 10
-  m_SpotAngle: 30
+  m_SpotAngle: 47.667114
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -1657,7 +1663,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 2
@@ -1714,7 +1720,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.4
   m_Range: 10
-  m_SpotAngle: 30
+  m_SpotAngle: 47.667114
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -1749,7 +1755,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 2
@@ -1770,9 +1776,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5487988830719691722}
-  - component: {fileID: 5487988830719691720}
   - component: {fileID: 5487988830719691723}
-  m_Layer: 15
+  - component: {fileID: 8397550027045469218}
+  m_Layer: 11
   m_Name: TileZone_
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -1793,19 +1799,6 @@ Transform:
   m_Father: {fileID: 5487988830438878789}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5487988830719691720
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5487988830719691725}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0.0000009536743}
 --- !u!114 &5487988830719691723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1822,13 +1815,28 @@ MonoBehaviour:
   nameHover: {fileID: 5487988831325400746}
   explanationHover: {fileID: 4212843262382954970}
   hoverTimes:
-  - 2
-  - 4
+  - 0.1
+  - 0.5
   light: {fileID: 5487988830809151991}
+  hideNames: 1
   isUsed: 0
   hoverTime: 0
   player: {fileID: 0}
   board: {fileID: 4295954021372424942}
+--- !u!136 &8397550027045469218
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487988830719691725}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.9
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.27813837, z: 0}
 --- !u!1 &5487988830744658807
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,7 +2111,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.4
   m_Range: 10
-  m_SpotAngle: 30
+  m_SpotAngle: 47.667114
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -2138,7 +2146,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 2
@@ -2460,8 +2468,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281013270
-  m_fontColor: {r: 0.08627451, g: 0.078431375, b: 0.16862746, a: 1}
+    rgba: 4290022508
+  m_fontColor: {r: 0.42352945, g: 0.54901963, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

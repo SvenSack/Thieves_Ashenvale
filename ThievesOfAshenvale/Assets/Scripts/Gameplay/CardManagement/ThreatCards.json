@@ -4,280 +4,240 @@
 			"cardName": "New Knives are in Order",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"0",
-					"0",
-					"0",
-					"5"
-				}
+				"0",
+				"0",
+				"0",
+				"0",
+				"0",
+				"5"
 			]
 		},
 		{
 			"cardName": "The Zeal is Ebbing up",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"0",
-					"2",
-					"4",
-					"0"
-				}
+				"0",
+				"0",
+				"0",
+				"2",
+				"4",
+				"0"
 			]
 		},
 		{
 			"cardName": "Local Heroes on the Trail",
 			"requirements":
 			[
-				{
-					"0",
-					"2",
-					"2",
-					"0",
-					"0",
-					"0"
-				}
+				"0",
+				"2",
+				"2",
+				"0",
+				"0",
+				"0"
 			]
 		},
 		{
 			"cardName": "Problematic Politician",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"2",
-					"0",
-					"0",
-					"1"
-				}
+				"0",
+				"0",
+				"2",
+				"0",
+				"0",
+				"1"
 			]
 		},
 		{
 			"cardName": "Battle with the Guard",
 			"requirements":
 			[
-				{
-					"2",
-					"1",
-					"0",
-					"0",
-					"0",
-					"3"
-				}
+				"2",
+				"1",
+				"0",
+				"0",
+				"0",
+				"3"
 			]
 		},
 		{
 			"cardName": "Market Dominance Waning",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"0",
-					"0",
-					"10",
-					"2"
-				}
+				"0",
+				"0",
+				"0",
+				"0",
+				"10",
+				"2"
 			]
 		},
 		{
 			"cardName": "Ambitions of Doom",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"0",
-					"0",
-					"0",
-					"8"
-				}
+				"0",
+				"0",
+				"0",
+				"0",
+				"0",
+				"8"
 			]
 		},
 		{
 			"cardName": "Problematic Mayor",
 			"requirements":
 			[
-				{
-					"2",
-					"0",
-					"2",
-					"1",
-					"0",
-					"3"
-				}
+				"2",
+				"0",
+				"2",
+				"1",
+				"0",
+				"3"
 			]
 		},
 		{
 			"cardName": "The People Stopped Fearing us",
 			"requirements":
 			[
-				{
-					"2",
-					"0",
-					"1",
-					"0",
-					"0",
-					"0"
-				}
+				"2",
+				"0",
+				"1",
+				"0",
+				"0",
+				"0"
 			]
 		},
 		{
 			"cardName": "Turf War",
 			"requirements":
 			[
-				{
-					"3",
-					"0",
-					"0",
-					"0",
-					"0",
-					"2"
-				}
+				"3",
+				"0",
+				"0",
+				"0",
+				"0",
+				"2"
 			]
 		},
 		{
 			"cardName": "A new Sheriff in Town",
 			"requirements":
 			[
-				{
-					"1",
-					"0",
-					"0",
-					"0",
-					"4",
-					"0"
-				}
+				"1",
+				"0",
+				"0",
+				"0",
+				"4",
+				"0"
 			]
 		},
 		{
 			"cardName": "Artifact Maintenance Required",
 			"requirements":
 			[
-				{
-					"2",
-					"0",
-					"0",
-					"0",
-					"15",
-					"0"
-				}
+				"2",
+				"0",
+				"0",
+				"0",
+				"15",
+				"0"
 			]
 		},
 		{
 			"cardName": "Draconic Demands",
 			"requirements":
 			[
-				{
-					"0",
-					"2",
-					"0",
-					"0",
-					"20",
-					"0"
-				}
+				"0",
+				"2",
+				"0",
+				"0",
+				"20",
+				"0"
 			]
 		},
 		{
 			"cardName": "Secret Caches Depleted",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"0",
-					"0",
-					"8",
-					"0"
-				}
+				"0",
+				"0",
+				"0",
+				"0",
+				"8",
+				"0"
 			]
 		},
 		{
 			"cardName": "Looming Royal Decree",
 			"requirements":
 			[
-				{
-					"0",
-					"4",
-					"3",
-					"0",
-					"0",
-					"5"
-				}
+				"0",
+				"4",
+				"3",
+				"0",
+				"0",
+				"5"
 			]
 		},
 		{
 			"cardName": "Religious Unrest Brewing",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"4",
-					"0",
-					"0",
-					"1"
-				}
+				"0",
+				"0",
+				"4",
+				"0",
+				"0",
+				"1"
 			]
 		},
 		{
 			"cardName": "War with the Watch",
 			"requirements":
 			[
-				{
-					"6",
-					"3",
-					"0",
-					"0",
-					"0",
-					"5"
-				}
+				"6",
+				"3",
+				"0",
+				"0",
+				"0",
+				"5"
 			]
 		},
 		{
 			"cardName": "Mounting Civilian Unrest",
 			"requirements":
 			[
-				{
-					"5",
-					"0",
-					"0",
-					"0",
-					"8",
-					"0"
-				}
+				"5",
+				"0",
+				"0",
+				"0",
+				"8",
+				"0"
 			]
 		},
 		{
 			"cardName": "Public Show of Force needed",
 			"requirements":
 			[
-				{
-					"0",
-					"0",
-					"1",
-					"0",
-					"0",
-					"6"
-				}
+				"0",
+				"0",
+				"1",
+				"0",
+				"0",
+				"6"
 			]
 		},
 		{
 			"cardName": "Crimes were Revealed",
 			"requirements":
 			[
-				{
-					"0",
-					"1",
-					"0",
-					"0",
-					"0",
-					"0"
-				}
+				"0",
+				"1",
+				"0",
+				"0",
+				"0",
+				"0"
 			]
 		}
 	]

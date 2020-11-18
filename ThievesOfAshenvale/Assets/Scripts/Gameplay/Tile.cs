@@ -12,12 +12,13 @@ namespace Gameplay
         [SerializeField] private GameObject explanationHover;
         [SerializeField] private float[] hoverTimes = new float[2];
         [SerializeField] private GameObject light;
+        [SerializeField] private bool hideNames = true;
         
         public bool isUsed;
         public float hoverTime = 0;
         public Participant player;
         public Board board;
-        
+
 
         private enum TileType
         {
@@ -52,7 +53,7 @@ namespace Gameplay
         private void Start()
         {
             explanationHover.SetActive(false);
-            if (board == null)
+            if (hideNames)
             {
                 nameHover.SetActive(false);
             }
@@ -501,7 +502,7 @@ namespace Gameplay
         private void ToggleHover(bool withExplanation)
         {
             CursorFollower.Instance.ToggleHover();
-            if (board == null)
+            if (hideNames)
             {
                 nameHover.SetActive(CursorFollower.Instance.IsHovering);
             }

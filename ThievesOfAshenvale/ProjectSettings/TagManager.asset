@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DistributionPanel
+  - DistributionItem
+  - CursorFollower
   layers:
   - Default
   - TransparentFX
@@ -13,12 +16,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Table
+  - Blinds
+  - Pieces
+  - HoverUI
+  - Cards
+  - Coins
   - 
   - 
   - 

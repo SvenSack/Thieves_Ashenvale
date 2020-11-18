@@ -209,6 +209,8 @@
             <e p="Tile.cs" t="Include" />
             <e p="UI" t="Include">
               <e p="AntiThreatAssigner.cs" t="Include" />
+              <e p="AntiThreatDistributionPieceUI.cs" t="Include" />
+              <e p="AntiThreatDistributionPool.cs" t="Include" />
               <e p="ArchiveItem.cs" t="Include" />
               <e p="ArchiveUI.cs" t="Include" />
               <e p="AssignmentChoice.cs" t="Include" />
@@ -223,8 +225,6 @@
               <e p="InformationSelection.cs" t="Include" />
               <e p="InformationSelectItem.cs" t="Include" />
               <e p="JobPieceUI.cs" t="Include" />
-              <e p="ThreatAssignmentPieceUI.cs" t="Include" />
-              <e p="ThreatAssignmentPool.cs" t="Include" />
               <e p="ThreatDistributionPieceUI.cs" t="Include" />
               <e p="ThreatDistributionPool.cs" t="Include" />
               <e p="TradeAssignmentChoice.cs" t="Include" />

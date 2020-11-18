@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8582696561052021639}
   - component: {fileID: 3403526440110890682}
   - component: {fileID: 4716813507666954576}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 509059015187025748}
   - component: {fileID: 3149509099832331555}
   - component: {fileID: 4415623480079420524}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 6350396808172175175}
   - component: {fileID: 7535956029664253138}
   - component: {fileID: 4812714288828681397}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: CharacterCard Variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,6 @@ Transform:
   m_Children:
   - {fileID: 5946116777595681444}
   - {fileID: 7103755110260626693}
-  - {fileID: 986442148607860553}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -340,7 +339,7 @@ GameObject:
   - component: {fileID: 7790691216916658417}
   - component: {fileID: 3035739967269213456}
   - component: {fileID: 4725096428359619855}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Hover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 877ac326dd7fa604cbce4660da9fec14, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -413,7 +412,7 @@ GameObject:
   - component: {fileID: 6350355000703500685}
   - component: {fileID: 8931427517252893210}
   - component: {fileID: 5192395206364050891}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +427,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6319202751544634433}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.8}
+  m_LocalPosition: {x: 0, y: 0, z: 3.3}
   m_LocalScale: {x: 0.99995613, y: 0.99996626, z: 0.9979103}
   m_Children: []
   m_Father: {fileID: 6154965126965043930}
@@ -436,7 +435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.7735, y: -4.05}
+  m_AnchoredPosition: {x: -3.92, y: -4.05}
   m_SizeDelta: {x: 0.8096, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8931427517252893210
@@ -569,7 +568,7 @@ GameObject:
   - component: {fileID: 1721697611491729896}
   - component: {fileID: 6214465851475262061}
   - component: {fileID: 5575699068554306417}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,7 +724,7 @@ GameObject:
   - component: {fileID: 6154965126965043930}
   - component: {fileID: 7076305541171392905}
   - component: {fileID: 159015512300528252}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -811,7 +810,7 @@ GameObject:
   - component: {fileID: 5946116777595681444}
   - component: {fileID: 7696749256284694849}
   - component: {fileID: 4646878462278638502}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: Cardboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,6 +829,7 @@ Transform:
   m_LocalScale: {x: 1.0184343, y: 0.021845652, z: 0.7373322}
   m_Children:
   - {fileID: 6154965126965043930}
+  - {fileID: 986442148607860553}
   m_Father: {fileID: 5104462147535406134}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -844,8 +844,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.98191214, y: 1.2696193, z: 0.99118024}
+  m_Center: {x: -0.004655081, y: -0.044814784, z: -0.0044098883}
 --- !u!54 &4646878462278638502
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 4999926479407104174}
   - component: {fileID: 5962131418561373238}
   - component: {fileID: 7260518989170770827}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wealth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -888,7 +888,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7902252828866090897}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.8}
+  m_LocalPosition: {x: 0, y: 0, z: 3.3}
   m_LocalScale: {x: 0.99995613, y: 0.99996626, z: 0.9979103}
   m_Children: []
   m_Father: {fileID: 6154965126965043930}
@@ -896,7 +896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.0213, y: -4.05}
+  m_AnchoredPosition: {x: 4.12, y: -4.05}
   m_SizeDelta: {x: 1.232, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5962131418561373238
@@ -1030,7 +1030,7 @@ GameObject:
   - component: {fileID: 8504448379160025524}
   - component: {fileID: 5383467456361705069}
   - component: {fileID: 7178683181129178377}
-  m_Layer: 15
+  m_Layer: 11
   m_Name: Hover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1091,22 +1091,22 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 5104462147535406134}
+    m_TransformParent: {fileID: 5946116777595681444}
     m_Modifications:
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.004
+      value: -0.0039275987
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.002
+      value: -0.09155141
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.003
+      value: -0.0040687234
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
@@ -1116,12 +1116,12 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.50000006
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.50000006
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
@@ -1131,7 +1131,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
@@ -1151,17 +1151,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 9.9818
+      value: 13.5377245
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 9.9818
+      value: 9.801124
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.8661275
+      value: 222.75041
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 67746d2135fb6bd49b68efa73cd92a79,
         type: 3}
@@ -1187,6 +1187,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: characterCard
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 67746d2135fb6bd49b68efa73cd92a79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67746d2135fb6bd49b68efa73cd92a79, type: 3}

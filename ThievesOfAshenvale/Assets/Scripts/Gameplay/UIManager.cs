@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gameplay.CardManagement;
+using Gameplay.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay
@@ -49,7 +51,7 @@ namespace Gameplay
         public bool isSelectingDistribution;
         public bool isSelectingThreatAssignment;
         public SelectionType typeOfSelection;
-        public ThreatAssignmentPool[] threatAssignmentPools = new ThreatAssignmentPool[6];
+        public AntiThreatDistributionPool[] antiThreatDistributionPools = new AntiThreatDistributionPool[6];
         public GameObject defaultUI;
         public DistributionPool[] workerDistributionPools = new DistributionPool[7];
         public ThreatDistributionPool[] threatPieceDistributionPools = new ThreatDistributionPool[7];
@@ -58,18 +60,19 @@ namespace Gameplay
         public bool dead;
         public DialUI runForOfficeDial;
         public Participant tradePartner;
-        
+
         private bool isGrabbingUI;
         private TargetingReason typeOfTargeting;
         private GraphicRaycaster gRayCaster;
         private EventSystem eventSys;
-        private DistributionPieceUI grabbedUI;
+        private DistributionPieceUI grabbedDPUI;
+        private AntiThreatDistributionPieceUI grabbedTDPUI;
         private Participant inquirer;
         private Threat targetedThreat;
         private int threatResolutionCardTargets;
         private int[] threatContributedValues = new int[6];
         private LayerMask piecesMask;
-        private Queue<SelectionType> selectionBuffer = new Queue<SelectionType>();
+        public Queue<SelectionType> selectionBuffer = new Queue<SelectionType>();
         private bool isSelectingForFalsify;
         private MoWTradeSecret[] secrets = new MoWTradeSecret[2];
 
@@ -106,7 +109,8 @@ namespace Gameplay
             TradeRequest,
             MoWTradeSecretChoice,
             SeleneJobClaim,
-            VigilanteReveal
+            VigilanteReveal,
+            StartTurnAgain
         }
 
         public enum TargetingReason
@@ -171,12 +175,13 @@ namespace Gameplay
         // mostly contains stuff related to mouse inputs for interface with the worldspace UI and the cursorfollower
         void Update()
         {
-            if (!isSelecting && selectionBuffer.Count != 0 && !turnEnded)
+            if (!isSelecting && selectionBuffer.Count != 0)
             {
+                Debug.LogAssertion("Dequed selection of type " + selectionBuffer.Peek());
                 StartSelection(selectionBuffer.Dequeue(), null);
             }
             
-            if (Input.GetMouseButtonDown(0) && !turnEnded)
+            if (Input.GetMouseButtonDown(0))
             {
                 if (!isGrabbingPiece && !isSelecting)
                 {
@@ -244,9 +249,17 @@ namespace Gameplay
                     {
                         if (result.gameObject.CompareTag("DistributionItem"))
                         {
-                            grabbedUI = result.gameObject.GetComponent<DistributionPieceUI>();
+                            if (typeOfSelection == SelectionType.ThreatCardAssignment)
+                            {
+                                grabbedTDPUI = result.gameObject.GetComponent<AntiThreatDistributionPieceUI>();
+                                grabbedTDPUI.Grab();
+                            }
+                            else
+                            {
+                                grabbedDPUI = result.gameObject.GetComponent<DistributionPieceUI>();
+                                grabbedDPUI.Grab();
+                            }
                             isGrabbingUI = true;
-                            grabbedUI.Grab();
                         }
                     }
                 }
@@ -263,15 +276,30 @@ namespace Gameplay
                     {
                         if (result.gameObject.CompareTag("DistributionPanel"))
                         {
+                            if (typeOfSelection == SelectionType.ThreatCardAssignment)
+                            {
+                                grabbedTDPUI.Release(result.gameObject.GetComponent<AntiThreatDistributionPool>());
+                            }
+                            else
+                            {
+                                grabbedDPUI.Release(result.gameObject.GetComponent<DistributionPool>());
+                            }
                             isGrabbingUI = false;
-                            grabbedUI.Release(result.gameObject.GetComponent<DistributionPool>());
-                            grabbedUI = null;
+                            grabbedDPUI = null;
+                            grabbedTDPUI = null;
                         }
                     }
 
                     if (isGrabbingUI)
                     {
-                        grabbedUI.Release(null);
+                        if (typeOfSelection == SelectionType.ThreatCardAssignment)
+                        {
+                            grabbedTDPUI.Release(null);
+                        }
+                        else
+                        {
+                            grabbedDPUI.Release(null);
+                        }
                     }
                 }
             }
@@ -312,15 +340,23 @@ namespace Gameplay
                 isSelectingDistribution = false;
                 if (isGrabbingUI)
                 {
-                    grabbedUI.Release(null);
+                    if (typeOfSelection == SelectionType.ThreatCardAssignment)
+                    {
+                        grabbedTDPUI.Release(null);
+                    }
+                    else
+                    {
+                        grabbedDPUI.Release(null);
+                    }
                 }
                 isGrabbingUI = false;
-                grabbedUI = null;
+                grabbedDPUI = null;
+                grabbedTDPUI = null;
             }
 
             if (isSelectingThreatAssignment)
             {
-                foreach (var pool in threatAssignmentPools)
+                foreach (var pool in antiThreatDistributionPools)
                 {
                   pool.DropPool();
                   pool.gameObject.SetActive(true);  
@@ -340,10 +376,10 @@ namespace Gameplay
 
         public void StartSelection(SelectionType type, Tile thisTile)
         { // this is used for all selection UIs (which is the name I gave to UI which asks for a player decision)
-            if (!turnEnded && !dead)
+            if (!dead)
             {
             
-                if (!isSelecting && !GameMaster.Instance.mustWait)
+                if (!isSelecting)
                 {
                     defaultUI.SetActive(false);
                     selectingTile = thisTile;
@@ -453,6 +489,9 @@ namespace Gameplay
                             targetedThreat = CursorFollower.Instance.hoveredCard.threat;
                             break;
                         // Above is a unique selection type with multiple functionalities
+                        case SelectionType.StartTurnAgain:
+                            StartTurnAgain();
+                            break;
                     }
                 }
                 else
@@ -468,15 +507,15 @@ namespace Gameplay
 
         #region ButtonMethods
         // these are all methods used by buttons
-        public void EndTurn()
+        public void EndTurn(bool buttonCall)
         {
-            if (!turnEnded)
+            if (buttonCall)
             {
                 turnEnded = true;
-                participant.pv.RPC("PassTurn", RpcTarget.MasterClient, (byte)participant.playerNumber);
                 endturnButtons[0].SetActive(false);
                 endturnButtons[1].SetActive(true);
             }
+            GameMaster.Instance.passedPlayers[participant.playerNumber] = true;
         }
 
         public void StartTrade()
@@ -492,18 +531,18 @@ namespace Gameplay
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    threatContributedValues[i+j] = threatAssignmentPools[i + 1 + j * 3].objectsHeld.Count;
+                    threatContributedValues[i+j] = antiThreatDistributionPools[i + 1 + j * 3].objectsHeld.Count;
                     switch (i)
                     {
                         case 0:
-                            foreach (var piece in threatAssignmentPools[i + 1 + j * 3].objectsHeld)
+                            foreach (var piece in antiThreatDistributionPools[i + 1 + j * 3].objectsHeld)
                             {
                                 piece.representative.ToggleUse(); 
                             }
 
                             break;
                         case 1:
-                            foreach (var piece in threatAssignmentPools[i + 1 + j * 3].objectsHeld)
+                            foreach (var piece in antiThreatDistributionPools[i + 1 + j * 3].objectsHeld)
                             {
                                 PhotonNetwork.Destroy(piece.representative.pv);
                             }
@@ -966,7 +1005,6 @@ namespace Gameplay
                 GameMaster.Instance.FetchPlayerByNumber(i).pv.RPC("RpcAddPiece", RpcTarget.All, (byte)GameMaster.PieceType.Worker, amount);
                 workerDistributionPools[i+1].DropPool();
             }
-            participant.pv.RPC("StartTurn", RpcTarget.All);
         }
 
         public void ConfirmThreatenPlayerDistribution()
@@ -983,13 +1021,22 @@ namespace Gameplay
 
         public void ConfirmJobDistribution()
         { // this is the confirm button for the leader-job distribution popup
+            Participant[] participants = FindObjectsOfType<Participant>();
             for (byte i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
             {
                 for (byte j = 0; j < jobDistributionPools[i+1].objectsHeld.Count; j++)
                 {
                     JobPieceUI jpui = jobDistributionPools[i+1].objectsHeld[j].GetComponent<JobPieceUI>();
                     Board targetBoard = GameMaster.Instance.jobBoards[(int) jpui.representedJob].GetComponent<Board>();
+                    string targetPlayer = CreateCharPlayerString(GameMaster.Instance.FetchPlayerByNumber(i));
                     targetBoard.pv.RPC("ChangeJobHolder", RpcTarget.All, j, i);
+                    string jobString = "" + jpui.representedJob;
+                    jobString = jobString.Insert(jobString.IndexOf('r')+1, " ");
+                    jobString = jobString.Insert(jobString.IndexOf('f')+1, " ");
+                    foreach (var part in participants)
+                    {
+                        part.pv.RPC("RpcAddEvidence", RpcTarget.All, targetPlayer + " has been made " + jobString, targetPlayer + " got a job in round " + GameMaster.Instance.turnCounter, false, i);
+                    }
                 }
                 jobDistributionPools[i+1].DropPool();
             }
@@ -1168,24 +1215,25 @@ namespace Gameplay
         private void CreateThreatAssignmentUI()
         { // this creates a fitting UI piece for the threat which was selected
             int[] values = CursorFollower.Instance.hoveredCard.threat.threatValues;
+            Debug.LogAssertion("values are " + String.Join(", ", new List<int>(values).ConvertAll(i => i.ToString()).ToArray()));
             for (int j = 0; j < 2; j++)
             {
-                if (values[j*3] != 0 || values[j*3+1] != 0)
+                if (values[j*2] != 0 || values[j*2+1] != 0)
                 {
-                    threatAssignmentPools[j+3].PopulatePool();
+                    antiThreatDistributionPools[j*3].PopulatePool();
                     for (int i = 0; i < 2; i++)
                     {
-                        if (values[i+j*3] == 0)
+                        if (values[i+j*2] == 0)
                         {
-                            threatAssignmentPools[i+1+j*3].gameObject.SetActive(false);
+                            antiThreatDistributionPools[i+1+j*3].gameObject.SetActive(false);
                         }
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < 3+j*3; i++)
+                    for (int i = j*3; i < 3+j*3; i++)
                     {
-                        threatAssignmentPools[i].gameObject.SetActive(false);
+                        antiThreatDistributionPools[i].gameObject.SetActive(false);
                     }
                 }
             }
@@ -1236,11 +1284,14 @@ namespace Gameplay
             }
         }
 
-        public void StartTurnAgain()
+        private void StartTurnAgain()
         {
-            turnEnded = false;
             endturnButtons[0].SetActive(true);
             endturnButtons[1].SetActive(false);
+            GameMaster.Instance.passedPlayers[participant.playerNumber] = false;
+            GameMaster.Instance.turnStep = GameMaster.TurnStep.Normal;
+            turnEnded = false;
+            ResetAfterSelect();
         }
 
         public void RequestTradePopup(Participant requestPartner)

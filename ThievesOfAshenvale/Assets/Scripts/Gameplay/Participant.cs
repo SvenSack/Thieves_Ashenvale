@@ -62,19 +62,19 @@ namespace Gameplay
                 coinCounter.text = coins.ToString();
             }
 
-            foreach (var card in aHand)
+            for (var i = 0; i < aHand.Count; i++)
             {
-                if (card == null)
+                if (aHand[i] == null)
                 {
-                    aHand.Remove(card);
+                    aHand.RemoveAt(i);
                 }
             }
-            
-            foreach (var piece in pieces)
+
+            for (var i = 0; i < pieces.Count; i++)
             {
-                if (piece == null)
+                if (pieces[i] == null)
                 {
-                    pieces.Remove(piece);
+                    pieces.RemoveAt(i);
                 }
             }
 
@@ -90,11 +90,6 @@ namespace Gameplay
                         newPiece.GetComponent<PhotonView>().TransferOwnership(pv.Controller);
                         newPiece.GetComponent<Piece>().cam = mySlot.perspective;
                     }
-                }
-
-                if (Input.GetKeyDown(KeyCode.KeypadPlus))
-                {
-                        GameMaster.Instance.EndTurn(false);
                 }
             }
         }
@@ -192,7 +187,7 @@ namespace Gameplay
             {
                 if (health > 0)
                 {
-                    PhotonNetwork.Destroy(healthObjects[healthObjects.Count-1]);
+                    healthObjects[healthObjects.Count-1].GetComponent<Dissolve>().StartDissolve();
                     healthObjects.RemoveAt(healthObjects.Count-1);
                 }
                 health--;
@@ -239,7 +234,6 @@ namespace Gameplay
 
         public void EndTheGame()
         {
-            GameMaster.Instance.mustWait = true;
             for (int i = 0; i < GameMaster.Instance.seatsClaimed; i++)
             {
                 GameMaster.Instance.FetchPlayerByNumber(i).pv.RPC("EndGame", RpcTarget.AllBuffered);
@@ -297,6 +291,198 @@ namespace Gameplay
             }
         }
 
+        public bool PayAndReset()
+        {
+            Piece[] pieces = FindObjectsOfType<Piece>();
+            bool payNeeded = false;
+            foreach (var piece in pieces)
+            {
+                if (piece != null)
+                {
+                    if (piece.pv.IsMine)
+                    {
+                        if (piece.type != GameMaster.PieceType.Worker)
+                        {
+                            payNeeded = true;
+                        }
+                        else
+                        {
+                            PhotonNetwork.Destroy(piece.pv);
+                        }
+                    }
+                }
+            }
+            if (payNeeded)
+            {
+                UIManager.Instance.StartSelection(UIManager.SelectionType.PostTurnPay, null);
+            }
+
+            return payNeeded;
+        }
+
+        public void LeaderTurnStart()
+        {
+            switch (GameMaster.Instance.turnCounter)
+            {
+                case 0:
+                case 2:
+                case 4:
+                    UIManager.Instance.StartSelection(UIManager.SelectionType.JobAssignment, null);
+                    goto case 3; 
+                case 1:
+                case 3:
+                    int deadPlayers = 0;
+                    foreach (var part in FindObjectsOfType<Participant>())
+                    {
+                        if (part.isDead)
+                        {
+                            deadPlayers++;
+                        }
+                    }
+                    int threatAmount = Mathf.CeilToInt((GameMaster.Instance.seatsClaimed-deadPlayers) / 2f);
+                    if (GameMaster.Instance.turnCounter == 0)
+                    {
+                        threatAmount = 0;
+                    }
+
+                    if (GameMaster.Instance.roleRevealTurns[2] == GameMaster.Instance.turnCounter &&
+                        GameMaster.Instance.turnCounter > 0)
+                    {
+                        threatAmount++;
+                    }
+
+                    for (int i = 0; i < threatAmount; i++)
+                    {
+                        byte newThreatIndex = (byte) GameMaster.Instance.DrawCard(Decklist.Cardtype.Threat);
+                        for (int j = 0; j < GameMaster.Instance.seatsClaimed; j++)
+                        {
+                            GameMaster.Instance.FetchPlayerByNumber(j).pv
+                                .RPC("DrawTCard", RpcTarget.All, newThreatIndex);
+                        }
+
+                        GameObject newThreat = PhotonNetwork.Instantiate(GameMaster.Instance.threatObject.name,
+                            Vector3.zero, Quaternion.identity);
+                        Threat nT = newThreat.GetComponent<Threat>();
+                        nT.GetComponent<PhotonView>().RPC("SetThreat", RpcTarget.All, newThreatIndex);
+                    }
+
+                    UIManager.Instance.StartSelection(UIManager.SelectionType.WorkerAssignment, null);
+                    break;
+                case 5:
+                    EndTheGame();
+                    break;
+            }
+        }
+
+        public void EndOfTurnEffects()
+        {
+            StartCoroutine(EndOfTurnEffect());
+        }
+
+        private IEnumerator EndOfTurnEffect()
+        {
+            bool selectionMade = false;
+            switch (character)
+            {
+                case GameMaster.Character.Poisoner:
+                    UIManager.Instance.StartSelection(UIManager.SelectionType.Poisoner, null);
+                    break;
+                case GameMaster.Character.Scion:
+                    AddCoin(2);
+                    break;
+                case GameMaster.Character.Seducer:
+                    UIManager.Instance.StartSelection(UIManager.SelectionType.Seducer, null);
+                    break;
+                case GameMaster.Character.PitFighter:
+                    AddPiece(GameMaster.PieceType.Thug, false);
+                    break;
+                case GameMaster.Character.OldFox:
+                    if (GameMaster.Instance.turnCounter % 2 == 0 || GameMaster.Instance.turnCounter == 0)
+                    {
+                        foreach (var board in GameMaster.Instance.jobBoards)
+                        {
+                            board.GetComponent<Board>().seleneClaimed = false;
+                        }
+
+                        UIManager.Instance.StartSelection(UIManager.SelectionType.SeleneJobClaim, null);
+                    }
+                    break;
+            }
+
+            if (role == GameMaster.Role.Gangster && roleRevealed)
+            {
+                AddPiece(GameMaster.PieceType.Thug, false);
+            }
+
+            if (role == GameMaster.Role.Vigilante && roleRevealed)
+            {
+                AddPiece(GameMaster.PieceType.Assassin, false);
+            }
+
+            if (role == GameMaster.Role.Noble && roleRevealed)
+            {
+                AddCoin(2);
+            }
+            
+            if (officeCampaign[0] != 0)
+            {
+                UIManager.Instance.RunForOffice();
+            }
+
+            foreach (var tile in FindObjectsOfType<Tile>())
+            {
+                if (tile.isUsed)
+                {
+                    tile.ToggleUsed();
+                }
+            }
+
+            while (UIManager.Instance.isSelecting)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            UIManager.Instance.EndTurn(false);
+        }
+
+        public bool DealWithThreatPieces()
+        {
+            if (piecesThreateningMe.Count != 0)
+            {
+                UIManager.Instance.StartSelection(UIManager.SelectionType.ThreatenedPlayerResolution, null);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void LeaderThreatResolution()
+        {
+            for (var i = 0; i < tHand.Count; i++)
+            {
+                var card = tHand[i];
+                if (!card.threat.Resolve())
+                {
+                    for (int e = 0; e < GameMaster.Instance.seatsClaimed; e++)
+                    {
+                        GameMaster.Instance.FetchPlayerByNumber(e).pv
+                            .RPC("RpcRemoveHealth", RpcTarget.All, (byte) 1);
+                    }
+                }
+
+                card.threat.pv.TransferOwnership(pv.Owner);
+                PhotonNetwork.Destroy(card.threat.pv);
+                for (int j = 0; j < GameMaster.Instance.seatsClaimed; j++)
+                {
+                    GameMaster.Instance.FetchPlayerByNumber(j).pv
+                        .RPC("RpcRemoveTCard", RpcTarget.All, (byte) i);
+                }
+
+            }
+            UIManager.Instance.EndTurn(false);
+        }
+
         public void GameOver(bool hasWon)
         {
             isDead = true;
@@ -336,12 +522,19 @@ namespace Gameplay
             UIManager.Instance.UpdateSelectionNames();
             if (PhotonNetwork.IsMasterClient)
             {
-                GameMaster.Instance.EndTurn(true);
+                GameMaster.Instance.EndTurn();
             }
             if (role == GameMaster.Role.Leader)
             {
                 UIManager.Instance.RevealRole();
                 isLeader = true;
+            }
+
+            Participant[] participants = FindObjectsOfType<Participant>();
+            string playerName = UIManager.Instance.CreateCharPlayerString(this);
+            foreach (var part in participants)
+            {
+                part.pv.RPC("RpcAddEvidence", RpcTarget.OthersBuffered, character + "/n" + Decklist.Instance.characterCards[(int)character].text + "/n Starting assets: " + coins + " coins and " + health + " health", playerName + " basic information", false, playerNumber);
             }
 
             if (role == GameMaster.Role.Noble)
@@ -366,7 +559,7 @@ namespace Gameplay
                 }
             }
         }
-        
+
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {

@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
-    public class GameMaster : MonoBehaviourPunCallbacks, IPunObservable
+    public class GameMaster : MonoBehaviourPunCallbacks
     {
         #region Lists
 
@@ -76,7 +76,6 @@ namespace Gameplay
 
             #endregion
         
-        [SerializeField] private GameObject[] cardPrefabs = new GameObject[5];
         [SerializeField] private GameObject[] piecePrefabs = new GameObject[3];
         [SerializeField] private GameObject participantObject = null;
         
@@ -92,23 +91,34 @@ namespace Gameplay
         public PhotonView pv;
         public GameObject threatObject = null;
         public bool[] passedPlayers;
-        public int[] roleRevealTurns = new int[7];
-        public bool mustWait;
-
+        public int[] roleRevealTurns = {-1,-1,-1,-1,-1,-1};
+        public TurnStep turnStep = TurnStep.Normal;
+        
+        private bool firstTurnHad = false;
         #region Enums
 
+        public enum TurnStep
+        {
+            Normal,
+            PayAndReset,
+            Effects,
+            ThreatPieces,
+            Threats,
+            Start
+        }
+        
         public enum Character
         {
+            Adventurer,
+            Necromancer,
+            Poisoner,
             Ruffian,
             Scion,
             Seducer,
-            BurglaryAce,
-            Necromancer,
             Sheriff,
-            Poisoner,
-            Adventurer,
-            PitFighter,
-            OldFox
+            BurglaryAce,
+            OldFox,
+            PitFighter
         }
         
         public enum Role
@@ -123,34 +133,34 @@ namespace Gameplay
 
         public enum Artifact
         {
-            Potion,
-            Serum,
             Ball,
-            Periapt,
-            Venom,
-            Dagger,
             Bauble,
             Bow,
+            Dagger,
+            Periapt,
+            Potion,
+            Serum,
             Scepter,
+            Venom,
             Wand
         }
         
         public enum Action
         {
-            SecretCache,
+            Improvise,
             DoubleAgent,
-            RunForOffice,
-            CallInBackup,
-            DealWithItYourself,
-            SwearTheOaths,
-            ExecuteAHeist,
-            BribeTheTaxOfficer,
+            SecretCache,
             AskForFavours,
-            Improvise
+            CallInBackup,
+            ExecuteAHeist,
+            RunForOffice,
+            SwearTheOaths,
+            BribeTheTaxOfficer,
+            DealWithItYourself
         }
 
         public enum Threat
-        {
+        {// this is out of order, if it is ever used in context, please fix
             NewKnives,
             ZealEbbing,
             LocalHeroes,
@@ -261,13 +271,13 @@ namespace Gameplay
                 };
             }
 
-            if (!passedPlayers.Contains(false))
+            if (!passedPlayers.Contains(false) && UIManager.Instance.turnEnded)
             {
-                for (var i = 0; i < passedPlayers.Length; i++)
+                if (turnStep == TurnStep.Normal)
                 {
-                    passedPlayers[i] = false;
+                    StartCoroutine(EndTurn(!firstTurnHad));
                 }
-                EndTurn(false);
+                AdvanceTurn();
             }
         }
 
@@ -378,12 +388,89 @@ namespace Gameplay
             
         }
 
-        public void EndTurn(bool isFirst)
+        public void EndTurn()
         {
-            for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+            turnStep = TurnStep.Normal;
+            for (var i = 0; i < passedPlayers.Length; i++)
             {
-                FetchPlayerByNumber(i).pv.RPC("RpcEndTurn", RpcTarget.All, isFirst);
+                passedPlayers[i] = true;
             }
+
+            UIManager.Instance.turnEnded = true;
+        }
+
+        private void AdvanceTurn()
+        {
+            for (var i = 0; i < passedPlayers.Length; i++)
+            {
+                passedPlayers[i] = false;
+            }
+
+            if (turnStep != TurnStep.Start)
+            {
+                turnStep++;
+            }
+            else
+            {
+                turnStep = TurnStep.Normal;
+            }
+        }
+
+        private IEnumerator EndTurn(bool isFirst)
+        {
+            if (isFirst)
+            {
+                turnStep = TurnStep.Start;
+                firstTurnHad = true;
+            }
+            else
+            {
+                if (!UIManager.Instance.participant.PayAndReset())
+                {
+                    UIManager.Instance.EndTurn(false);
+                }
+                Debug.LogAssertion("Paid");
+                while (turnStep == TurnStep.PayAndReset)
+                {
+                    yield return new WaitForSeconds(.5f);
+                }
+                UIManager.Instance.participant.EndOfTurnEffects();
+                Debug.LogAssertion("Did end of turn");
+                while (turnStep == TurnStep.Effects)
+                {
+                    yield return new WaitForSeconds(.5f);
+                }
+                if (!UIManager.Instance.participant.DealWithThreatPieces())
+                {
+                    UIManager.Instance.EndTurn(false);
+                }
+                Debug.LogAssertion("dealt with threatpieces");
+                while (turnStep == TurnStep.ThreatPieces)
+                {
+                    yield return new WaitForSeconds(.5f);
+                }
+
+                if (UIManager.Instance.participant.isLeader)
+                {
+                    UIManager.Instance.participant.LeaderThreatResolution();
+                }
+                else
+                {
+                    UIManager.Instance.EndTurn(false);
+                }
+                Debug.LogAssertion("cleared threats");
+                while (turnStep == TurnStep.Threats)
+                {
+                    yield return new WaitForSeconds(.5f);
+                }
+            }
+            if (UIManager.Instance.participant.isLeader)
+            {
+                UIManager.Instance.participant.LeaderTurnStart();
+            }
+            turnCounter++;
+            Debug.LogAssertion("started new turn");
+            UIManager.Instance.StartSelection(UIManager.SelectionType.StartTurnAgain, null);
         }
 
         public void MakeNewLeader()
@@ -464,18 +551,6 @@ namespace Gameplay
             }
             Debug.LogAssertion("Things went wrong");
             return null;
-        }
-
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.IsWriting)
-            {
-                stream.SendNext(mustWait);
-            }
-            else
-            {
-                mustWait = (bool) stream.ReceiveNext();
-            }
         }
     }
 

@@ -78,7 +78,7 @@ namespace Gameplay.CardManagement
                     ArtifactCard thisACard = artifactCards[index];
                     partsA.cardType = type;
                     partsA.illustration.sprite = thisACard.illustration;
-                    partsA.cardName.text = thisACard.name;
+                    partsA.cardName.text = thisACard.cardName;
                     partsA.text.text = thisACard.text;
                     partsA.extraText1.text = "Strength: " + thisACard.weaponStrength;
                     partsA.cardIndex = index;
@@ -88,7 +88,7 @@ namespace Gameplay.CardManagement
                     CharacterCard thisCCard = characterCards[index];
                     partsC.cardType = type;
                     partsC.illustration.sprite = thisCCard.illustration;
-                    partsC.cardName.text = thisCCard.name;
+                    partsC.cardName.text = thisCCard.cardName;
                     partsC.text.text = thisCCard.text;
                     partsC.extraText1.text = thisCCard.health.ToString();
                     partsC.extraText2.text = thisCCard.wealth.ToString();
@@ -98,7 +98,7 @@ namespace Gameplay.CardManagement
                     RoleCard thisRCard = roleCards[index];
                     partsR.cardType = type;
                     partsR.illustration.sprite = thisRCard.illustration;
-                    partsR.cardName.text = thisRCard.name;
+                    partsR.cardName.text = thisRCard.cardName;
                     partsR.text.text = thisRCard.text;
                     if (!thisRCard.isGuild)
                     {
@@ -111,7 +111,7 @@ namespace Gameplay.CardManagement
                     ThreatCard thisTCard = threatCards[index];
                     partsT.cardType = type;
                     partsT.illustration.sprite = thisTCard.illustration;
-                    partsT.cardName.text = thisTCard.name;
+                    partsT.cardName.text = thisTCard.cardName;
                     partsT.text.text = thisTCard.text;
                     break;
             }
@@ -125,30 +125,36 @@ namespace Gameplay.CardManagement
             {
                 roleCards[i].cardIndex = i;
                 roleCards[i].illustration = roleSprites[i];
+                roleCards[i].type = Cardtype.Role;
             }
             characterCards = JsonUtility.FromJson<CharacterCards>(jsonFiles[1].text).characterCards;
             for (int i = 0; i < characterCards.Length; i++)
             {
                 characterCards[i].cardIndex = i;
                 characterCards[i].illustration = characterSprites[i];
+                characterCards[i].type = Cardtype.Character;
             }
             actionCards = JsonUtility.FromJson<ActionCards>(jsonFiles[2].text).actionCards;
             for (int i = 0; i < actionCards.Length; i++)
             {
                 actionCards[i].cardIndex = i;
                 actionCards[i].illustration = actionSprites[i];
+                actionCards[i].type = Cardtype.Action;
             }
             artifactCards = JsonUtility.FromJson<ArtifactCards>(jsonFiles[3].text).artifactCards;
             for (int i = 0; i < artifactCards.Length; i++)
             {
                 artifactCards[i].cardIndex = i;
                 artifactCards[i].illustration = artifactSprites[i];
+                artifactCards[i].type = Cardtype.Artifact;
             }
             threatCards = JsonUtility.FromJson<ThreatCards>(jsonFiles[4].text).threatCards;
             for (int i = 0; i < threatCards.Length; i++)
             {
                 threatCards[i].cardIndex = i;
                 threatCards[i].illustration = threatSprites[i];
+                threatCards[i].type = Cardtype.Threat;
+                threatCards[i].RequireText();
             }
         }
     }

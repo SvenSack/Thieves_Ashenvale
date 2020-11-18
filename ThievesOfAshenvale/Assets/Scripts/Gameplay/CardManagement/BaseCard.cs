@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.CardManagement
 {
-    [System.Serializable] public class BaseCard : MonoBehaviour
+    [System.Serializable] public class BaseCard
     {
         public int cardIndex;
         public Decklist.Cardtype type;
@@ -12,53 +12,32 @@ namespace Gameplay.CardManagement
         public Sprite illustration;
     }
 
-    public class RoleCard : BaseCard
+    [System.Serializable] public class RoleCard : BaseCard
     {
         public bool isGuild;
-        
-        private void Start()
-        {
-            type = Decklist.Cardtype.Role;
-        }
     }
 
-    public class CharacterCard : BaseCard
+    [System.Serializable] public class CharacterCard : BaseCard
     {
         public int health;
         public int wealth;
-
-        private void Start()
-        {
-            type = Decklist.Cardtype.Character;
-        }
     }
 
-    public class ActionCard : BaseCard
+    [System.Serializable] public class ActionCard : BaseCard
     {
-        private void Start()
-        {
-            type = Decklist.Cardtype.Action;
-        }
     }
 
-    public class ArtifactCard : BaseCard
+    [System.Serializable] public class ArtifactCard : BaseCard
     {
         public int weaponStrength;
-
-        private void Start()
-        {
-            type = Decklist.Cardtype.Artifact;
-        }
     }
 
-    public class ThreatCard : BaseCard
+    [System.Serializable] public class ThreatCard : BaseCard
     {
         public int[] requirements = new int[6]; // thugs, thugs(D), assassins, assassins(D), coins, weaponstrength
 
-        private void Start()
+        public void RequireText()
         {
-            type = Decklist.Cardtype.Threat;
-            
             if (requirements[0] != 0)
             {
                 text += requirements[0] + " Thugs, ";

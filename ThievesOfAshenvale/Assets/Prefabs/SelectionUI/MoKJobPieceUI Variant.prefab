@@ -22,6 +22,12 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.14901961
       objectReference: {fileID: 0}
+    - target: {fileID: 6098966039467101266, guid: 3e54dfb969881794f923f80337a6a405,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 30ba2143b38c026428dbb471942558df,
+        type: 3}
     - target: {fileID: 6098966039467101267, guid: 3e54dfb969881794f923f80337a6a405,
         type: 3}
       propertyPath: representedJob
@@ -135,7 +141,7 @@ PrefabInstance:
     - target: {fileID: 6098966039467101270, guid: 3e54dfb969881794f923f80337a6a405,
         type: 3}
       propertyPath: m_Name
-      value: MoKJobPieceUI
+      value: MoKJobPieceUI Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6098966040315887565, guid: 3e54dfb969881794f923f80337a6a405,
         type: 3}
@@ -206,6 +212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 35.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6098966041034103010, guid: 3e54dfb969881794f923f80337a6a405,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e54dfb969881794f923f80337a6a405, type: 3}

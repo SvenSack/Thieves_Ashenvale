@@ -17,7 +17,7 @@ namespace Gameplay
         
         void Start()
         {
-            tableMask = LayerMask.GetMask("Table");
+            tableMask = LayerMask.GetMask("Table", "Blinds");
             Instance = this;
         }
 

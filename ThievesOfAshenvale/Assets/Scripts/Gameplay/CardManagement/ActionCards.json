@@ -2,43 +2,43 @@
 	[
 		{
 			"cardName": "Improvise",
-			"text": "Reveal a total of 2 cards from either the artifact or action deck. Immediately use them or discard them.",
+			"text": "Reveal a total of 2 cards from either the artifact or action deck. Immediately use them or discard them."
 		},
 		{
 			"cardName": "Double Agent",
-			"text": "Move any one piece that threatens you into your character pool instead.",
+			"text": "Move any one piece that threatens you into your character pool instead."
 		},
 		{
 			"cardName": "Secret Cache",
-			"text": "Take 2 artifacts.", ",
+			"text": "Take 2 artifacts."
 		},
 		{
 			"cardName": "Ask for Favours",
-			"text": "The Leader must give you your choice of: - an artifact - any specific kind of piece - 2 coins - an action card",
+			"text": "The Leader must give you your choice of: - an artifact - any specific kind of piece - 2 coins - an action card"
 		},
 		{
 			"cardName": "Call in Backup",
-			"text": "Take 3 Thugs and add them to your character pool, you may immediately use them on this turn.",
+			"text": "Take 3 Thugs and add them to your character pool, you may immediately use them on this turn."
 		},
 		{
 			"cardName": "Execute a Heist",
-			"text": "Any number of characters of your choice each gain 3 coins.",
+			"text": "Any number of characters of your choice each gain 3 coins."
 		},
 		{
 			"cardName": "Run for Office",
-			"text": "Pay any amount of coins. Unless the Leader pays more at the end of this turn, you become Leader instead, they remain in the game without a role card.",
+			"text": "Pay any amount of coins. Unless the Leader pays more at the end of this turn, you become Leader instead, they remain in the game without a role card."
 		},
 		{
 			"cardName": "Swear the Oaths",
-			"text": "Take 2 Assassins and add them to your character pool. You may immediately use them on this turn.",
+			"text": "Take 2 Assassins and add them to your character pool. You may immediately use them on this turn."
 		},
 		{
 			"cardName": "Bribe the Tax Officer",
-			"text": "All other characters must give you 2 coins. If they cannot, they must reveal their character pool to prove it.",
+			"text": "All other characters must give you 2 coins. If they cannot, they must reveal their character pool to prove it."
 		},
 		{
 			"cardName": "Deal with it Yourself",
-			"text": "Discard any one open threat card, and all things placed on it. You lose 1 HP.",
+			"text": "Discard any one open threat card, and all things placed on it. You lose 1 HP."
 		}
 	]
 }

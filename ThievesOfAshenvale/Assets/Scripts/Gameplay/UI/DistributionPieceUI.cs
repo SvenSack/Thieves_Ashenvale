@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Gameplay
+namespace Gameplay.UI
 {
     public class DistributionPieceUI : MonoBehaviour
     {
