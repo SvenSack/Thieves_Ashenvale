@@ -36,6 +36,7 @@ namespace Gameplay
         [SerializeField] private InformationSelection infoSelect;
         [SerializeField] private TextMeshProUGUI tradeRequestText;
         [SerializeField] private TextMeshProUGUI[] tradeSecretButtons = new TextMeshProUGUI[2];
+        [SerializeField] private GameObject infoReminder;
 
         [ReadOnly] public GameObject[] pieceDistributionUIPrefabs = new GameObject[3];
         public static UIManager Instance;
@@ -167,7 +168,8 @@ namespace Gameplay
                 {
                     tpdp.gameObject.SetActive(false);
                 }
-            }
+            } 
+            SetInfoNotif(false);
             archiveUI.SetActive(false);
         }
 
@@ -515,7 +517,7 @@ namespace Gameplay
                 endturnButtons[0].SetActive(false);
                 endturnButtons[1].SetActive(true);
             }
-            GameMaster.Instance.passedPlayers[participant.playerNumber] = true;
+            participant.pv.RPC("RpcEndTurn", RpcTarget.All);
         }
 
         public void StartTrade()
@@ -991,6 +993,11 @@ namespace Gameplay
                 GameMaster.Instance.characterIndex.TryGetValue(GameMaster.Character.Sheriff, out Participant part);
                 part.pv.RPC("RpcAddCoin", RpcTarget.Others, thugAmount/2);
             }
+        }
+
+        public void SetInfoNotif(bool newState)
+        {
+            infoReminder.SetActive(newState);
         }
 
         public void ConfirmWorkerDistribution()

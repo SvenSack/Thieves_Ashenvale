@@ -470,7 +470,7 @@ namespace Gameplay
             }
             turnCounter++;
             Debug.LogAssertion("started new turn");
-            UIManager.Instance.StartSelection(UIManager.SelectionType.StartTurnAgain, null);
+            UIManager.Instance.participant.pv.RPC("RpcStartTurnAgain", RpcTarget.AllBuffered);
         }
 
         public void MakeNewLeader()

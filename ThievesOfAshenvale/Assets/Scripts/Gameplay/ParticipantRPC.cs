@@ -26,6 +26,12 @@ namespace Gameplay
         }
 
         [PunRPC]
+        public void RpcStartTurnAgain()
+        {
+            UIManager.Instance.StartSelection(UIManager.SelectionType.StartTurnAgain, null);
+        }
+
+        [PunRPC]
         public void RpcRemoveCoin(byte amount)
         {
             if (pv.IsMine)
@@ -435,6 +441,7 @@ namespace Gameplay
                 }
 
                 informationHand.Add(new InformationPiece(content, header, isEvidence, targetedPlayer));
+                UIManager.Instance.SetInfoNotif(true);
             }
         }
 
@@ -448,6 +455,12 @@ namespace Gameplay
                 StartCoroutine(WaitForTradeConfirm(amountOfWorkers, amountOfThugs, amountOfAssassins,
                     amountPoisoned, artifactsIndices, actionsIndices, coinAmount, playerIndex));
             }
+        }
+
+        [PunRPC]
+        public void RpcEndTurn()
+        {
+            GameMaster.Instance.passedPlayers[playerNumber] = true;
         }
 
         [PunRPC]
@@ -505,9 +518,6 @@ namespace Gameplay
                 }
             }
         }
-
-
-        // TODO remove end turn rpc call and replace
 
         #endregion
 

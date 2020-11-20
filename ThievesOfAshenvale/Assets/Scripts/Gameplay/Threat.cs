@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Gameplay.CardManagement;
 using Photon.Pun;
@@ -57,6 +58,7 @@ namespace Gameplay
             for (int j = 0; j < GameMaster.Instance.seatsClaimed; j++)
             {
                 playerContributions.TryGetValue(j, out int[] cont);
+                Debug.LogAssertion("Found values of " + String.Join(" ,", new List<int>(cont).ConvertAll(i => i.ToString()).ToArray()));
                 for (int i = 0; i < 6; i++)
                 {
                     threatValues[i] -= cont[i];

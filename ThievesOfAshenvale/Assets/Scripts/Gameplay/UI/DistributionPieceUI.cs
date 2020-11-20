@@ -29,6 +29,7 @@ namespace Gameplay.UI
         { // this and the following method are used to make the distribution UI work (the one where you can drag and drop UI elements into pools)
             isGrabbed = true;
             transform.parent = UIManager.Instance.workerDistributionPools[0].transform;
+            ResetSize();
         }
 
         public virtual void Release(DistributionPool newPool)
@@ -47,23 +48,18 @@ namespace Gameplay.UI
         }
 
         public void Resize(float newWidth)
-        { // this and the following are currently deprecated systems to flex size the elements to make them fit into a container instead of spilling as they do atm
-          // I could put this on a TO DO, but honestly it doesnt matter for this prototype 
-            var recTRect = recT.rect;
-            recTRect.width = newWidth;
+        {
             float scaleFactor = originalWidth / originalHeight;
             currentHeight = newWidth * scaleFactor;
-            recTRect.height = currentHeight;
             currentWidth = newWidth;
+            recT.localScale = new Vector3(currentWidth/originalWidth, currentHeight/originalHeight, 1);
         }
 
         public void ResetSize()
         {
-            var recTRect = recT.rect;
-            recTRect.width = originalWidth;
-            recTRect.height = originalHeight;
             currentWidth = originalWidth;
             currentHeight = originalHeight;
+            recT.localScale = new Vector3(1,1,1);
         }
 
         public virtual void Update()

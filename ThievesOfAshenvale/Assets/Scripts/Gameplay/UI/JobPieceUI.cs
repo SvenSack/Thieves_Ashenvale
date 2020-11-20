@@ -38,6 +38,7 @@ namespace Gameplay
         {
             isGrabbed = true;
             transform.parent = UIManager.Instance.jobDistributionPools[0].transform;
+            ResetSize();
         }
 
         public override void Update()

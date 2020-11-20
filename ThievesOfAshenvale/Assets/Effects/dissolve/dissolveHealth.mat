@@ -87,7 +87,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - timeOffset: 88.60764
+    - timeOffset: 34.599514
     m_Colors:
     - Color_8DC4FDC1: {r: 0.87058824, g: 0, b: 0.039215688, a: 1}
     - Color_E1699F29: {r: 2.9960785, g: 0.15686275, b: 0, a: 1}

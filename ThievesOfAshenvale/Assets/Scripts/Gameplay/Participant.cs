@@ -464,6 +464,7 @@ namespace Gameplay
                 var card = tHand[i];
                 if (!card.threat.Resolve())
                 {
+                    Debug.LogAssertion("Lose one health due to threat");
                     for (int e = 0; e < GameMaster.Instance.seatsClaimed; e++)
                     {
                         GameMaster.Instance.FetchPlayerByNumber(e).pv
@@ -520,12 +521,9 @@ namespace Gameplay
         {
             yield return new WaitForSeconds(1f);
             UIManager.Instance.UpdateSelectionNames();
-            if (PhotonNetwork.IsMasterClient)
-            {
-                GameMaster.Instance.EndTurn();
-            }
             if (role == GameMaster.Role.Leader)
             {
+                GameMaster.Instance.EndTurn();
                 UIManager.Instance.RevealRole();
                 isLeader = true;
             }
@@ -534,7 +532,7 @@ namespace Gameplay
             string playerName = UIManager.Instance.CreateCharPlayerString(this);
             foreach (var part in participants)
             {
-                part.pv.RPC("RpcAddEvidence", RpcTarget.OthersBuffered, character + "/n" + Decklist.Instance.characterCards[(int)character].text + "/n Starting assets: " + coins + " coins and " + health + " health", playerName + " basic information", false, playerNumber);
+                part.pv.RPC("RpcAddEvidence", RpcTarget.OthersBuffered, character + "\n" + Decklist.Instance.characterCards[(int)character].text + "\n Starting assets: " + coins + " coins and " + health + " health", playerName + " basic information", false,(byte) playerNumber);
             }
 
             if (role == GameMaster.Role.Noble)
@@ -554,7 +552,7 @@ namespace Gameplay
                     if (i != playerNumber)
                     {
                         string content = nobleActions[Random.Range(0, 5)];
-                        GameMaster.Instance.FetchPlayerByNumber(i).pv.RPC("RpcAddEvidence", RpcTarget.Others, content, head, true, playerNumber);
+                        GameMaster.Instance.FetchPlayerByNumber(i).pv.RPC("RpcAddEvidence", RpcTarget.Others, content, head, true, (byte)playerNumber);
                     }
                 }
             }

@@ -110,6 +110,10 @@ namespace Gameplay
                 objectsHeld.Add(wPUI);
                 item.transform.parent = transform;
                 wPUI.currentPool = this;
+                if (wPUI.currentWidth != 0 && Math.Abs(wPUI.currentWidth - columnSize) > .5f)
+                {
+                    wPUI.Resize(columnSize);
+                }
             }
             else
             {
@@ -118,27 +122,39 @@ namespace Gameplay
             
             if (isFlex && objectsHeld.Count > 0)
             {
-                if (objectsHeld.Count > columns * rows)
+                if (isAdded)
                 {
-                    if (objectsHeld[0].currentHeight * rows + 1 < height)
+                    if (objectsHeld.Count > columns * rows)
                     {
-                        rows++;
+                        if (objectsHeld[0].currentHeight * (rows + 1) < height)
+                        {
+                            rows++;
+                        }
+                        else
+                        {
+                            columns++;
+                        }
                     }
-                    else
+                
+                    if (width < objectsHeld[0].currentWidth * columns)
                     {
-                        columns++;
+                        float buffer = columnSize/10 * columns;
+                        float betterWidth = (width - buffer) / columns;
+                        foreach (var obj in objectsHeld)
+                        {
+                            obj.Resize(betterWidth);
+                        }
+
+                        columnSize = betterWidth;
                     }
                 }
-                
-                if (width < objectsHeld[0].currentWidth * columns)
+                else if(width >= originalColumSize * columns)
                 {
-                    float betterWidth = width / columns;
-                    foreach (var obj in objectsHeld)
-                    {
-                        obj.Resize(betterWidth);
-                    }
+                    wPUI.ResetSize();
+                    columnSize = originalColumSize;
+                    columns = originalColumns;
+                    rowSize = originalRowSize;
                 }
-                
             }
             else if(isFlex)
             {

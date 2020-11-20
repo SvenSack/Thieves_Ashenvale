@@ -128,6 +128,16 @@ PrefabInstance:
       propertyPath: m_textInfo.lineCount
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5487988829381632626, guid: 549e3a0c01600004f8505d7ce948cc74,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487988829381632626, guid: 549e3a0c01600004f8505d7ce948cc74,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5487988829416640082, guid: 549e3a0c01600004f8505d7ce948cc74,
         type: 3}
       propertyPath: m_Name
