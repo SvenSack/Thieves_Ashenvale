@@ -20,6 +20,7 @@ namespace Gameplay
         [SerializeField] private AssignmentChoice postTurnPayAssigner;
         [SerializeField] private GameObject[] playerSelectorsChar = new GameObject[6];
         [SerializeField] private GameObject playerSelectorChar;
+        [SerializeField] private Transform[] playerSelectorsPos;
         [SerializeField] private GameObject[] jobSelectionUIPrefabs = new GameObject[5];
         [SerializeField] private TextMeshProUGUI cardTargetingText;
         [SerializeField] private TextMeshProUGUI baubleDecisionText;
@@ -447,6 +448,7 @@ namespace Gameplay
                         case SelectionType.CardPlayerTargeting:
                             isSelectingAPlayer = true;
                             playerSelectorChar.SetActive(true);
+                            UpdateSelectionNames();
                             break;
                         // Above are player selection popups with only one option allowed
                         case SelectionType.WorkerAssignment:
@@ -1470,20 +1472,38 @@ namespace Gameplay
 
         public void UpdateSelectionNames()
         { // this is used once to create the player select buttons
+            List<Transform[]> activeNames = new List<Transform[]>();
             for (int i = 0; i < GameMaster.Instance.seatsClaimed; i++)
             {
                 Participant part = GameMaster.Instance.FetchPlayerByNumber(i);
-                string nameText = CreateCharPlayerString(part);
-                playerSelectorsChar[i].SetActive(true);
-                playerSelectorsChar[i].GetComponentInChildren<TextMeshProUGUI>().text = nameText;
-                heistPartnerToggles[i].gameObject.SetActive(true);
-                heistPartnerToggles[i].GetComponentInChildren<TextMeshProUGUI>().text = nameText;
-                workerDistributionPools[i + 1].gameObject.SetActive(true);
-                workerDistributionPools[i + 1].labelText.text = nameText;
-                jobDistributionPools[i + 1].gameObject.SetActive(true);
-                jobDistributionPools[i + 1].labelText.text = nameText;
-                threatPieceDistributionPools[i + 1].gameObject.SetActive(true);
-                threatPieceDistributionPools[i + 1].labelText.text = nameText;
+                if (!part.isDead)
+                {
+                    string nameText = CreateCharPlayerString(part);
+                    playerSelectorsChar[i].SetActive(true);
+                    playerSelectorsChar[i].GetComponentInChildren<TextMeshProUGUI>().text = nameText;
+                    heistPartnerToggles[i].gameObject.SetActive(true);
+                    heistPartnerToggles[i].GetComponentInChildren<TextMeshProUGUI>().text = nameText;
+                    workerDistributionPools[i + 1].gameObject.SetActive(true);
+                    workerDistributionPools[i + 1].labelText.text = nameText;
+                    jobDistributionPools[i + 1].gameObject.SetActive(true);
+                    jobDistributionPools[i + 1].labelText.text = nameText;
+                    threatPieceDistributionPools[i + 1].gameObject.SetActive(true);
+                    threatPieceDistributionPools[i + 1].labelText.text = nameText;
+                    activeNames.Add(new []{playerSelectorsChar[i].transform, heistPartnerToggles[i].transform});
+                }
+                else
+                {
+                    threatPieceDistributionPools[i + 1].gameObject.SetActive(false);
+                    jobDistributionPools[i + 1].gameObject.SetActive(false);
+                    workerDistributionPools[i + 1].gameObject.SetActive(false);
+                    playerSelectorsChar[i].SetActive(false);
+                }
+            }
+
+            for (int i = 0; i < activeNames.Count; i++)
+            {
+                activeNames[i][0].position = playerSelectorsPos[i].position;
+                activeNames[i][1].position = playerSelectorsPos[i].position;
             }
         }
 
