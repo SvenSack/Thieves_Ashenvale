@@ -23,13 +23,12 @@ public class Dissolve : MonoBehaviour
     {
         dissolveMaterial.SetFloat("timeOffset", Time.time);
         meshRen.material = dissolveMaterial;
-        parts.Play(true);
         StartCoroutine(RemoveAfter(dissolveTime));
     }
 
     private IEnumerator RemoveAfter(float waitingTime)
     {
         yield return new WaitForSeconds(waitingTime);
-        PhotonNetwork.Destroy(gameObject);
+        meshRen.enabled = false;
     }
 }
