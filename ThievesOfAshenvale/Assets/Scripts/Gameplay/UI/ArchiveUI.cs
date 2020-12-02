@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Gameplay
 {
@@ -9,6 +10,7 @@ namespace Gameplay
         [SerializeField] private float distanceBetweenItems;
         [SerializeField] private Transform archiveParent;
         [SerializeField] private GameObject informationPieceUIPrefab;
+        [SerializeField] private UIHider UIHider;
         
         public List<ArchiveItem> archive = new List<ArchiveItem>();
 
@@ -17,6 +19,9 @@ namespace Gameplay
             for (var i = 0; i < informationPieces.Count; i++)
             {
                 ArchiveItem newItem = Instantiate(informationPieceUIPrefab, archiveParent).GetComponent<ArchiveItem>();
+                EventTrigger.Entry entry1 = new EventTrigger.Entry {eventID = EventTriggerType.PointerEnter};
+                entry1.callback.AddListener((eventData) => UIHider.ShowHide());
+                newItem.GetComponent<EventTrigger>().triggers.Add(entry1);
                 newItem.GiveSource(informationPieces[i], this);
                 archive.Add(newItem);
             }

@@ -229,11 +229,13 @@
               <e p="ThreatDistributionPool.cs" t="Include" />
               <e p="TradeAssignmentChoice.cs" t="Include" />
               <e p="TradeAssignmentToggle.cs" t="Include" />
+              <e p="UIHider.cs" t="Include" />
             </e>
             <e p="UIManager.cs" t="Include" />
           </e>
           <e p="Setup" t="Include">
             <e p="Launcher.cs" t="Include" />
+            <e p="LobbyCode.cs" t="Include" />
             <e p="PlayerList.cs" t="Include" />
             <e p="PlayerListing.cs" t="Include" />
             <e p="PlayerNameInputfield.cs" t="Include" />

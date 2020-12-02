@@ -31,15 +31,14 @@ namespace Gameplay
     
         void Start()
         {
-            if (isFlex)
-            {
-                var rect = GetComponent<RectTransform>().rect;
-                width = rect.width;
-                height = rect.height;
-                originalColumSize = columnSize;
-                originalRowSize = rowSize;
-                originalColumns = columns;
-            }
+            var rect = GetComponent<RectTransform>().rect;
+            width = rect.width;
+            height = rect.height;
+            rowSize = (height*.9f) / rows;
+            columnSize = (width*.9f) / columns;
+            originalRowSize = rowSize;
+            originalColumns = columns;
+            firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
         }
 
         public virtual void Update()
@@ -129,11 +128,14 @@ namespace Gameplay
                         if (objectsHeld[0].currentHeight * (rows + 1) < height)
                         {
                             rows++;
+                            rowSize = (height*.9f) / rows;
                         }
                         else
                         {
                             columns++;
+                            columnSize = (width*.9f) / columns;
                         }
+                        firstPostion = new Vector2(-width/2+columnSize/2, +height/2-rowSize/2);
                     }
                 
                     if (width < objectsHeld[0].currentWidth * columns)
@@ -146,6 +148,7 @@ namespace Gameplay
                         }
 
                         columnSize = betterWidth;
+                        firstPostion = new Vector2(-width/2+columnSize/2, +height/2-rowSize/2);
                     }
                 }
                 else if(width >= originalColumSize * columns)
@@ -154,6 +157,7 @@ namespace Gameplay
                     columnSize = originalColumSize;
                     columns = originalColumns;
                     rowSize = originalRowSize;
+                    firstPostion = new Vector2(-width/2+columnSize/2, +height/2-rowSize/2);
                 }
             }
             else if(isFlex)
@@ -162,6 +166,7 @@ namespace Gameplay
                 columnSize = originalColumSize;
                 columns = originalColumns;
                 rowSize = originalRowSize;
+                firstPostion = new Vector2(-width/2+columnSize/2, +height/2-rowSize/2);
             }
 
             flaggedForAdjustment = true;

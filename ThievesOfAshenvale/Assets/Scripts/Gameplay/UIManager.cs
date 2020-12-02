@@ -62,6 +62,7 @@ namespace Gameplay
         public bool dead;
         public DialUI runForOfficeDial;
         public Participant tradePartner;
+        public bool archiveOpen;
 
         private bool isGrabbingUI;
         private TargetingReason typeOfTargeting;
@@ -1171,6 +1172,8 @@ namespace Gameplay
             {
                 archive.DropArchive();
             }
+
+            archiveOpen = !archiveOpen;
             archiveUI.SetActive(!archiveUI.activeSelf);
         }
 

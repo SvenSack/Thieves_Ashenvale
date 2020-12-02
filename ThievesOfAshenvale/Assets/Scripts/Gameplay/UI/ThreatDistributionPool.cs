@@ -51,11 +51,14 @@ namespace Gameplay
                     if (heldItems[0].currentHeight * rows + 1 < height)
                     {
                         rows++;
+                        rowSize = (height*.9f) / rows;
                     }
                     else
                     {
                         columns++;
+                        columnSize = (width*.9f) / columns;
                     }
+                    firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
                 }
                 
                 if (width < heldItems[0].currentWidth * columns)
@@ -65,6 +68,7 @@ namespace Gameplay
                     {
                         obj.Resize(betterWidth);
                     }
+                    firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
                 }
                 
             }
@@ -74,6 +78,7 @@ namespace Gameplay
                 columnSize = originalColumSize;
                 columns = originalColumns;
                 rowSize = originalRowSize;
+                firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
             }
 
             flaggedForAdjustment = true;

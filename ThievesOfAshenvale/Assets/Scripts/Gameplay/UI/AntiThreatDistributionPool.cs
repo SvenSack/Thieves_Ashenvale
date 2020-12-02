@@ -6,9 +6,6 @@ namespace Gameplay.UI
     public class AntiThreatDistributionPool : MonoBehaviour
     {
         [SerializeField] private int rows;
-        [SerializeField] private Vector2 firstPostion;
-        [SerializeField] private float rowSize;
-        [SerializeField] private float columnSize;
         [SerializeField] private int columns;
         [SerializeField] private GameObject populationPiecePrefab;
         
@@ -22,20 +19,23 @@ namespace Gameplay.UI
         private float width;
         private float height;
         private bool flaggedForAdjustment;
+        private float rowSize;
+        private float columnSize;
+        private Vector2 firstPostion;
     
         // this class is basically a copy paste of the normal distributionpools, I wanted to make it a child, but it had too little in common to be feasible that way (which sounds
         // like I planned poorly when writing those...
         void Start()
         {
-            if (isFlex)
-            {
-                var rect = GetComponent<RectTransform>().rect;
-                width = rect.width;
-                height = rect.height;
-                originalColumSize = columnSize;
-                originalRowSize = rowSize;
-                originalColumns = columns;
-            }
+            var rect = GetComponent<RectTransform>().rect;
+            width = rect.width;
+            height = rect.height;
+            originalColumSize = columnSize;
+            rowSize = (height*.9f) / rows;
+            columnSize = (width*.9f) / columns;
+            originalRowSize = rowSize;
+            originalColumns = columns;
+            firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
         }
 
         private void Update()
@@ -68,11 +68,14 @@ namespace Gameplay.UI
                     if (objectsHeld[0].currentHeight * rows + 1 < height)
                     {
                         rows++;
+                        rowSize = (height*.9f) / rows;
                     }
                     else
                     {
                         columns++;
+                        columnSize = (width*.9f) / columns;
                     }
+                    firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
                 }
                 
                 if (width < objectsHeld[0].currentWidth * columns)
@@ -82,6 +85,7 @@ namespace Gameplay.UI
                     {
                         obj.Resize(betterWidth);
                     }
+                    firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
                 }
                 
             }
@@ -91,6 +95,7 @@ namespace Gameplay.UI
                 columnSize = originalColumSize;
                 columns = originalColumns;
                 rowSize = originalRowSize;
+                firstPostion = new Vector2(-width/2+columnSize/2, height/2-rowSize/2);
             }
 
             flaggedForAdjustment = true;
