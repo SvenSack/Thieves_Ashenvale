@@ -10,6 +10,7 @@ namespace Gameplay.CardManagement
         public string cardName;
         public string text;
         public Sprite illustration;
+        public string flavourText;
     }
 
     [System.Serializable] public class RoleCard : BaseCard

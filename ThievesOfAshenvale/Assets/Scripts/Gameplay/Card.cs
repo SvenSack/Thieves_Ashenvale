@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Gameplay.CardManagement;
 using Photon.Pun;
 using TMPro;
@@ -12,6 +13,7 @@ namespace Gameplay
         [SerializeField] private GameObject highlighter;
         [SerializeField] private Rigidbody cardBody;
         
+        public GameObject flavourPopup;
         public int cardIndex;
         public Decklist.Cardtype cardType;
         public bool isPrivate = true;
@@ -37,6 +39,7 @@ namespace Gameplay
             cardTransform = cardBody.transform;
             cardCollider = cardBody.GetComponent<BoxCollider>();
             highlighter.SetActive(false);
+            flavourPopup.SetActive(false);
         }
 
         public void ToggleSelector(bool doubleCheck)
@@ -74,6 +77,15 @@ namespace Gameplay
             }
         }
 
+        IEnumerator ShowFlavour(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            if (showing && flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text != "")
+            {
+                flavourPopup.SetActive(true);
+            }
+        }
+
         public void ToggleShowCard()
         { // used to show cards for closer inspection
             switch (showing)
@@ -86,6 +98,7 @@ namespace Gameplay
                     cardTransform.LeanRotate(hoverLocation.rotation.eulerAngles, .5f);
                     cardTransform.LeanMove(hoverLocation.position, .5f);
                     showing = true;
+                    StartCoroutine(ShowFlavour(2f));
                     break;
                 case true:
                     cardBody.isKinematic = false;
@@ -94,6 +107,7 @@ namespace Gameplay
                     cardTransform.LeanRotate(originRotation.eulerAngles, .5f);
                     cardTransform.LeanMove(originPosition, .5f);
                     showing = false;
+                    flavourPopup.SetActive(false);
                     break;
             }
         }

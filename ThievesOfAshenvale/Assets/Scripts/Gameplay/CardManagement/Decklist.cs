@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 namespace Gameplay.CardManagement
@@ -67,6 +68,7 @@ namespace Gameplay.CardManagement
                 case Cardtype.Action:
                     Card parts = inst.GetComponent<Card>();
                     ActionCard thisCard = actionCards[index];
+                    parts.flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text = thisCard.flavourText;
                     parts.cardType = type;
                     parts.illustration.sprite = thisCard.illustration;
                     parts.cardName.text = thisCard.cardName;
@@ -76,6 +78,7 @@ namespace Gameplay.CardManagement
                 case Cardtype.Artifact:
                     Card partsA = inst.GetComponent<Card>();
                     ArtifactCard thisACard = artifactCards[index];
+                    partsA.flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text = thisACard.flavourText;
                     partsA.cardType = type;
                     partsA.illustration.sprite = thisACard.illustration;
                     partsA.cardName.text = thisACard.cardName;
@@ -86,6 +89,7 @@ namespace Gameplay.CardManagement
                 case Cardtype.Character:
                     Card partsC = inst.GetComponent<Card>();
                     CharacterCard thisCCard = characterCards[index];
+                    partsC.flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text = thisCCard.flavourText;
                     partsC.cardType = type;
                     partsC.illustration.sprite = thisCCard.illustration;
                     partsC.cardName.text = thisCCard.cardName;
@@ -96,6 +100,7 @@ namespace Gameplay.CardManagement
                 case Cardtype.Role:
                     Card partsR = inst.GetComponent<Card>();
                     RoleCard thisRCard = roleCards[index];
+                    partsR.flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text = thisRCard.flavourText;
                     partsR.cardType = type;
                     partsR.illustration.sprite = thisRCard.illustration;
                     partsR.cardName.text = thisRCard.cardName;
@@ -109,6 +114,7 @@ namespace Gameplay.CardManagement
                 case Cardtype.Threat:
                     Card partsT = inst.GetComponent<Card>();
                     ThreatCard thisTCard = threatCards[index];
+                    partsT.flavourPopup.GetComponentInChildren<TextMeshProUGUI>().text = thisTCard.flavourText;
                     partsT.cardType = type;
                     partsT.illustration.sprite = thisTCard.illustration;
                     partsT.cardName.text = thisTCard.cardName;

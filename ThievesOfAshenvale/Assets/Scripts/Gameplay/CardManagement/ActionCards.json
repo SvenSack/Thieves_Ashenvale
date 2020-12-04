@@ -2,43 +2,53 @@
 	[
 		{
 			"cardName": "Improvise",
-			"text": "Reveal a total of 2 cards from either the artifact or action deck. Immediately use them or discard them."
+			"text": "Reveal a total of 2 cards from either the artifact or action deck. Immediately use them or discard them.",
+			"flavourText": "I dont have the perfect tool, but I have tools..."
 		},
 		{
 			"cardName": "Double Agent",
-			"text": "Move any one piece that threatens you into your character pool instead."
+			"text": "Move any one piece that threatens you into your character pool instead.",
+			"flavourText": "You meet friends in the strangest of places..."
 		},
 		{
 			"cardName": "Secret Cache",
-			"text": "Take 2 artifacts."
+			"text": "Take 2 artifacts.",
+			"flavourText": "Always be prepared."
 		},
 		{
 			"cardName": "Ask for Favours",
-			"text": "The Leader must give you your choice of: - an artifact - any specific kind of piece - 2 coins - an action card"
+			"text": "The Leader must give you your choice of: - an artifact - any specific kind of piece - 2 coins - an action card",
+			"flavourText": "View it less as a favour and more as an investment in your future."
 		},
 		{
 			"cardName": "Call in Backup",
-			"text": "Take 3 Thugs and add them to your character pool, you may immediately use them on this turn."
+			"text": "Take 3 Thugs and add them to your character pool, you may immediately use them on this turn.",
+			"flavourText": "I am sorry to ask for this, but I need some help here."
 		},
 		{
 			"cardName": "Execute a Heist",
-			"text": "Any number of characters of your choice each gain 3 coins."
+			"text": "Any number of characters of your choice each gain 3 coins.",
+			"flavourText": "Just follow my lead, and we can all get rich !"
 		},
 		{
 			"cardName": "Run for Office",
-			"text": "Pay any amount of coins. Unless the Leader pays more at the end of this turn, you become Leader instead, they remain in the game without a role card."
+			"text": "Pay any amount of coins. Unless the Leader pays more at the end of this turn, you become Leader instead, they remain in the game without a role card.",
+			"flavourText": "I dont think someone as poor as this one is qualified to lead this enterprise."
 		},
 		{
 			"cardName": "Swear the Oaths",
-			"text": "Take 2 Assassins and add them to your character pool. You may immediately use them on this turn."
+			"text": "Take 2 Assassins and add them to your character pool. You may immediately use them on this turn.",
+			"flavourText": "I swear to shed blood only in the name of the flock, be it mine, or that of another."
 		},
 		{
 			"cardName": "Bribe the Tax Officer",
-			"text": "All other characters must give you 2 coins. If they cannot, they must reveal their character pool to prove it."
+			"text": "All other characters must give you 2 coins. If they cannot, they must reveal their character pool to prove it.",
+			"flavourText": "Well my friends, it looks like the taxman came around for a fifth quarter this year."
 		},
 		{
 			"cardName": "Deal with it Yourself",
-			"text": "Discard any one open threat card, and all things placed on it. You lose 1 HP."
+			"text": "Discard any one open threat card, and all things placed on it. You lose 1 HP.",
+			"flavourText": "The only one you can trust around here, is often yourself."
 		}
 	]
 }

@@ -3,52 +3,62 @@
 		{
 			"cardName": "Crystal Ball",
 			"text": "You may look behind the screen of any one player of your choice.",
-			"weaponStrength": "1"
+			"weaponStrength": "1",
+			"flavourText": "Holding the future in the palm of your hands, literally."
 		},
 		{
 			"cardName": "Bauble of Shielding",
 			"text": "Instead of playing this card, you may discard it to negate the effect of any one artifact which targets you.",
-			"weaponStrength": "2"
+			"weaponStrength": "2",
+			"flavourText": "Protection; because you know the weapons you have against them."
 		},
 		{
 			"cardName": "Bow of the Manhunter",
 			"text": "Any one character of your choice immediately discards up to 3 Assassins or Thugs.",
-			"weaponStrength": "4"
+			"weaponStrength": "4",
+			"flavourText": "Is it time to cull the herd once more ?"
 		},
 		{
 			"cardName": "Ritual Dagger",
 			"text": "You may immediately take and use 2 Assassins for your character pool.",
-			"weaponStrength": "3"
+			"weaponStrength": "3",
+			"flavourText": "Fanatics are useful, and little gets them more invested than a good ritual."
 		},
 		{
 			"cardName": "Periapt of the Mindthief",
 			"text": "You may secretly look at the Role card of any one player of your choice.",
-			"weaponStrength": "2"
+			"weaponStrength": "2",
+			"flavourText": "Ever wish you could read someone’s mind ? Next best thing."
 		},
 		{
 			"cardName": "Potion of Healing",
 			"text": "Restore up to 3 HP to a character of your choice.",
-			"weaponStrength": "1"
+			"weaponStrength": "1",
+			"flavourText": "Anything that does not kill you, can be cured."
 		},
 		{
 			"cardName": "Serum of Truth",
 			"text": "A player of your choice must immediately answer a yes or no question truthfully.",
-			"weaponStrength": "1"
+			"weaponStrength": "1",
+			"flavourText": "Sometimes all you have to do is ask nicely. After drugging them first."
 		},
 		{
 			"cardName": "Scepter of Lightning",
 			"text": "A character of your choise immediately loses 3 health.",
-			"weaponStrength": "5"
+			"weaponStrength": "5",
+			"flavourText": "Lightning does strike twice if you are the one telling it where to go."
 		},
 		{
 			"cardName": "Mantikor Venom",
 			"text": "Play this artifact together with an Assassin. For the remainder of this turn, that Assassin has a threat value of 5.",
-			"weaponStrength": "3"
+			"weaponStrength": "3",
+			"flavourText": "A drop of it can kill a bear; this bottle should be enough for anyone."
 		},
 		{
 			"cardName": "Wand of Fireballs",
 			"text": "Discard any number of pieces which threaten you.",
-			"weaponStrength": "5"
+			"weaponStrength": "5",
+			"flavourText": "Few problems can not be solved with enough explosions."
 		}
 	]
 }

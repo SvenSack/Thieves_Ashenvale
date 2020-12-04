@@ -4,61 +4,71 @@
 			"cardName": "Ott, the Retired Adventurer",
 			"text": "At the start of the game, Ott draws 3 artifacts. Ott also never takes damage from Thugs.",
 			"health": "6",
-			"wealth": "3"
+			"wealth": "3",
+			"flavourText": "This whole Guild business is some pretty nice vacation time."
 		},
 		{
 			"cardName": "Aria, the Backalley Necromancer",
 			"text": "At the start of each turn, Aria gains an additional worker piece.",
 			"health": "4",
-			"wealth": "4"
+			"wealth": "4",
+			"flavourText": "What do you need ? Some bones, a skeleton, maybe a resurrection or two ?"
 		},
 		{
 			"cardName": "Aden, the Poisoner",
 			"text": "At the start of each turn, Aden may reduce the health of a character of their choice by 1.",
 			"health": "4",
-			"wealth": "4"
+			"wealth": "4",
+			"flavourText": "It simply must be a coincidence that people who dislike me get sick…"
 		},
 		{
 			"cardName": "Mary, the Ruffian",
 			"text": "At the end of the turn, Mary does not need to pay for up to 5 Thugs. Any additional Thugs require payment as usual.",
 			"health": "5",
-			"wealth": "2"
+			"wealth": "2",
+			"flavourText": "Don’t mind them, these friends of mine are simply here to make sure I am safe while talking to you !"
 		},
 		{
 			"cardName": "Adeline, the Noble Scion",
 			"text": "At the start of each turn, Adeline adds 2 coins to her character pool.",
 			"health": "4",
-			"wealth": "6"
+			"wealth": "6",
+			"flavourText": "You say all I have is money, but money is what rules the world, my friend !"
 		},
 		{
 			"cardName": "Harkon, the Seducer",
 			"text": "At the end of each turn, Harkon may look behind the screen of any one player of his choice.",
 			"health": "4",
-			"wealth": "3"
+			"wealth": "3",
+			"flavourText": "Oh relax. Leave your worries behind and tell me all about your day."
 		},
 		{
 			"cardName": "John, the Corrupt Sheriff",
 			"text": "At the end of each turn, when Thugs are paid, John gets half of those coins. This does not apply to his own Thugs.",
 			"health": "5",
-			"wealth": "2"
+			"wealth": "2",
+			"flavourText": "Well, what is law enforcement worth to you ?"
 		},
 		{
 			"cardName": "Steven, the Burglary Ace",
 			"text": "Whenever Steven robs the Bank tile, he gets twice as much gold for himself and the Leader.",
 			"health": "4",
-			"wealth": "3"
+			"wealth": "3",
+			"flavourText": "The place has windows ? They’re making it too easy !"
 		},
 		{
 			"cardName": "Selene, the Old Fox",
 			"text": "At the start of any turn, where jobs would be assigned, Selene may pick one for herself before the Leader starts to assign. This applies even if she is Leader and does not count against the usual rules for Leaders picking jobs.",
 			"health": "5",
-			"wealth": "5"
+			"wealth": "5",
+			"flavourText": "You poor child, you think I need help ? I have been doing your job since before you were born !"
 		},
 		{
 			"cardName": "Ruko, the Priced Pitfighter",
 			"text": "At the end of each turn, Ruko may add a Thug to his character pool. He does not have to pay for that Thug on that turn.",
 			"health": "5",
-			"wealth": "3"
+			"wealth": "3",
+			"flavourText": "What can I say, the weak flock to the strong, and that’s why everyone comes to me !"
 		}
 	]
 }
