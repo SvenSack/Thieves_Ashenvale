@@ -1,17 +1,18 @@
 {"threatCards":
 	[
+
 		{
-			"cardName": "New Knives are in Order",
+			"cardName": "Crimes were Revealed",
 			"requirements":
 			[
 				"0",
+				"1",
 				"0",
 				"0",
 				"0",
-				"0",
-				"5"
+				"0"
 			],
-			"flavourText": "Nicked and bent, simply unacceptable for any self respecting organization."
+			"flavourText": "Who do we like the least? A higher-up got caught."
 		},
 		{
 			"cardName": "The Zeal is Ebbing up",
@@ -27,6 +28,19 @@
 			"flavourText": "The tides of blood are slowing, we need to open the floodgates once more."
 		},
 		{
+			"cardName": "War with the Watch",
+			"requirements":
+			[
+				"6",
+				"3",
+				"0",
+				"0",
+				"0",
+				"5"
+			],
+			"flavourText": "It is war they want? Then war we shall give them!"
+		},
+		{
 			"cardName": "Local Heroes on the Trail",
 			"requirements":
 			[
@@ -40,17 +54,121 @@
 			"flavourText": "Its those so called heroes again, always meddeling, never truly helping anyone."
 		},
 		{
-			"cardName": "Problematic Politician",
+			"cardName": "Looming Royal Decree",
+			"requirements":
+			[
+				"0",
+				"4",
+				"3",
+				"0",
+				"0",
+				"5"
+			],
+			"flavourText": "If we do not act soon, we will have royal troops on our streets within the month..."
+		},
+		{
+			"cardName": "Ambitions of Doom",
 			"requirements":
 			[
 				"0",
 				"0",
+				"0",
+				"0",
+				"0",
+				"8"
+			],
+			"flavourText": "They would never again dare to stop us if only I had a flying fortress..."
+		},
+		{
+			"cardName": "Draconic Demands",
+			"requirements":
+			[
+				"0",
 				"2",
 				"0",
 				"0",
-				"1"
+				"20",
+				"0"
 			],
-			"flavourText": "She wants reforms. This can not stand."
+			"flavourText": "Sometimes speaking a language is just about understanding the formalities of extortion."
+		},
+		{
+			"cardName": "Problematic Mayor",
+			"requirements":
+			[
+				"2",
+				"0",
+				"2",
+				"1",
+				"0",
+				"3"
+			],
+			"flavourText": "We have tried buying him, now it seems more drastic measures are in order."
+		},
+		{
+			"cardName": "Turf War",
+			"requirements":
+			[
+				"3",
+				"0",
+				"0",
+				"0",
+				"0",
+				"2"
+			],
+			"flavourText": "I have gotten word of a new gang in town, lets show them that this is our turf."
+		},
+		{
+			"cardName": "Artifact Maintenance Required",
+			"requirements":
+			[
+				"2",
+				"0",
+				"0",
+				"0",
+				"15",
+				"0"
+			],
+			"flavourText": "We need to redraw the runes on the staves, if we dont, terrible things might happen...to us."
+		},
+		{
+			"cardName": "The People Stopped Fearing us",
+			"requirements":
+			[
+				"2",
+				"0",
+				"1",
+				"0",
+				"0",
+				"0"
+			],
+			"flavourText": "In the past people used to scare children with stories of the guild. I miss those days."
+		},
+		{
+			"cardName": "A new Sheriff in Town",
+			"requirements":
+			[
+				"1",
+				"0",
+				"0",
+				"0",
+				"4",
+				"0"
+			],
+			"flavourText": "He acts all strong and tough, but everyone has a price."
+		},
+		{
+			"cardName": "Secret Caches Depleted",
+			"requirements":
+			[
+				"0",
+				"0",
+				"0",
+				"0",
+				"8",
+				"0"
+			],
+			"flavourText": "We used to be prepared, but we have gotten lazy about that."
 		},
 		{
 			"cardName": "Battle with the Guard",
@@ -79,123 +197,6 @@
 			"flavourText": "Legal goods are starting to ruin our market, lets get back on track."
 		},
 		{
-			"cardName": "Ambitions of Doom",
-			"requirements":
-			[
-				"0",
-				"0",
-				"0",
-				"0",
-				"0",
-				"8"
-			],
-			"flavourText": "They would never again dare to stop us if only I had a flying fortress..."
-		},
-		{
-			"cardName": "Problematic Mayor",
-			"requirements":
-			[
-				"2",
-				"0",
-				"2",
-				"1",
-				"0",
-				"3"
-			],
-			"flavourText": "We have tried buying him, now it seems more drastic measures are in order."
-		},
-		{
-			"cardName": "The People Stopped Fearing us",
-			"requirements":
-			[
-				"2",
-				"0",
-				"1",
-				"0",
-				"0",
-				"0"
-			],
-			"flavourText": "In the past people used to scare children with stories of the guild. I miss those days."
-		},
-		{
-			"cardName": "Turf War",
-			"requirements":
-			[
-				"3",
-				"0",
-				"0",
-				"0",
-				"0",
-				"2"
-			],
-			"flavourText": "I have gotten word of a new gang in town, lets show them that this is our turf."
-		},
-		{
-			"cardName": "A new Sheriff in Town",
-			"requirements":
-			[
-				"1",
-				"0",
-				"0",
-				"0",
-				"4",
-				"0"
-			],
-			"flavourText": "He acts all strong and tough, but everyone has a price."
-		},
-		{
-			"cardName": "Artifact Maintenance Required",
-			"requirements":
-			[
-				"2",
-				"0",
-				"0",
-				"0",
-				"15",
-				"0"
-			],
-			"flavourText": "We need to redraw the runes on the staves, if we dont, terrible things might happen...to us."
-		},
-		{
-			"cardName": "Draconic Demands",
-			"requirements":
-			[
-				"0",
-				"2",
-				"0",
-				"0",
-				"20",
-				"0"
-			],
-			"flavourText": "Sometimes speaking a language is just about understanding the formalities of extortion."
-		},
-		{
-			"cardName": "Secret Caches Depleted",
-			"requirements":
-			[
-				"0",
-				"0",
-				"0",
-				"0",
-				"8",
-				"0"
-			],
-			"flavourText": "We used to be prepared, but we have gotten lazy about that."
-		},
-		{
-			"cardName": "Looming Royal Decree",
-			"requirements":
-			[
-				"0",
-				"4",
-				"3",
-				"0",
-				"0",
-				"5"
-			],
-			"flavourText": "If we do not act soon, we will have royal troops on our streets within the month..."
-		},
-		{
 			"cardName": "Religious Unrest Brewing",
 			"requirements":
 			[
@@ -209,17 +210,17 @@
 			"flavourText": "Only so long can you stoke the flames of Zeal without burning something."
 		},
 		{
-			"cardName": "War with the Watch",
+			"cardName": "Problematic Politician",
 			"requirements":
 			[
-				"6",
-				"3",
 				"0",
 				"0",
+				"2",
 				"0",
-				"5"
+				"0",
+				"1"
 			],
-			"flavourText": "It is war they want ? Then war we shall give them !"
+			"flavourText": "She wants reforms. This can not stand."
 		},
 		{
 			"cardName": "Mounting Civilian Unrest",
@@ -235,6 +236,20 @@
 			"flavourText": "If we act quickly, we can spin us to be the defenders of the common man."
 		},
 		{
+
+			"cardName": "New Knives are in Order",
+			"requirements":
+			[
+				"0",
+				"0",
+				"0",
+				"0",
+				"0",
+				"5"
+			],
+			"flavourText": "Nicked and bent, simply unacceptable for any self respecting organization."
+		},
+		{
 			"cardName": "Public Show of Force needed",
 			"requirements":
 			[
@@ -246,19 +261,6 @@
 				"6"
 			],
 			"flavourText": "Lets do something big to distract them from what is really happening."
-		},
-		{
-			"cardName": "Crimes were Revealed",
-			"requirements":
-			[
-				"0",
-				"1",
-				"0",
-				"0",
-				"0",
-				"0"
-			],
-			"flavourText": "Who do we like the least ? A higher-up got caught."
 		}
 	]
 }

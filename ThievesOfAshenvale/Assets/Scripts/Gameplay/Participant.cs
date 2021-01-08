@@ -31,6 +31,7 @@ namespace Gameplay
         public bool isDead { get; private set; }
         public int[] officeCampaign = {0, 0, 0};
         public bool[] awaitingTrade = {false, false, false, false, false, false, false};
+        public bool isAI = false;
         
         private int health = 0;
         private TextMeshProUGUI coinCounter = null;
@@ -44,53 +45,68 @@ namespace Gameplay
         {
             pv = GetComponent<PhotonView>();
 
-            if (pv.IsMine)
-            { 
-                FindSlot(true);
-                GameSetup();
+            if (!isAI)
+            {
+                if (pv.IsMine)
+                { 
+                    FindSlot(true);
+                    GameSetup();
+                }
+                else
+                { 
+                    FindSlot(false);
+                }
             }
             else
-            { 
-                FindSlot(false);
+            {
+                mySlot.Board.SetActive(true);
+                foreach (var tile in mySlot.publicTiles)
+                {
+                    tile.player = this;
+                }
+                GameMaster.Instance.seatsClaimed++;
             }
         }
 
         private void Update()
         {
-            if (pv.IsMine && coinCounter.text != coins.ToString())
+            if (!isAI)
             {
-                coinCounter.text = coins.ToString();
-            }
-
-            for (var i = 0; i < aHand.Count; i++)
-            {
-                if (aHand[i] == null)
+                if (pv.IsMine && coinCounter.text != coins.ToString())
                 {
-                    aHand.RemoveAt(i);
+                    coinCounter.text = coins.ToString();
                 }
-            }
 
-            for (var i = 0; i < pieces.Count; i++)
-            {
-                if (pieces[i] == null)
+                for (var i = 0; i < aHand.Count; i++)
                 {
-                    pieces.RemoveAt(i);
-                }
-            }
-
-            if (pv.IsMine && GameMaster.Instance.isTesting)
-            {
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
-                {
-                    for (int i = 0; i < 3; i++)
+                    if (aHand[i] == null)
                     {
-                        GameObject newPiece = GameMaster.Instance.CreatePiece((GameMaster.PieceType) i);
-                        newPiece.transform.position = mySlot.pieceLocation.position +
-                                                      new Vector3(Random.Range(-.5f, .5f), .5f, Random.Range(-.5f, .5f));
-                        newPiece.GetComponent<PhotonView>().TransferOwnership(pv.Controller);
-                        newPiece.GetComponent<Piece>().cam = mySlot.perspective;
+                        aHand.RemoveAt(i);
                     }
                 }
+
+                for (var i = 0; i < pieces.Count; i++)
+                {
+                    if (pieces[i] == null)
+                    {
+                        pieces.RemoveAt(i);
+                    }
+                }
+
+                if (pv.IsMine && GameMaster.Instance.isTesting)
+                {
+                    if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            GameObject newPiece = GameMaster.Instance.CreatePiece((GameMaster.PieceType) i);
+                            newPiece.transform.position = mySlot.pieceLocation.position +
+                                                          new Vector3(Random.Range(-.5f, .5f), .5f, Random.Range(-.5f, .5f));
+                            newPiece.GetComponent<PhotonView>().TransferOwnership(pv.Controller);
+                            newPiece.GetComponent<Piece>().cam = mySlot.perspective;
+                        }
+                    }
+                } 
             }
         }
 
@@ -122,11 +138,38 @@ namespace Gameplay
         private void GameSetup()
         {
             mySlot.perspective.enabled = true;
+            mySlot.listener.enabled = true;
             coinCounter = mySlot.coinCounter;
             CursorFollower.Instance.playerCam = mySlot.perspective;
             UIManager.Instance.participant = this;
             UIManager.Instance.playerCamera = mySlot.perspective;
             UIManager.Instance.player = pv.Controller;
+        }
+
+        public void TutorialAssignChar()
+        {
+            character = (GameMaster.Character) 7;
+            GameObject charCard = Decklist.Instance.CreateCard(Decklist.Cardtype.Character, 7);
+            var position = mySlot.rCCardLocation.position;
+            charCard.transform.position = position + new Vector3(0,.3f,0);
+            var rotation = mySlot.rCCardLocation.rotation;
+            charCard.transform.rotation = rotation;
+            charCard.GetComponent<Card>().hoverLocation = mySlot.hoverLocation;
+            AddCoin(Decklist.Instance.characterCards[(int) character].wealth);
+            AddHealth(Decklist.Instance.characterCards[(int) character].health);
+            GameMaster.Instance.characterIndex.Add(character, this);
+        }
+
+        public void TutorialAssignRole()
+        {
+            var rotation = mySlot.rCCardLocation.rotation;
+            var position = mySlot.rCCardLocation.position;
+            GameObject roleCard = Decklist.Instance.CreateCard(Decklist.Cardtype.Role, 1);
+            roleCard.transform.position = position + new Vector3(.5f,.3f,.5f);
+            roleCard.transform.rotation = rotation;
+            roleCard.GetComponent<Card>().hoverLocation = mySlot.hoverLocation;
+            
+            StartCoroutine(PrepAndStart(true));
         }
 
         #endregion
@@ -327,7 +370,10 @@ namespace Gameplay
                 case 0:
                 case 2:
                 case 4:
-                    UIManager.Instance.StartSelection(UIManager.SelectionType.JobAssignment, null);
+                    if (!GameMaster.Instance.isTutorial)
+                    {
+                        UIManager.Instance.StartSelection(UIManager.SelectionType.JobAssignment, null);
+                    }
                     goto case 3; 
                 case 1:
                 case 3:
@@ -366,7 +412,10 @@ namespace Gameplay
                         nT.GetComponent<PhotonView>().RPC("SetThreat", RpcTarget.All, newThreatIndex);
                     }
 
-                    UIManager.Instance.StartSelection(UIManager.SelectionType.WorkerAssignment, null);
+                    if (!GameMaster.Instance.isTutorial)
+                    {
+                        UIManager.Instance.StartSelection(UIManager.SelectionType.WorkerAssignment, null);
+                    }
                     break;
                 case 5:
                     EndTheGame();
@@ -517,22 +566,33 @@ namespace Gameplay
             return null;
         }
         
-        IEnumerator PrepAndStart()
+        IEnumerator PrepAndStart(bool isTutorial)
         {
             yield return new WaitForSeconds(1f);
             UIManager.Instance.UpdateSelectionNames();
             if (role == GameMaster.Role.Leader)
             {
-                GameMaster.Instance.EndTurn();
+                if(!isTutorial) GameMaster.Instance.EndTurn();
                 UIManager.Instance.RevealRole();
                 isLeader = true;
             }
 
             Participant[] participants = FindObjectsOfType<Participant>();
             string playerName = UIManager.Instance.CreateCharPlayerString(this);
-            foreach (var part in participants)
+            if (!isTutorial)
             {
-                part.pv.RPC("RpcAddEvidence", RpcTarget.OthersBuffered, character + "\n" + Decklist.Instance.characterCards[(int)character].text + "\n Starting assets: " + coins + " coins and " + health + " health", playerName + " basic information", false,(byte) playerNumber);
+                foreach (var part in participants)
+                {
+                    part.pv.RPC("RpcAddEvidence", RpcTarget.OthersBuffered, character + "\n" + Decklist.Instance.characterCards[(int)character].text + "\n Starting assets: " + coins + " coins and " + health + " health", playerName + " basic information", false,(byte) playerNumber);
+                }
+            }
+            else
+            {
+                RpcAddEvidence("Ott, the Retired Adventurer" + "\n" + Decklist.Instance.characterCards[0].text + "\n Starting assets: " + "3 coins and " + "6 health", "Ott basic information", false,(byte) 1);
+                RpcAddEvidence("Aria, the Backalley Necromancer" + "\n" + Decklist.Instance.characterCards[1].text + "\n Starting assets: " + "4 coins and " + "4 health", "Aria basic information", false,(byte) 2);
+                RpcAddEvidence("Mary, the Ruffian" + "\n" + Decklist.Instance.characterCards[3].text + "\n Starting assets: " + "2 coins and " + "5 health", "Mary basic information", false,(byte) 3);
+                RpcAddEvidence("Ott is the Leader", "Ott has revealed their role", false,(byte) 1);
+                
             }
 
             if (role == GameMaster.Role.Noble)

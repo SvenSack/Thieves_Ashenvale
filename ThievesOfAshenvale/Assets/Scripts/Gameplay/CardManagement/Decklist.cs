@@ -53,7 +53,17 @@ namespace Gameplay.CardManagement
                 {GameMaster.Character.Sheriff, "John"},
                 {GameMaster.Character.BurglaryAce, "Steven"},
                 {GameMaster.Character.OldFox, "Selene"},
-                {GameMaster.Character.PitFighter, "Ruko"}
+                {GameMaster.Character.PitFighter, "Ruko"},
+                {GameMaster.Character.ConArtist, "Sheira"},
+                {GameMaster.Character.Counterfeiter, "Lex"},
+                {GameMaster.Character.ExSpy, "Kev"},
+                {GameMaster.Character.HighPriest, "Kin"},
+                {GameMaster.Character.Kidnapper, "Bun"},
+                {GameMaster.Character.Smuggler, "Gina"},
+                {GameMaster.Character.FleshStitcher, "Laura"},
+                {GameMaster.Character.UnderBoss, "Sid"},
+                {GameMaster.Character.LookOut, "Kivi"},
+                {GameMaster.Character.HeistPlanner, "Lauren"}
             };
 
             ReadData();

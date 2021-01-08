@@ -24,7 +24,18 @@ namespace Gameplay
             Character.Sheriff,
             Character.BurglaryAce,
             Character.OldFox,
-            Character.PitFighter};
+            Character.PitFighter,
+            Character.ConArtist,
+            Character.Counterfeiter,
+            Character.ExSpy,
+            Character.HighPriest,
+            Character.Kidnapper,
+            Character.Smuggler,
+            Character.FleshStitcher,
+            Character.UnderBoss,
+            Character.LookOut,
+            Character.HeistPlanner
+        };
         public List<Role> roleDeck = new List<Role>
         {
             Role.Leader,
@@ -51,6 +62,11 @@ namespace Gameplay
         {
             Artifact.Ball, Artifact.Ball, Artifact.Ball, Artifact.Ball,
             Artifact.Bauble, Artifact.Bauble, Artifact.Bauble, Artifact.Bauble,
+            Artifact.Key, Artifact.Key, Artifact.Key, Artifact.Key,
+            Artifact.Cloak, Artifact.Cloak,
+            Artifact.Phasing, Artifact.Phasing, Artifact.Phasing,
+            Artifact.Midas, Artifact.Midas,
+            Artifact.Cape, Artifact.Cape,
             Artifact.Bow, Artifact.Bow, Artifact.Bow,
             Artifact.Dagger, Artifact.Dagger, Artifact.Dagger, Artifact.Dagger,
             Artifact.Periapt, Artifact.Periapt, Artifact.Periapt, Artifact.Periapt,
@@ -62,17 +78,7 @@ namespace Gameplay
         };
         public List<Threat> threatDeck = new List<Threat>
         {
-            Threat.AmbitionsDoom, Threat.ArtifactMaintenance,
-            Threat.BattleGuard, Threat.CivilianUnrest,
-            Threat.CrimesRevealed, Threat.DraconicDemands,
-            Threat.LocalHeroes, Threat.NewKnives,
-            Threat.NewSheriff, Threat.ProblematicMayor,
-            Threat.ProblematicPolitician, Threat.ReligiousUnrest,
-            Threat.RoyalDecree, Threat.SecretCaches, 
-            Threat.ShowForce, Threat.StoppedFearing,
-            Threat.TurfWar, Threat.WaningDominance,
-            Threat.WarWatch, Threat.ZealEbbing
-        };
+        }; // TODO: when implementing the other threats, add them to the gameobject which overwrites this atm...
 
             #endregion
         
@@ -93,8 +99,9 @@ namespace Gameplay
         public bool[] passedPlayers;
         public int[] roleRevealTurns = {-1,-1,-1,-1,-1,-1};
         public TurnStep turnStep = TurnStep.Normal;
+        public bool isTutorial;
+        public bool firstTurnHad = false;
         
-        private bool firstTurnHad = false;
         #region Enums
 
         public enum TurnStep
@@ -118,7 +125,17 @@ namespace Gameplay
             Sheriff,
             BurglaryAce,
             OldFox,
-            PitFighter
+            PitFighter,
+            ConArtist,
+            Counterfeiter,
+            ExSpy,
+            HighPriest,
+            Kidnapper,
+            Smuggler,
+            FleshStitcher,
+            UnderBoss,
+            LookOut,
+            HeistPlanner
         }
         
         public enum Role
@@ -142,7 +159,12 @@ namespace Gameplay
             Serum,
             Scepter,
             Venom,
-            Wand
+            Wand,
+            Cloak,
+            Key,
+            Phasing,
+            Midas,
+            Cape
         }
         
         public enum Action
@@ -160,27 +182,27 @@ namespace Gameplay
         }
 
         public enum Threat
-        {// this is out of order, if it is ever used in context, please fix
-            NewKnives,
+        {// TODO: this is out of order, if it is ever used in context, please fix
+            CrimesRevealed,
             ZealEbbing,
+            WarWatch,
             LocalHeroes,
+            RoyalDecree,
+            AmbitionsDoom,
+            DraconicDemands,
+            ProblematicMayor,
+            TurfWar,
+            ArtifactMaintenance,
+            NewKnives,
             ProblematicPolitician,
             BattleGuard,
             WaningDominance,
-            AmbitionsDoom,
-            ProblematicMayor,
             StoppedFearing,
-            TurfWar,
             NewSheriff,
-            ArtifactMaintenance,
-            DraconicDemands,
             SecretCaches,
-            RoyalDecree,
             ReligiousUnrest,
-            WarWatch,
             CivilianUnrest,
             ShowForce,
-            CrimesRevealed
         }
 
         public enum PieceType
@@ -203,9 +225,19 @@ namespace Gameplay
         
         private void Start()
         {
-            for (int i = 0; i < 6-PhotonNetwork.CurrentRoom.PlayerCount; i++)
+            if (isTutorial)
             {
-                roleDeck.RemoveAt(roleDeck.Count-1);
+                for (int i = 0; i < 2; i++)
+                {
+                    roleDeck.RemoveAt(roleDeck.Count-1);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 6-PhotonNetwork.CurrentRoom.PlayerCount; i++)
+                {
+                    roleDeck.RemoveAt(roleDeck.Count-1);
+                }
             }
             pv = GetComponent<PhotonView>();
             Instance = this;
@@ -223,11 +255,31 @@ namespace Gameplay
             yield return new WaitUntil(StartCondition);
             yield return new WaitForSeconds(1);
             Participant[] players = FindObjectsOfType<Participant>();
-            foreach (var player in players)
+            if (isTutorial)
             {
-                byte roleNum = (byte) DrawCard(Decklist.Cardtype.Role);
-                int charNum = DrawCard(Decklist.Cardtype.Character);
-                player.pv.RPC("RpcAssignRoleAndChar", RpcTarget.AllBufferedViaServer, roleNum, charNum);
+                RemoveFromDeck(1, 7);
+                RemoveFromDeck(0, 1);
+                foreach (var player in players)
+                {
+                    byte roleNum = (byte) DrawCard(Decklist.Cardtype.Role);
+                    int charNum = DrawCard(Decklist.Cardtype.Character);
+                    if (player.isAI)
+                    {
+                        player.pv.RPC("RpcAssignRoleAndChar", RpcTarget.AllBufferedViaServer, roleNum, charNum);
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+            else
+            {
+                foreach (var player in players)
+                {
+                    byte roleNum = (byte) DrawCard(Decklist.Cardtype.Role);
+                    int charNum = DrawCard(Decklist.Cardtype.Character);
+                    player.pv.RPC("RpcAssignRoleAndChar", RpcTarget.AllBufferedViaServer, roleNum, charNum);
+                }
             }
         }
 
@@ -244,6 +296,11 @@ namespace Gameplay
                 {
                     Artifact.Ball, Artifact.Ball, Artifact.Ball, Artifact.Ball,
                     Artifact.Bauble, Artifact.Bauble, Artifact.Bauble, Artifact.Bauble,
+                    Artifact.Key, Artifact.Key, Artifact.Key, Artifact.Key,
+                    Artifact.Cloak, Artifact.Cloak,
+                    Artifact.Phasing, Artifact.Phasing, Artifact.Phasing,
+                    Artifact.Midas, Artifact.Midas,
+                    Artifact.Cape, Artifact.Cape,
                     Artifact.Bow, Artifact.Bow, Artifact.Bow,
                     Artifact.Dagger, Artifact.Dagger, Artifact.Dagger, Artifact.Dagger,
                     Artifact.Periapt, Artifact.Periapt, Artifact.Periapt, Artifact.Periapt,
@@ -471,6 +528,14 @@ namespace Gameplay
             turnCounter++;
             Debug.LogAssertion("started new turn");
             UIManager.Instance.participant.pv.RPC("RpcStartTurnAgain", RpcTarget.AllBuffered);
+            if (isTutorial)
+            {
+                if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.EndingYourFirstTurn ||
+                    TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.EndingTheSecondTurn)
+                {
+                    TutorialManager.Instance.currentStep++;
+                }
+            }
         }
 
         public void MakeNewLeader()
@@ -510,6 +575,18 @@ namespace Gameplay
         // all of these are helper functions for other classes to access the correct participants. this happens very often since I am using their index number when sending data via RPC
         public Participant FetchPlayerByNumber(int playerNumber)
         {
+            if (isTutorial)
+            {
+                switch (playerNumber)
+                {
+                    case 1:
+                        return TutorialManager.Instance.tutorialAi[0];
+                    case 2:
+                        return TutorialManager.Instance.tutorialAi[1];
+                    case 3:
+                        return TutorialManager.Instance.tutorialAi[2];
+                }
+            }
             return playerSlots[playerNumber].gameObject.GetComponent<PlayerSlot>().player;
         }
 

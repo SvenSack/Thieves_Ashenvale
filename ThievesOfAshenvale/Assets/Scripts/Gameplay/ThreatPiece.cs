@@ -38,7 +38,7 @@ namespace Gameplay
             isThreatening = false;
             transform.position = GameMaster.Instance.FetchPlayerByNumber(originPlayerNumber).mySlot.pieceLocation
                 .position + new Vector3(Random.Range(-.5f, .5f), .5f, Random.Range(-.5f, .5f));
-            meshRen.material = defaultMaterial;
+            // meshRen.material = defaultMaterial;
         }
 
         public void ThreatenPlayer(int playerIndexToThreaten)
@@ -60,14 +60,14 @@ namespace Gameplay
         public void ToggleThreaten()
         {
             isThreatening = !isThreatening;
-            if (isThreatening)
+            /* if (isThreatening)
             {
                 meshRen.material = threatMaterial;
             }
             else
             {
                 meshRen.material = defaultMaterial;
-            }
+            }*/
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Gameplay
     public class CursorFollower : MonoBehaviour
     {
         public static CursorFollower Instance;
-        public bool IsHovering { get; private set; }
+        public bool IsHovering;
         public Camera playerCam;
         public bool isHoveringACard;
         public bool isHoveringTCard;

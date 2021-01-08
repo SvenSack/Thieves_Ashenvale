@@ -29,6 +29,14 @@ namespace Gameplay
             isOpened = !isOpened;
             contentBox.SetActive(!contentBox.activeSelf);
             archive.RearrangeArchive();
+            if (GameMaster.Instance.isTutorial)
+            {
+                if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.CheckingYourNotes &&
+                    headerText.text == "Ott has revealed their role")
+                {
+                    TutorialManager.Instance.currentStep++;
+                }
+            }
         }
 
         public void GiveSource(InformationPiece source, ArchiveUI _archive)

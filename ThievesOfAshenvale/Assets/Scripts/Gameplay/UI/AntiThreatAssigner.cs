@@ -13,7 +13,20 @@ namespace Gameplay
             Piece[] pieces = FindObjectsOfType<Piece>();
             foreach (var piece in pieces)
             {
-                if (piece.pv.IsMine)
+                bool isTutorialEnemy = false;
+                if (GameMaster.Instance.isTutorial)
+                {
+                    if (piece.TryGetComponent(out ThreatPiece tPiece))
+                    {
+                        Debug.LogAssertion("found a tPiece");
+                        if (UIManager.Instance.participant.piecesThreateningMe.Contains(tPiece))
+                        {
+                            Debug.LogAssertion("Sorted out one enemy");
+                            isTutorialEnemy = true;
+                        }
+                    }
+                }
+                if (piece.pv.IsMine && !isTutorialEnemy)
                 {
                     GameObject inst = null;
                     switch (piece.type)

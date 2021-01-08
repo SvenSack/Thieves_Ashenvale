@@ -12,7 +12,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private string gameVersion = "1";
     private string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
     private enum ConnectionPath {host, join};
-
+    private bool isTutorial = true;
     private ConnectionPath currentPath;
 
     [SerializeField] private byte maxPlayersPerRoom = 6;
@@ -21,6 +21,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject progressLabel = null;
     [SerializeField] private GameObject joinPopUp;
     [SerializeField] private TMP_InputField roomNameInput;
+    [SerializeField] private GameObject tutorialPanel = null;
 
     private void Awake()
     {
@@ -29,9 +30,21 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        progressLabel.SetActive(false);
+        if (PlayerPrefs.HasKey("TutorialFinished"))
+        {
+            isTutorial = false;
+            tutorialPanel.SetActive(false);
+        }
         controlPanel.SetActive(true);
         joinPopUp.SetActive(false);
+
+        if (isTutorial)
+        {
+            controlPanel.transform.GetChild(0).gameObject.SetActive(false);
+            controlPanel.transform.GetChild(2).gameObject.SetActive(false);
+        }
+        
+        progressLabel.SetActive(false);
         
         if (PlayerPrefs.HasKey("RoomName"))
         {
@@ -43,7 +56,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     { // this gets called by the play button, and then does method calls and UI things
         PhotonNetwork.ConnectUsingSettings();
         currentPath = ConnectionPath.host;
-        if (PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsConnected && !isTutorial)
         {
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
@@ -123,7 +136,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     { // this transfers us to a new scene, so players know that the actual room stuff behind the scenes worked
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            PhotonNetwork.LoadLevel("Waiting Room");
+            if (!isTutorial)
+            {
+                PhotonNetwork.LoadLevel("Waiting Room");
+            }
+            else
+            {
+                PhotonNetwork.LoadLevel("Tutorial Waiting Room");
+            }
         }
     }
 }

@@ -63,6 +63,7 @@ MonoBehaviour:
   piecesThreateningMe: []
   officeCampaign: 000000000000000000000000
   awaitingTrade: 00000000000000
+  isAI: 0
 --- !u!114 &1349756622432304604
 MonoBehaviour:
   m_ObjectHideFlags: 0

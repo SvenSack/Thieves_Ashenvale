@@ -1,4 +1,5 @@
-﻿using Gameplay.CardManagement;
+﻿using FMODUnity;
+using Gameplay.CardManagement;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
@@ -11,6 +12,7 @@ namespace Gameplay
         public GameObject Board;
         public Participant player;
         public string playerCharacterName;
+        public StudioListener listener;
         public Transform coinLocation;
         public Transform healthLocation;
         public Transform rCCardLocation;
@@ -28,6 +30,7 @@ namespace Gameplay
         private void Awake()
         {
             perspective.enabled = false;
+            listener.enabled = false;
             Board.SetActive(false);
         }
 

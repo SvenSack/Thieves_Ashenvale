@@ -110,6 +110,7 @@ namespace Gameplay
                     PhotonNetwork.Destroy(art.gameObject);
                 }
             }
+            SoundManager.Instance.PlayOneShot("event:/Effects/BoardDrop", transform.position);
         }
 
         public void RemoveCoins(int amount)

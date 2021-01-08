@@ -31,6 +31,14 @@ namespace Gameplay
             {
                 playerContributions[playerNumber][i] += contribution[i];
             }
+
+            if (GameMaster.Instance.isTutorial)
+            {
+                if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.DealingWithThreats)
+                {
+                    TutorialManager.Instance.currentStep++;
+                }
+            }
         }
 
         [PunRPC]
@@ -69,6 +77,14 @@ namespace Gameplay
             {
                 if (t > 0)
                 {
+                    if (GameMaster.Instance.isTutorial)
+                    {
+                        if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.EndingTheSecondTurn && !TutorialManager.Instance.hasOneThreatDealt)
+                        {
+                            TutorialManager.Instance.hasOneThreatDealt = true;
+                            return true;
+                        }
+                    }
                     return false;
                 }
             }

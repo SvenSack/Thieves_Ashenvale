@@ -69,6 +69,76 @@
 			"health": "5",
 			"wealth": "3",
 			"flavourText": "What can I say, the weak flock to the strong, and that’s why everyone comes to me !"
+		},
+		{
+			"cardName": "Sheira, the Con-Artist",
+			"text": "At the end of each turn, Sheira may take an action card she used on that turn back to her hand.",
+			"health": "4",
+			"wealth": "3",
+			"flavourText": "This magical lamp is 100% authentic I swear on my mothers grave !"
+		},
+		{
+			"cardName": "Lex, the Counterfeiter",
+			"text": "Whenever any effect would require Lex to pay coins, he can chose to pay 1 less.",
+			"health": "4",
+			"wealth": "3",
+			"flavourText": "Life does get easier when you can make your own money…"
+		},
+		{
+			"cardName": "Kev, the Ex-Spy",
+			"text": "Whenever a secret trade takes place, Kev gets the second piece of information, not the writer.",
+			"health": "5",
+			"wealth": "3",
+			"flavourText": "What do you need to know, and where can I get that information ?"
+		},
+		{
+			"cardName": "Kin, the High Priest",
+			"text": "At the end of each turn, Kin needs to pay 1 less coin for each of his assassins.",
+			"health": "4",
+			"wealth": "2",
+			"flavourText": "Listen to me, my flock, for the hour of blood draws close !"
+		},
+		{
+			"cardName": "Bun, the Kidnapper",
+			"text": "At the end of each turn, when pieces return to their respective pools, Bun may add one of them to her pool instead. This does not work on grey worker pieces.",
+			"health": "5",
+			"wealth": "2",
+			"flavourText": "Why do they call me Bun ? Easy, I tie it all up !"
+		},
+		{
+			"cardName": "Gina, the Smuggler",
+			"text": "Whenever Gina draws an artifact card, she also draws an action card into the same pool.",
+			"health": "4",
+			"wealth": "2",
+			"flavourText": "I can bring it in for you, what you do with it is none of my business."
+		},
+		{
+			"cardName": "Laura, the Ruthless Fleshstitcher",
+			"text": "Whenever Laura discards a piece for any reason, she may take 2 coins. This includes threatened pieces that she has defended against.",
+			"health": "4",
+			"wealth": "4",
+			"flavourText": "Everyone has worth, dead or alive is a formality."
+		},
+		{
+			"cardName": "Sid, the Underboss",
+			"text": "Whenever any effect talks about the Leader, Sid also gains the benefit. If Sid is the Leader, he gains it twice. This does not include paying more for the public board tiles, and can not also be withheld by the Greedy Rogue.",
+			"health": "5",
+			"wealth": "2",
+			"flavourText": "Sorry my friend, the Leader’s not in tonight, but leave it with me, I’ll make sure they get it…"
+		},
+		{
+			"cardName": "Kivi, the Lookout",
+			"text": "Before threats are drawn each turn, Kivi may look at the top 2 threats and put them back on the bottom or top of the deck.",
+			"health": "4",
+			"wealth": "4",
+			"flavourText": "I’m not twitchy, I’m just good at my job !"
+		},
+		{
+			"cardName": "Lauren, the Heist Planner",
+			"text": "When Lauras thugs harm another character, she can chose to steal one coin from them for each damage dealt.",
+			"health": "4",
+			"wealth": "2",
+			"flavourText": "Ok boys, we go in, we get the stuff, we get it out, its that simple."
 		}
 	]
 }

@@ -108,6 +108,13 @@ namespace Gameplay
                     {
                         player.AddCoin(4);
                         GiveCoinsToLeader(2);
+                        if (GameMaster.Instance.isTutorial)
+                        {
+                            if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.RobbingTheBank)
+                            {
+                                TutorialManager.Instance.currentStep++;
+                            }
+                        }
                     }
                     return true;
                 case TileType.DarkShrine:
@@ -123,6 +130,13 @@ namespace Gameplay
                     {
                         GiveCoinToOwner(1, GameMaster.Job.MasterOfClubs);
                         player.AddPiece(GameMaster.PieceType.Thug, true);
+                        if (GameMaster.Instance.isTutorial)
+                        {
+                            if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.UsingTheTavern)
+                            {
+                                TutorialManager.Instance.currentStep++;
+                            }
+                        }
                         return true;
                     }
                     break;
@@ -153,6 +167,13 @@ namespace Gameplay
                                     board.RemoveCoins(board.coins);
                                     GiveCoinsToLeader(2);
                                     ToggleUsed();
+                                    if (GameMaster.Instance.isTutorial)
+                                    {
+                                        if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.SkimmingOffTheTreasuryAndJobChanges)
+                                        {
+                                            TutorialManager.Instance.currentStep++;
+                                        }
+                                    }
                                     return true;
                                 }
                                 else return false;
@@ -171,6 +192,13 @@ namespace Gameplay
                                     player.RemoveCoins(2);
                                     board.AddCoin(board.coins);
                                     ToggleUsed();
+                                    if (GameMaster.Instance.isTutorial)
+                                    {
+                                        if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.OrganizingOperations || TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.MoreOrganizing )
+                                        {
+                                            TutorialManager.Instance.currentStep++;
+                                        }
+                                    }
                                     return true;
                                 }
                                 else return false;
@@ -178,6 +206,13 @@ namespace Gameplay
                                 board.AddCoin(4);
                                 GiveCoinsToLeader(2);
                                 ToggleUsed();
+                                if (GameMaster.Instance.isTutorial)
+                                {
+                                    if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.StimulatingTheFlow)
+                                    {
+                                        TutorialManager.Instance.currentStep++;
+                                    }
+                                }
                                 return true;
                             case TileType.ExtortMembers:
                                 player.AddCoin(4);
@@ -313,6 +348,13 @@ namespace Gameplay
                                     player.DrawACard(Decklist.Cardtype.Artifact);
                                     GiveArtifactToLeader();
                                     ToggleUsed();
+                                    if (GameMaster.Instance.isTutorial)
+                                    {
+                                        if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.PocketingMerchandise || TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.MorePocketing)
+                                        {
+                                            TutorialManager.Instance.currentStep++;
+                                        }
+                                    }
                                     return true;
                                 }
                                 else return false;
@@ -340,25 +382,34 @@ namespace Gameplay
         // this is stuff that is used regularly in the tile logic and thus was made into functions for easier viewing/less lines
         private void GiveCoinsToLeader(int amount)
         {
-            if (player.Equals(GameMaster.Instance.FetchLeader()) || (player.roleRevealed && (player.role == GameMaster.Role.Rogue || player.role == GameMaster.Role.Paladin || player.role == GameMaster.Role.Vigilante)))
+            if (!GameMaster.Instance.isTutorial)
             {
-                player.AddCoin(amount);
-            }
-            else
-            {
-                GameMaster.Instance.FetchLeader().pv.RPC("RpcAddCoin", RpcTarget.Others,(byte) amount);
+                if (player.Equals(GameMaster.Instance.FetchLeader()) ||
+                    (player.roleRevealed && (player.role == GameMaster.Role.Rogue ||
+                                             player.role == GameMaster.Role.Paladin ||
+                                             player.role == GameMaster.Role.Vigilante)))
+                {
+                    player.AddCoin(amount);
+                }
+                else
+                {
+                    GameMaster.Instance.FetchLeader().pv.RPC("RpcAddCoin", RpcTarget.Others, (byte) amount);
+                }
             }
         }
 
         private void GiveArtifactToLeader()
         {
-            if (player.Equals(GameMaster.Instance.FetchLeader()) || (player.roleRevealed && (player.role == GameMaster.Role.Rogue || player.role == GameMaster.Role.Paladin || player.role == GameMaster.Role.Vigilante)))
+            if (!GameMaster.Instance.isTutorial)
             {
-                player.DrawACard(Decklist.Cardtype.Artifact);
-            }
-            else
-            {
-                GameMaster.Instance.FetchLeader().pv.RPC("RpcAddArtifactCard", RpcTarget.Others);
+                if (player.Equals(GameMaster.Instance.FetchLeader()) || (player.roleRevealed && (player.role == GameMaster.Role.Rogue || player.role == GameMaster.Role.Paladin || player.role == GameMaster.Role.Vigilante)))
+                {
+                    player.DrawACard(Decklist.Cardtype.Artifact);
+                }
+                else
+                {
+                    GameMaster.Instance.FetchLeader().pv.RPC("RpcAddArtifactCard", RpcTarget.Others);
+                }
             }
         }
 
@@ -369,22 +420,25 @@ namespace Gameplay
 
         public void GiveCoinToOwner(byte amount, GameMaster.Job owningRole)
         {
-            if (player.Equals(GameMaster.Instance.FetchPlayerByJob(owningRole)))
+            if (!GameMaster.Instance.isTutorial)
             {
-                if (player.Equals(GameMaster.Instance.FetchLeader()))
+                if (player.Equals(GameMaster.Instance.FetchPlayerByJob(owningRole)))
                 {
-                                
+                    if (player.Equals(GameMaster.Instance.FetchLeader()))
+                    {
+
+                    }
+                    else
+                    {
+                        UIManager.Instance.PayAmountOwed(amount);
+                        GiveCoinsToLeader(amount);
+                    }
                 }
                 else
                 {
                     UIManager.Instance.PayAmountOwed(amount);
-                    GiveCoinsToLeader(amount);
+                    GiveJobCoin(amount, owningRole);
                 }
-            }
-            else
-            {
-                UIManager.Instance.PayAmountOwed(amount);
-                GiveJobCoin(amount, owningRole);
             }
         }
 
@@ -395,11 +449,15 @@ namespace Gameplay
             if (other.gameObject.layer == LayerMask.NameToLayer("Pieces") && player.pv.IsMine)
             {
                 Piece piece = other.gameObject.GetComponent<Piece>();
-                if (!piece.pv.IsMine)
+                if (!piece.pv.IsMine || GameMaster.Instance.isTutorial)
                 {
                     if (type != TileType.ThreatenPlayers)
                     {
-                        return;
+                        if (!GameMaster.Instance.isTutorial)
+                        {
+                            piece.ResetPiecePosition();
+                            return;
+                        }
                     }
                     else
                     {
@@ -418,30 +476,33 @@ namespace Gameplay
                         {
                             tp.ToggleThreaten();
                         }
-                        Debug.LogAssertion("Open Threat Dialogue");
-                        switch (piece.type)
+
+                        if (piece.pv.IsMine && !GameMaster.Instance.isTutorial)
                         {
-                            case GameMaster.PieceType.Assassin:
-                                if (PerformTileAction(false))
-                                {
-                                }
-                                else
-                                {
+                            switch (piece.type)
+                            {
+                                case GameMaster.PieceType.Assassin:
+                                    if (PerformTileAction(false))
+                                    {
+                                    }
+                                    else
+                                    {
+                                        piece.ResetPiecePosition();
+                                    }
+                                    break;
+                                case GameMaster.PieceType.Thug:
+                                    if (PerformTileAction(false))
+                                    {
+                                    }
+                                    else
+                                    {
+                                        piece.ResetPiecePosition();
+                                    }
+                                    break;
+                                default:
                                     piece.ResetPiecePosition();
-                                }
-                                break;
-                            case GameMaster.PieceType.Thug:
-                                if (PerformTileAction(false))
-                                {
-                                }
-                                else
-                                {
-                                    piece.ResetPiecePosition();
-                                }
-                                break;
-                            default:
-                                piece.ResetPiecePosition();
-                                break;
+                                    break;
+                            }
                         }
                     }
                     else

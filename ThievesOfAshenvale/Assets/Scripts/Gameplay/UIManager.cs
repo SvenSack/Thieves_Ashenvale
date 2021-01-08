@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -113,7 +114,8 @@ namespace Gameplay
             MoWTradeSecretChoice,
             SeleneJobClaim,
             VigilanteReveal,
-            StartTurnAgain
+            StartTurnAgain,
+            Tutorial
         }
 
         public enum TargetingReason
@@ -137,7 +139,10 @@ namespace Gameplay
             piecesMask = LayerMask.GetMask("Pieces");
             foreach (var popUp in SelectionPopUps)
             {
-                popUp.SetActive(false);
+                if (popUp != null)
+                {
+                    popUp.SetActive(false);
+                }
             }
 
             foreach (var selector in playerSelectorsChar)
@@ -318,13 +323,21 @@ namespace Gameplay
                 if (pieceHit.transform.gameObject.GetComponent<Piece>().TryPickup(player))
                 {
                     defaultUI.SetActive(false);
+                    SoundManager.Instance.PlayOneShot("event:/Effects/PiecePickup", pieceHit.transform.position);
                 }
             }
         }
 
         public void ResetAfterSelect()
         { // this is used by all selection types to reset to a base state after use
-            SelectionPopUps[(int)typeOfSelection].SetActive(false);
+            if (typeOfSelection != SelectionType.Tutorial)
+            {
+                SelectionPopUps[(int)typeOfSelection].SetActive(false);
+            }
+            else
+            {
+                TutorialManager.Instance.tutorialUI[(int)TutorialManager.Instance.currentStep].SetActive(false);
+            }
             isSelecting = false;
             if (isSelectingACard || isSelectingTCard)
             {
@@ -388,7 +401,10 @@ namespace Gameplay
                     defaultUI.SetActive(false);
                     selectingTile = thisTile;
                     isSelecting = true;
-                    SelectionPopUps[(int)type].SetActive(true);
+                    if (SelectionPopUps[(int) type] != null)
+                    {
+                        SelectionPopUps[(int)type].SetActive(true);
+                    }
                     typeOfSelection = type;
                     switch (type)
                     { 
@@ -497,6 +513,24 @@ namespace Gameplay
                         case SelectionType.StartTurnAgain:
                             StartTurnAgain();
                             break;
+                        case SelectionType.Tutorial:
+                            TutorialManager.Instance.tutorialUI[(int)TutorialManager.Instance.currentStep].SetActive(true);
+                            string head = TutorialManager.Instance.currentStep.ToString();
+                            string header = "";
+                            for(int i = 0; i < head.Length; i++)
+                            {
+                                if(char.IsUpper(head[i]) && i != 0)
+                                {
+                                    header += " ";
+                                }
+                                header += head[i];
+                            }
+                            string body = TutorialManager.Instance
+                                .tutorialUI[(int) TutorialManager.Instance.currentStep].transform.GetChild(0)
+                                .GetChild(1).GetComponent<TextMeshProUGUI>().text;
+                            participant.RpcAddEvidence(body,header,false, 0);
+                            break;
+                        // above is the unique type for tutorial text
                     }
                 }
                 else
@@ -897,6 +931,14 @@ namespace Gameplay
                     }
                     break;
             }
+
+            if (GameMaster.Instance.isTutorial)
+            {
+                if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.UsingArtifacts)
+                {
+                    TutorialManager.Instance.currentStep++;
+                }
+            }
         }
         
         private void SelectACardTCS(Card hoveredCard)
@@ -1001,6 +1043,7 @@ namespace Gameplay
         public void SetInfoNotif(bool newState)
         {
             infoReminder.SetActive(newState);
+            SoundManager.Instance.PlayOneShot("event:/Effects/InformationGained");
         }
 
         public void ConfirmWorkerDistribution()
@@ -1195,7 +1238,7 @@ namespace Gameplay
                                 target.pv.RPC("LookBehindScreenBy", RpcTarget.All,(byte) participant.playerNumber);
                                 break;
                             case TargetingReason.Potion:
-                                target.pv.RPC("RpcAddHealth", RpcTarget.All, 2);
+                                target.pv.RPC("RpcAddHealth", RpcTarget.All, (byte)2);
                                 break;
                             case TargetingReason.ForgeEvidence:
                                 participant.RpcAddEvidence(evidenceInputs[1].text, evidenceInputs[0].text, true,(byte) target.playerNumber);
@@ -1218,6 +1261,12 @@ namespace Gameplay
                     }
                 }
             }
+        }
+
+        public void TutorialConfirmOnly()
+        {
+            ResetAfterSelect();
+            TutorialManager.Instance.currentStep++;
         }
 
         #endregion
@@ -1527,6 +1576,18 @@ namespace Gameplay
                 playerName = player.pv.Controller.NickName;
             }
             Decklist.Instance.characterNames.TryGetValue(player.character, out string charName);
+            if (GameMaster.Instance.isTutorial)
+            {
+                switch (player.playerNumber)
+                {
+                    case 1:
+                        return "Ott(Ai-Leader)";
+                    case 2:
+                        return "Aria(Ai)";
+                    case 3:
+                        return "Mary(Ai)";
+                }
+            }
             return charName + "(" + playerName + ")";
         }
         

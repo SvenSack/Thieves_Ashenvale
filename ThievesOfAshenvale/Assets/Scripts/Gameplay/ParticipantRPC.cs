@@ -317,7 +317,7 @@ namespace Gameplay
                     DrawACard(Decklist.Cardtype.Artifact);
                 }
 
-                StartCoroutine(PrepAndStart());
+                StartCoroutine(PrepAndStart(false));
             }
         }
 

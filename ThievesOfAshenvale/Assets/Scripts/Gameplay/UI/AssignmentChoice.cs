@@ -99,27 +99,58 @@ namespace Gameplay
                 confirmButton.enabled = false;
             }
             Piece[] pieces = FindObjectsOfType<Piece>();
-            foreach (var piece in pieces)
+            if (!GameMaster.Instance.isTutorial)
             {
-                if (piece.pv.IsMine)
+                foreach (var piece in pieces)
                 {
-                    GameObject inst = null;
-                    switch (piece.type)
+                    if (piece.pv.IsMine)
                     {
-                        case GameMaster.PieceType.Assassin:
-                            inst = Instantiate(togglePrefabs[0], transform);
-                            break;
-                        case GameMaster.PieceType.Thug:
-                            inst = Instantiate(togglePrefabs[1], transform);
-                            break;
+                        GameObject inst = null;
+                        switch (piece.type)
+                        {
+                            case GameMaster.PieceType.Assassin:
+                                inst = Instantiate(togglePrefabs[0], transform);
+                                break;
+                            case GameMaster.PieceType.Thug:
+                                inst = Instantiate(togglePrefabs[1], transform);
+                                break;
+                        }
+                        if (piece.type != GameMaster.PieceType.Worker)
+                        {
+                            AssignmentToggle toggle = inst.GetComponent<AssignmentToggle>();
+                            toggle.assigner = this;
+                            toggle.representative = piece;
+                            toggle.isPrivate = piece.isPrivate;
+                            toggledOff.Add(toggle);
+                        }
                     }
-                    if (piece.type != GameMaster.PieceType.Worker)
+                }
+            }
+            else
+            {
+                foreach (var p in UIManager.Instance.participant.pieces)
+                {
+                    Piece piece = p.GetComponent<Piece>();
+                    if (piece.pv.IsMine)
                     {
-                        AssignmentToggle toggle = inst.GetComponent<AssignmentToggle>();
-                        toggle.assigner = this;
-                        toggle.representative = piece;
-                        toggle.isPrivate = piece.isPrivate;
-                        toggledOff.Add(toggle);
+                        GameObject inst = null;
+                        switch (piece.type)
+                        {
+                            case GameMaster.PieceType.Assassin:
+                                inst = Instantiate(togglePrefabs[0], transform);
+                                break;
+                            case GameMaster.PieceType.Thug:
+                                inst = Instantiate(togglePrefabs[1], transform);
+                                break;
+                        }
+                        if (piece.type != GameMaster.PieceType.Worker)
+                        {
+                            AssignmentToggle toggle = inst.GetComponent<AssignmentToggle>();
+                            toggle.assigner = this;
+                            toggle.representative = piece;
+                            toggle.isPrivate = piece.isPrivate;
+                            toggledOff.Add(toggle);
+                        }
                     }
                 }
             }

@@ -99,6 +99,15 @@ namespace Gameplay
                     cardTransform.LeanMove(hoverLocation.position, .5f);
                     showing = true;
                     StartCoroutine(ShowFlavour(2f));
+                    if (GameMaster.Instance.isTutorial)
+                    {
+                        if (TutorialManager.Instance.currentStep == TutorialManager.TutorialStep.WhatAreThreats &&
+                            cardType == Decklist.Cardtype.Threat)
+                        {
+                            TutorialManager.Instance.viewedThreats[UIManager.Instance.participant.tHand.IndexOf(this)] =
+                                true;
+                        }
+                    }
                     break;
                 case true:
                     cardBody.isKinematic = false;

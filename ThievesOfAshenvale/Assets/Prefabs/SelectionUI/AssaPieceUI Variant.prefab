@@ -25,7 +25,7 @@ PrefabInstance:
     - target: {fileID: 8158621362820047968, guid: 7daee5f31bdf565409d7bb94f78995de,
         type: 3}
       propertyPath: m_Name
-      value: AssaPieceUI
+      value: AssaPieceUI Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8158621362820047975, guid: 7daee5f31bdf565409d7bb94f78995de,
         type: 3}

@@ -59,6 +59,36 @@
 			"text": "Discard any number of pieces which threaten you.",
 			"weaponStrength": "5",
 			"flavourText": "Few problems can not be solved with enough explosions."
+		},
+		{
+			"cardName": "Cloak of Invisibility",
+			"text": "You may secretly look at the artifacts and actions at the disposal of any one character of your choice.",
+			"weaponStrength": "2",
+			"flavourText": "A trick so old one would think people would not fall for it anymore."
+		},
+		{
+			"cardName": "Skeleton Key",
+			"text": "Anyone who robs the Bank for the remainder this turn, takes 2 coins more. The Leader still only gets 1.",
+			"weaponStrength": "1",
+			"flavourText": "Never forget your keys again, or someone else’s for that matter."
+		},
+		{
+			"cardName": "Gloves of Phasing",
+			"text": "You may immediately use the effect of one tile on any job board as if you owned it, even if it is occupied.",
+			"weaponStrength": "2",
+			"flavourText": "Walls are a problem for the poor."
+		},
+		{
+			"cardName": "Gloves of Midas' Touch",
+			"text": "Discard any number of pieces which threaten you.",
+			"weaponStrength": "5",
+			"flavourText": "For when greed and hatred go hand in hand."
+		},
+		{
+			"cardName": "Cape of Endless Blades",
+			"text": "For the remainder of this turn, increase the threat of all assassins and thugs by 1. This applies to all players.",
+			"weaponStrength": "3",
+			"flavourText": "The problem with getting a murderous mob is usually arming them."
 		}
 	]
 }

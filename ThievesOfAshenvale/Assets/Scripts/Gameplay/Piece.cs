@@ -104,6 +104,14 @@ namespace Gameplay
                 transform.position = originBoard.pieceLocation.position + Vector3.up * .3f;
             }
         }
+        
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!other.collider.CompareTag("CursorFollower"))
+            {
+                SoundManager.Instance.PlayOneShot("event:/Effects/PieceFall", other.GetContact(0).point);
+            }
+        }
 
         [PunRPC]
         public void ActivatePoison()
