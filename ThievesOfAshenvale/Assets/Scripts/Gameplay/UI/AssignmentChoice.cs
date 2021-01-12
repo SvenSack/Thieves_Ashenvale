@@ -40,9 +40,13 @@ namespace Gameplay
                 switch (target.representative.type)
                 {
                     case GameMaster.PieceType.Assassin:
-                        if (UIManager.Instance.participant.hasZeal)
+                        if (UIManager.Instance.participant.hasZeal || UIManager.Instance.participant.character == GameMaster.Character.HighPriest)
                         {
                             total = total +  1*multiplier;
+                            break;
+                        }
+                        if (UIManager.Instance.participant.hasZeal && UIManager.Instance.participant.character == GameMaster.Character.HighPriest)
+                        {
                             break;
                         }
 

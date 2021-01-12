@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -54,7 +55,7 @@ namespace Gameplay
                             && GameMaster.Instance.roleRevealTurns[(int) GameMaster.Role.Gangster] == GameMaster.Instance.turnCounter
                             && piece.type == GameMaster.PieceType.Thug)
                         {
-                            tp.damageValue = 2;
+                            tp.damageValue = 2+1*GameMaster.Instance.knivesAmount;
                         }
                         toggledOff.Add(toggle);
                     }
@@ -67,7 +68,7 @@ namespace Gameplay
                     && GameMaster.Instance.roleRevealTurns[(int) GameMaster.Role.Gangster] == GameMaster.Instance.turnCounter
                     && tp.thisPiece.type == GameMaster.PieceType.Thug)
                 {
-                    tp.damageValue = 2;
+                    tp.damageValue = 2+1*GameMaster.Instance.knivesAmount;
                 }
                 total += tp.damageValue;
             }
@@ -92,7 +93,7 @@ namespace Gameplay
                 multiplier = -1;
             }
 
-            total += target.representative.GetComponent<ThreatPiece>().damageValue * multiplier;
+            total += (target.representative.GetComponent<ThreatPiece>().damageValue+1*GameMaster.Instance.knivesAmount) * multiplier;
             
             totalText.text = "Total Damage Taken: " + total;
             AdjustPositions();
@@ -104,7 +105,7 @@ namespace Gameplay
             foreach (var obj in toggledOn)
             {
                 ThreatPiece tp = obj.representative.GetComponent<ThreatPiece>();
-                payAmount += tp.damageValue;
+                payAmount += tp.damageValue+1*GameMaster.Instance.knivesAmount;
                 if (payAmount <= totalThreat)
                 {
                     PhotonNetwork.Destroy(obj.representative.pv);
@@ -119,7 +120,7 @@ namespace Gameplay
             int antiPayAmount = 0;
             foreach (var tp in UIManager.Instance.participant.piecesThreateningMe)
             {
-                antiPayAmount += tp.damageValue;
+                antiPayAmount += tp.damageValue+1*GameMaster.Instance.knivesAmount;
                 if (antiPayAmount <= payAmount)
                 {
                     tp.DestroySelf();
@@ -127,6 +128,16 @@ namespace Gameplay
                 else
                 {
                     tp.ReturnToOwner();
+                    if (GameMaster.Instance.characterIndex.ContainsKey(GameMaster.Character.HeistPlanner))
+                    {
+                        GameMaster.Instance.characterIndex.TryGetValue(GameMaster.Character.HeistPlanner,
+                            out Participant planner);
+                        if (tp.thisPiece.type == GameMaster.PieceType.Thug &&
+                            tp.originPlayerNumber == planner.playerNumber)
+                        {
+                            planner.pv.RPC("RpcAddCoin", RpcTarget.Others, UIManager.Instance.PayAmountOwed(2));
+                        }
+                    }
                 }
             }
             toggledOn = new List<AssignmentToggle>();

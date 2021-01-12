@@ -80,8 +80,8 @@
 		},
 		{
 			"cardName": "Gloves of Midas' Touch",
-			"text": "Discard any number of pieces which threaten you.",
-			"weaponStrength": "5",
+			"text": "Discard any number of pieces from your character and job pools, and take 2 coins for each.",
+			"weaponStrength": "4",
 			"flavourText": "For when greed and hatred go hand in hand."
 		},
 		{

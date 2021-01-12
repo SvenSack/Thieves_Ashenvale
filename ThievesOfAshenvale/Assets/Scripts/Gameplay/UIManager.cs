@@ -17,7 +17,6 @@ namespace Gameplay
     public class UIManager : MonoBehaviour
     {
         [SerializeField] GameObject[] SelectionPopUps = new GameObject[2];
-        [SerializeField] private Transform playedCardsLocation;
         [SerializeField] private AssignmentChoice postTurnPayAssigner;
         [SerializeField] private GameObject[] playerSelectorsChar = new GameObject[6];
         [SerializeField] private GameObject playerSelectorChar;
@@ -39,6 +38,7 @@ namespace Gameplay
         [SerializeField] private TextMeshProUGUI tradeRequestText;
         [SerializeField] private TextMeshProUGUI[] tradeSecretButtons = new TextMeshProUGUI[2];
         [SerializeField] private GameObject infoReminder;
+        [SerializeField] private ConActionSelect conActionAssigner;
 
         [ReadOnly] public GameObject[] pieceDistributionUIPrefabs = new GameObject[3];
         public static UIManager Instance;
@@ -64,6 +64,7 @@ namespace Gameplay
         public DialUI runForOfficeDial;
         public Participant tradePartner;
         public bool archiveOpen;
+        public List<CardEntry> discardList = new List<CardEntry>();
 
         private bool isGrabbingUI;
         private TargetingReason typeOfTargeting;
@@ -115,7 +116,8 @@ namespace Gameplay
             SeleneJobClaim,
             VigilanteReveal,
             StartTurnAgain,
-            Tutorial
+            Tutorial,
+            ConArtistActionSelect
         }
 
         public enum TargetingReason
@@ -388,6 +390,12 @@ namespace Gameplay
                     dial.gameObject.SetActive(true);
                 }
             }
+
+            if (typeOfSelection == SelectionType.ConArtistActionSelect)
+            {
+                conActionAssigner.DropAll();
+            }
+            
             defaultUI.SetActive(true);
         }
 
@@ -446,7 +454,10 @@ namespace Gameplay
                         case SelectionType.Trade:
                             tradeAssigner.CreateToggles();
                             break;
-                        // Above are two list assignment popups
+                        case SelectionType.ConArtistActionSelect:
+                            conActionAssigner.CreateToggles();
+                            break;
+                        // Above are list assignment popups
                         case SelectionType.Poisoner:
                             typeOfTargeting = TargetingReason.Poison;
                             goto case SelectionType.CardPlayerTargeting;
@@ -729,12 +740,30 @@ namespace Gameplay
             if (isFirst)
             {
                 participant.RpcAddEvidence(secrets[0].content, secrets[0].header, true, secrets[0].targetedPlayer);
-                GameMaster.Instance.FetchPlayerByNumber(secrets[1].secondaryPlayer).pv.RPC("RpcAddEvidence", RpcTarget.Others, secrets[1].content, secrets[1].header, true, secrets[1].targetedPlayer);
+                Participant secondary;
+                if (GameMaster.Instance.characterIndex.ContainsKey(GameMaster.Character.ExSpy))
+                {
+                    GameMaster.Instance.characterIndex.TryGetValue(GameMaster.Character.ExSpy, out secondary);
+                }
+                else
+                {
+                    secondary = GameMaster.Instance.FetchPlayerByNumber(secrets[1].secondaryPlayer);
+                }
+                secondary.pv.RPC("RpcAddEvidence", RpcTarget.Others, secrets[1].content, secrets[1].header, true, secrets[1].targetedPlayer);
             }
             else
             {
                 participant.RpcAddEvidence(secrets[1].content, secrets[1].header, true, secrets[1].targetedPlayer);
-                GameMaster.Instance.FetchPlayerByNumber(secrets[0].secondaryPlayer).pv.RPC("RpcAddEvidence", RpcTarget.Others, secrets[0].content, secrets[0].header, true, secrets[0].targetedPlayer);
+                Participant secondary;
+                if (GameMaster.Instance.characterIndex.ContainsKey(GameMaster.Character.ExSpy))
+                {
+                    GameMaster.Instance.characterIndex.TryGetValue(GameMaster.Character.ExSpy, out secondary);
+                }
+                else
+                {
+                    secondary = GameMaster.Instance.FetchPlayerByNumber(secrets[0].secondaryPlayer);
+                }
+                secondary.pv.RPC("RpcAddEvidence", RpcTarget.Others, secrets[0].content, secrets[0].header, true, secrets[0].targetedPlayer);
             }
             participant.DropOutstandingTS(secrets[0]);
             participant.DropOutstandingTS(secrets[1]);
@@ -765,6 +794,10 @@ namespace Gameplay
             {
                 selectingTile.GiveCoinToOwner(1, GameMaster.Job.MasterOfGoods);
                 selectingTile.player.DrawACard(Decklist.Cardtype.Artifact);
+                if (participant.character == GameMaster.Character.Smuggler)
+                {
+                    selectingTile.player.DrawACard(Decklist.Cardtype.Action);
+                }
             }
         }
         
@@ -838,6 +871,14 @@ namespace Gameplay
                             participant.piecesThreateningMe = new List<ThreatPiece>();
                             PlayCard(hoveredCard);
                             break;
+                        case GameMaster.Artifact.Key:
+                            GameMaster.Instance.keysAmount++;
+                            PlayCard(hoveredCard);
+                            break;
+                        case GameMaster.Artifact.Cape:
+                            GameMaster.Instance.knivesAmount++;
+                            PlayCard(hoveredCard);
+                            break;
                     }
                     break;
                 case Decklist.Cardtype.Action:
@@ -872,6 +913,11 @@ namespace Gameplay
                         case GameMaster.Action.SecretCache:
                             participant.DrawACard(Decklist.Cardtype.Artifact);
                             participant.DrawACard(Decklist.Cardtype.Artifact);
+                            if (participant.character == GameMaster.Character.Smuggler)
+                            {
+                                participant.DrawACard(Decklist.Cardtype.Action);
+                                participant.DrawACard(Decklist.Cardtype.Action);
+                            }
                             PlayCard(hoveredCard);
                             break;
                         case GameMaster.Action.AskForFavours:
@@ -1352,6 +1398,10 @@ namespace Gameplay
             GameMaster.Instance.passedPlayers[participant.playerNumber] = false;
             GameMaster.Instance.turnStep = GameMaster.TurnStep.Normal;
             turnEnded = false;
+            if (participant.character == GameMaster.Character.ConArtist)
+            {
+                discardList = new List<CardEntry>();
+            }
             ResetAfterSelect();
         }
 
@@ -1440,8 +1490,9 @@ namespace Gameplay
             StartSelection(SelectionType.MoWTradeSecretChoice, null);
         }
 
-        public void PayAmountOwed(int owed)
+        public int PayAmountOwed(int owed1)
         { // this allows players to pay from any pool they own
+            int owed = owed1;
             if (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfCoin).playerNumber ==
                 participant.playerNumber)
             {
@@ -1488,10 +1539,18 @@ namespace Gameplay
                 }
             }
 
-            if (owed != 0)
+            if (owed != 0 && participant.coins >= owed)
             {
                 participant.RemoveCoins(owed);
             }
+            else if(owed != 0)
+            {
+                int amount = participant.coins;
+                participant.RemoveCoins(participant.coins);
+                return amount;
+            }
+
+            return owed1;
         }
         
         
@@ -1593,9 +1652,12 @@ namespace Gameplay
         
         private void PlayCard(Card card)
         { // the generic method to use up cards which were played
-            card.transform.position = playedCardsLocation.position + Vector3.up * .5f;
+            if (participant.character == GameMaster.Character.ConArtist && card.cardType == Decklist.Cardtype.Action)
+            {
+                discardList.Add(new CardEntry(card.cardType, card.cardIndex));
+            }
             participant.aHand.Remove(card);
-            card.cardCollider.enabled = false;
+            PhotonNetwork.Destroy(card.gameObject);
             ResetAfterSelect();
         }
 
@@ -1641,5 +1703,17 @@ public class InformationPiece
         header = _header;
         isEvidence = _isEvidence;
         evidenceTargetIndex = _evidenceTargetIndex;
+    }
+}
+
+public class CardEntry
+{
+    public Decklist.Cardtype type;
+    public int index;
+
+    public CardEntry(Decklist.Cardtype type1, int index1)
+    {
+        type = type1;
+        index = index1;
     }
 }

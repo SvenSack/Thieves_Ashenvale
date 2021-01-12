@@ -101,12 +101,12 @@ namespace Gameplay
                 case TileType.Bank:
                     if (player.character != GameMaster.Character.BurglaryAce)
                     {
-                        player.AddCoin(2);
+                        player.AddCoin(2+2*GameMaster.Instance.keysAmount);
                         GiveCoinsToLeader(1);
                     }
                     else
                     {
-                        player.AddCoin(4);
+                        player.AddCoin(4+2*GameMaster.Instance.keysAmount);
                         GiveCoinsToLeader(2);
                         if (GameMaster.Instance.isTutorial)
                         {
@@ -118,7 +118,9 @@ namespace Gameplay
                     }
                     return true;
                 case TileType.DarkShrine:
-                    if (player.coins > 0)
+                    if (player.coins > 0 || (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfCoin).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfCoin].GetComponent<Board>().coins > 0) ||
+                        (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfGoods).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfGoods].GetComponent<Board>().coins > 0) ||
+                        (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfClubs).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfClubs].GetComponent<Board>().coins > 0))
                     {
                         GiveCoinToOwner(1, GameMaster.Job.MasterOfKnives);
                         player.AddPiece(GameMaster.PieceType.Assassin, true);
@@ -126,7 +128,9 @@ namespace Gameplay
                     }
                     break;
                 case TileType.Tavern:
-                    if (player.coins > 0)
+                    if (player.coins > 0 || (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfCoin).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfCoin].GetComponent<Board>().coins > 0) ||
+                        (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfGoods).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfGoods].GetComponent<Board>().coins > 0) ||
+                        (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfClubs).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfClubs].GetComponent<Board>().coins > 0))
                     {
                         GiveCoinToOwner(1, GameMaster.Job.MasterOfClubs);
                         player.AddPiece(GameMaster.PieceType.Thug, true);
@@ -180,7 +184,7 @@ namespace Gameplay
                             case TileType.InvestInTheFuture:
                                 if (player.coins > 1)
                                 {
-                                    player.RemoveCoins(2);
+                                    player.RemoveCoins(player.character == GameMaster.Character.Counterfeiter ? 1 : 2);
                                     board.AddCoin(4);
                                     ToggleUsed();
                                     return true;
@@ -189,7 +193,7 @@ namespace Gameplay
                             case TileType.OrganizeOperations:
                                 if (player.coins > 1)
                                 {
-                                    player.RemoveCoins(2);
+                                    player.RemoveCoins(player.character == GameMaster.Character.Counterfeiter ? 1 : 2);
                                     board.AddCoin(board.coins);
                                     ToggleUsed();
                                     if (GameMaster.Instance.isTutorial)
@@ -310,31 +314,16 @@ namespace Gameplay
                             case TileType.BuyBulkArtifacts:
                                 if (board.coins > 3)
                                 {
-                                    board.RemoveCoins(4);
-                                    board.DrawACard();
-                                    board.DrawACard();
-                                    board.DrawACard();
-                                    GiveArtifactToLeader();
-                                    ToggleUsed();
-                                    return true;
-                                }
-                                else if (player.coins > 3)
-                                {
-                                    UIManager.Instance.PayAmountOwed(4);
-                                    board.DrawACard();
-                                    board.DrawACard();
-                                    board.DrawACard();
-                                    GiveArtifactToLeader();
-                                    ToggleUsed();
-                                    return true;
-                                }
-                                else return false;
-                            case TileType.PocketSomeMerchandise:
-                                if (board.coins > 3)
-                                {
-                                    board.RemoveCoins(4);
-                                    board.DrawACard();
-                                    player.DrawACard(Decklist.Cardtype.Artifact);
+                                    board.RemoveCoins(player.character == GameMaster.Character.Counterfeiter ? 3 : 4);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    if (player.character == GameMaster.Character.Smuggler)
+                                    {
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                    }
                                     GiveArtifactToLeader();
                                     ToggleUsed();
                                     return true;
@@ -343,9 +332,50 @@ namespace Gameplay
                                          (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfGoods).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfGoods].GetComponent<Board>().coins > 3) ||
                                          (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfClubs).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfClubs].GetComponent<Board>().coins > 3))
                                 {
-                                    UIManager.Instance.PayAmountOwed(4);
-                                    board.DrawACard();
+                                    UIManager.Instance.PayAmountOwed(
+                                        player.character == GameMaster.Character.Counterfeiter ? 3 : 4);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    if (player.character == GameMaster.Character.Smuggler)
+                                    {
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                    }
+                                    GiveArtifactToLeader();
+                                    ToggleUsed();
+                                    return true;
+                                }
+                                else return false;
+                            case TileType.PocketSomeMerchandise:
+                                if (board.coins > 3)
+                                {
+                                    board.RemoveCoins(player.character == GameMaster.Character.Counterfeiter ? 3 : 4);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
                                     player.DrawACard(Decklist.Cardtype.Artifact);
+                                    if (player.character == GameMaster.Character.Smuggler)
+                                    {
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        player.DrawACard(Decklist.Cardtype.Action);
+                                    }
+                                    GiveArtifactToLeader();
+                                    ToggleUsed();
+                                    return true;
+                                }
+                                else if (player.coins > 3 || (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfCoin).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfCoin].GetComponent<Board>().coins > 3) ||
+                                         (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfGoods).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfGoods].GetComponent<Board>().coins > 3) ||
+                                         (GameMaster.Instance.FetchPlayerByJob(GameMaster.Job.MasterOfClubs).playerNumber == player.playerNumber && GameMaster.Instance.jobBoards[(int) GameMaster.Job.MasterOfClubs].GetComponent<Board>().coins > 3))
+                                {
+                                    UIManager.Instance.PayAmountOwed(
+                                        player.character == GameMaster.Character.Counterfeiter ? 3 : 4);
+                                    board.DrawACard(Decklist.Cardtype.Artifact);
+                                    player.DrawACard(Decklist.Cardtype.Artifact);
+                                    if (player.character == GameMaster.Character.Smuggler)
+                                    {
+                                        board.DrawACard(Decklist.Cardtype.Action);
+                                        player.DrawACard(Decklist.Cardtype.Action);
+                                    }
                                     GiveArtifactToLeader();
                                     ToggleUsed();
                                     if (GameMaster.Instance.isTutorial)
@@ -405,10 +435,19 @@ namespace Gameplay
                 if (player.Equals(GameMaster.Instance.FetchLeader()) || (player.roleRevealed && (player.role == GameMaster.Role.Rogue || player.role == GameMaster.Role.Paladin || player.role == GameMaster.Role.Vigilante)))
                 {
                     player.DrawACard(Decklist.Cardtype.Artifact);
+                    if (player.character == GameMaster.Character.Smuggler)
+                    {
+                        player.DrawACard(Decklist.Cardtype.Action);
+                    }
                 }
                 else
                 {
-                    GameMaster.Instance.FetchLeader().pv.RPC("RpcAddArtifactCard", RpcTarget.Others);
+                    Participant leader = GameMaster.Instance.FetchLeader();
+                    leader.pv.RPC("RpcAddArtifactCard", RpcTarget.Others);
+                    if (leader.character == GameMaster.Character.Smuggler)
+                    {
+                        leader.pv.RPC("RpcAddActionCard", RpcTarget.Others);
+                    }
                 }
             }
         }
@@ -422,6 +461,10 @@ namespace Gameplay
         {
             if (!GameMaster.Instance.isTutorial)
             {
+                if (player.character == GameMaster.Character.Counterfeiter)
+                {
+                    return;
+                }
                 if (player.Equals(GameMaster.Instance.FetchPlayerByJob(owningRole)))
                 {
                     if (player.Equals(GameMaster.Instance.FetchLeader()))

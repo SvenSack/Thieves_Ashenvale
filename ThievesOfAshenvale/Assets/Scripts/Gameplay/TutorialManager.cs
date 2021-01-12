@@ -256,6 +256,7 @@ namespace Gameplay
             {
                 yield return new WaitForSeconds(.5f);
             }
+            UIManager.Instance.participant.RemoveHealth(1);
             yield return new WaitForSeconds(2f);
             UIManager.Instance.StartSelection(UIManager.SelectionType.Tutorial, null);
             while (currentStep == TutorialStep.Resolution)
@@ -263,7 +264,7 @@ namespace Gameplay
                 yield return new WaitForSeconds(.5f);
             }
             PlayerPrefs.SetInt("TutorialFinished", 1);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(10f);
             SceneManager.LoadScene(0);
         }
     }

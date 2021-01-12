@@ -178,9 +178,17 @@ namespace Gameplay
             }
         }
         
-        public void DrawACard()
+        public void DrawACard(Decklist.Cardtype type)
         { // draws a card to this board
-            int newCardIndex = GameMaster.Instance.DrawCard(Decklist.Cardtype.Artifact);
+            int newCardIndex;
+            if (type == Decklist.Cardtype.Action)
+            {
+                newCardIndex = GameMaster.Instance.DrawCard(Decklist.Cardtype.Action);
+            }
+            else
+            {
+                newCardIndex = GameMaster.Instance.DrawCard(Decklist.Cardtype.Artifact);
+            }
             AddACard(newCardIndex);
         }
 

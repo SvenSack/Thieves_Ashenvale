@@ -337,6 +337,8 @@
               <e p="AssignmentToggle.cs" t="Include" />
               <e p="CardHover.cs" t="Include" />
               <e p="CoinHover.cs" t="Include" />
+              <e p="ConActionSelect.cs" t="Include" />
+              <e p="ConReclaimButton.cs" t="Include" />
               <e p="CursorFollower.cs" t="Include" />
               <e p="DialUI.cs" t="Include" />
               <e p="DistributionPieceUI.cs" t="Include" />

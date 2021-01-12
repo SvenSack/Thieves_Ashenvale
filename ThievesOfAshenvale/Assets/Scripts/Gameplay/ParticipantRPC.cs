@@ -93,6 +93,15 @@ namespace Gameplay
                 DrawACard(Decklist.Cardtype.Artifact);
             }
         }
+        
+        [PunRPC]
+        public void RpcAddActionCard()
+        {
+            if (pv.IsMine)
+            {
+                DrawACard(Decklist.Cardtype.Action);
+            }
+        }
 
         [PunRPC]
         public void RpcHandCard(byte indexOfCard, byte typeOfCard)

@@ -7,6 +7,7 @@ namespace Gameplay
     public class Piece : MonoBehaviour
     {
         [SerializeField] private ParticleSystem poisonParticles;
+        [SerializeField] private ParticleSystem hoverLiftParticles;
         public bool isUsed { get; private set; }
         public bool isPickedUp;
         public bool isPrivate = true;
@@ -64,6 +65,14 @@ namespace Gameplay
         {
             rb.isKinematic = !rb.isKinematic;
             isPickedUp = !isPickedUp;
+            if (isPickedUp)
+            {
+                hoverLiftParticles.Play(true);
+            }
+            else
+            {
+                hoverLiftParticles.Stop(true);
+            }
             UIManager.Instance.isGrabbingPiece = !UIManager.Instance.isGrabbingPiece;
         }
 

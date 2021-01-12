@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
-    public class GameMaster : MonoBehaviourPunCallbacks
+    public class GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     {
         #region Lists
 
@@ -101,6 +101,9 @@ namespace Gameplay
         public TurnStep turnStep = TurnStep.Normal;
         public bool isTutorial;
         public bool firstTurnHad = false;
+
+        public byte knivesAmount = 0;
+        public byte keysAmount = 0;
         
         #region Enums
 
@@ -536,6 +539,9 @@ namespace Gameplay
                     TutorialManager.Instance.currentStep++;
                 }
             }
+
+            keysAmount = 0;
+            knivesAmount = 0;
         }
 
         public void MakeNewLeader()
@@ -628,6 +634,20 @@ namespace Gameplay
             }
             Debug.LogAssertion("Things went wrong");
             return null;
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(knivesAmount);
+                stream.SendNext(keysAmount);
+            }
+            else
+            {
+                knivesAmount = (byte)stream.ReceiveNext();
+                keysAmount = (byte) stream.ReceiveNext();
+            }
         }
     }
 

@@ -9,10 +9,12 @@ using Random = UnityEngine.Random;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    
+    public bool isTutorial = true;
+    
     private string gameVersion = "1";
     private string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
     private enum ConnectionPath {host, join};
-    private bool isTutorial = true;
     private ConnectionPath currentPath;
 
     [SerializeField] private byte maxPlayersPerRoom = 6;

@@ -79,7 +79,7 @@
 		},
 		{
 			"cardName": "Lex, the Counterfeiter",
-			"text": "Whenever any effect would require Lex to pay coins, he can chose to pay 1 less.",
+			"text": "Whenever a tile would require Lex to pay coins, he pays 1 less.",
 			"health": "4",
 			"wealth": "3",
 			"flavourText": "Life does get easier when you can make your own money…"
@@ -135,7 +135,7 @@
 		},
 		{
 			"cardName": "Lauren, the Heist Planner",
-			"text": "When Lauras thugs harm another character, she can chose to steal one coin from them for each damage dealt.",
+			"text": "When Lauras thugs harm another character, she can steal two coins from them for each damage dealt.",
 			"health": "4",
 			"wealth": "2",
 			"flavourText": "Ok boys, we go in, we get the stuff, we get it out, its that simple."

@@ -386,6 +386,7 @@ namespace Gameplay
                         }
                     }
                     int threatAmount = Mathf.CeilToInt((GameMaster.Instance.seatsClaimed-deadPlayers) / 2f);
+                    Debug.LogAssertion(threatAmount);
                     if (GameMaster.Instance.turnCounter == 0)
                     {
                         threatAmount = 0;
